@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="resourceRef" value="true" />
+		<property name="jndiName" value="jdbc/ds" />
+	</bean>
+
+	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+		<property name="configLocation" value="classpath:de/schildbach/ehcache.xml" />
+		<property name="shared" value="true" />
+	</bean>
+
+	<bean id="xmppConnectionFactory" class="de.schildbach.portal.service.user.XMPPConnectionFactory">
+		<property name="host">
+			<bean class="org.springframework.jndi.JndiObjectFactoryBean">
+				<property name="resourceRef" value="true" />
+				<property name="jndiName" value="xmpp/host" />
+			</bean>
+		</property>
+		<property name="username">
+			<bean class="org.springframework.jndi.JndiObjectFactoryBean">
+				<property name="resourceRef" value="true" />
+				<property name="jndiName" value="xmpp/username" />
+			</bean>
+		</property>
+		<property name="password">
+			<bean class="org.springframework.jndi.JndiObjectFactoryBean">
+				<property name="resourceRef" value="true" />
+				<property name="jndiName" value="xmpp/password" />
+			</bean>
+		</property>
+		<property name="resource">
+			<bean class="org.springframework.jndi.JndiObjectFactoryBean">
+				<property name="resourceRef" value="true" />
+				<property name="jndiName" value="xmpp/resource" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="session">
+			<bean class="org.springframework.jndi.JndiObjectFactoryBean">
+				<property name="resourceRef" value="true" />
+				<property name="jndiName" value="mail/session" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="mailMessage" class="org.springframework.mail.SimpleMailMessage">
+		<property name="from">
+			<bean class="org.springframework.jndi.JndiObjectFactoryBean">
+				<property name="resourceRef" value="true" />
+				<property name="jndiName" value="mail/from" />
+			</bean>
+		</property>
+	</bean>
+
+</beans>

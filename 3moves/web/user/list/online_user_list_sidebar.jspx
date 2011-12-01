@@ -1,0 +1,63 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:user="urn:jsptagdir:/WEB-INF/tags/user"
+>
+	<c:url var="resource_crown" value="/user/img/crown.png"/>
+	<c:url var="resource_star" value="/user/img/star.png"/>
+	<c:url var="resource_details" value="/img/action.gif"/>
+
+	<fmt:bundle basename="user_list" prefix="online_user_list_sidebar.">
+		
+		<fmt:message var="resource_crown_title" key="sponsor"/>
+		<fmt:message var="resource_star_title" key="new_user"/>
+
+		<div xmlns="http://www.w3.org/1999/xhtml" class="sidebar online_user_list">
+		
+			<h1><fmt:message key="header"/></h1>
+			<c:if test="${!empty chat_requests}">
+				<div class="warning">
+					<span class="blink">!</span>
+					= <fmt:message key="chat_request"/>
+				</div>
+			</c:if>
+			<c:forEach var="row" items="${rows}">
+				<div>
+					<user:username name="${row.username}" />
+					<c:choose>
+						<c:when test="${row.role == 'SPONSOR' || row.role == 'GAME_ADMIN'}">
+							<a href="${link_donations}"><img src="${resource_crown}" alt="${resource_crown_title}" title="${resource_crown_title}"/></a>
+						</c:when>
+						<c:when test="${row.role == 'ADMIN'}">
+							<span style="color:brown"> (admin)</span>
+						</c:when>
+					</c:choose>
+					<c:if test="${row.new}">
+						<img src="${resource_star}" alt="${resource_star_title}" title="${resource_star_title}"/>
+					</c:if>
+					<c:if test="${chat_requests[row.username]}">
+						<a class="blink" href="${link_chat}?user=${row.username}">
+							!
+						</a>
+					</c:if>
+				</div>
+			</c:forEach>
+			<c:if test="${show_more}">
+				<div style="text-align:right">
+					<a href="${link_more}">
+						<img src="${resource_details}"/>
+						<c:if test="${more_num > 0}">
+							<fmt:message key="more">
+								<fmt:param value="${more_num}"/>
+							</fmt:message>
+						</c:if>
+					</a>
+				</div>
+			</c:if>
+
+		</div>
+
+	</fmt:bundle>
+
+</jsp:root>

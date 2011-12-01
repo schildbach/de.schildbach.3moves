@@ -1,0 +1,46 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+>
+	<c:set var="page_content" scope="request">
+
+		<fmt:bundle basename="home" prefix="index_arriving_guest.">
+
+			<h3><fmt:message key="header"/></h3>
+
+			<div class="sidebox">
+				<img style="display:block" src="img/chessboard.png" alt="sample chessboard"/>
+			</div>
+
+			<p style="font-weight:bold"><fmt:message key="rules.header"/></p>
+
+			<c:forEach var="rules_option" items="${rules_options}">
+				<p style="font-weight:bold">
+					<fmt:message key="rules.${rules_option}"/>
+					&#160;
+					<a class="action" href="game/demo_game.html?rules=${rules_option}">
+						<fmt:message key="action_demo"/>
+					</a>
+				</p>
+			</c:forEach>
+
+			<div class="sidebox_left">
+				<c:import url="/user/registration/quick_registration.dof"/>
+			</div>
+
+			<p style="font-weight:bold; color:grey"><fmt:message key="message"/></p>
+
+			<p style="font-weight:bold; color:grey"><fmt:message key="welcome"/></p>
+
+			<div class="sidebox_clear">&#160;</div>
+
+			<c:import url="/game/list/games_teaser.dof"/>
+
+		</fmt:bundle>
+
+	</c:set>
+
+	<c:import url="/layout/standard.dof"/>
+
+</jsp:root>

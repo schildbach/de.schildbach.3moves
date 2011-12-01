@@ -1,0 +1,43 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:form="http://www.springframework.org/tags/form"
+	xmlns:user="urn:jsptagdir:/WEB-INF/tags/user"
+>
+	<c:set var="page_content" scope="request">
+	
+		<fmt:bundle basename="user_profile" prefix="title.">
+		
+			<fmt:message var="label_submit" key="submit" />
+
+			<h3><fmt:message key="header" /></h3>
+
+			<form:form cssClass="border" action="?" method="post">
+
+				<p>
+
+					<c:forEach var="entry" items="${available_titles}">
+
+						<div>
+							<form:radiobutton path="title" value="${entry.key}" />
+							<user:title title="${entry.value}" />
+						</div>
+
+					</c:forEach>
+
+				</p>
+
+				<p>
+					<input type="submit" value="${label_submit}" />
+				</p>
+				
+			</form:form>
+	
+		</fmt:bundle>
+		
+	</c:set>
+	
+	<c:import url="/layout/standard.dof" />
+
+</jsp:root>

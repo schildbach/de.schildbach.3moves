@@ -1,0 +1,31 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+>
+	<c:choose>
+		<c:when test="${columns == 1}">
+			<c:import url="/game/list/forming_single_games_teaser.dof?max=10"/>
+			<c:import url="/game/list/forming_gamegroups_teaser.dof?max=10"/>
+		</c:when>
+		<c:otherwise>
+			<table cellspacing="0" style="width:100%; border-spacing:5px; cell-padding:0px; cell-spacing:0px;">
+				<tr>
+					<td style="vertical-align:top;">
+						<c:import url="/game/list/running_single_games_teaser.dof?max=5"/>
+					</td>
+					<td style="vertical-align:top;">
+						<c:import url="/game/list/running_gamegroups_teaser.dof?max=5"/>
+					</td>
+				</tr>
+				<tr>
+					<td style="vertical-align:top;">
+						<c:import url="/game/list/forming_single_games_teaser.dof?max=10"/>
+					</td>
+					<td style="vertical-align:top;">
+						<c:import url="/game/list/forming_gamegroups_teaser.dof?max=10"/>
+					</td>
+				</tr>
+			</table>
+		</c:otherwise>
+	</c:choose>
+</jsp:root>

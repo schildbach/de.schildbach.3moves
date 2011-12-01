@@ -1,0 +1,44 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+>
+	<c:set var="page_content" scope="request">
+	
+		<fmt:bundle basename="user" prefix="duplicate_sessions.">
+	
+			<h3>
+				<fmt:message key="header">
+					<fmt:param value="${user_name}"/>
+				</fmt:message>
+			</h3>
+			
+			<p><fmt:message key="message1"/></p>
+			<p><fmt:message key="message2"/></p>
+
+			<table cellspacing="0" class="list">
+				<tr>
+					<th><fmt:message key="remote_addr"/></th>
+					<th><fmt:message key="remote_host"/></th>
+					<th><fmt:message key="user_agent"/></th>
+					<th><fmt:message key="logged_in_at"/></th>
+				</tr>
+				<c:forEach var="item" items="${list}">
+					<tr style="${item.is_self ? 'font-weight:bold' : ''}">
+						<td>${item.remote_addr}</td>
+						<td>${item.remote_host}</td>
+						<td>${item.user_agent}</td>
+						<td><fmt:formatDate value="${item.logged_in_at}" type="both" dateStyle="medium"/></td>
+					</tr>
+				</c:forEach>
+			</table>
+
+			<p><fmt:message key="message3"/></p>
+
+		</fmt:bundle>
+	
+	</c:set>
+	
+	<c:import url="/layout/standard.dof"/>
+
+</jsp:root>

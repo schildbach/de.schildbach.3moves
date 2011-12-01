@@ -1,0 +1,81 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:user="urn:jsptagdir:/WEB-INF/tags/user"
+>
+	<fmt:bundle basename="game" prefix="gamegroup.">
+
+		<c:import url="/game/game_header.dof"/>
+
+		<table cellspacing="0" class="tournamentmatrix">
+
+			<tr>
+				<th style="border-bottom-style:solid; border-bottom-width:1px; border-right-style:solid; border-right-width:1px; vertical-align: top;">
+					<fmt:message key="matrix_header_name"/>
+				</th>
+				<c:forEach var="px" varStatus="sx" items="${players}">
+					<th class="tournamentmatrix" style="border-bottom-style:solid; border-bottom-width:1px; vertical-align: top;">
+						<user:image name="${px.subject.name}" height="64" />
+						<br />
+						<user:username name="${px.subject.name}" />
+					</th>
+				</c:forEach>
+				<th style="border-bottom-style:solid; border-bottom-width:1px; border-left-style:solid; border-left-width:1px; align=right; vertical-align: top;">
+					<fmt:message key="matrix_header_points"/>
+				</th>
+			</tr>
+	
+			<c:forEach var="py" varStatus="sy" items="${players}">
+				<tr>
+					<th style="border-right-style:solid; border-right-width:1px; text-align:left;">
+						<user:username name="${py.subject.name}" />
+					</th>
+					<c:forEach var="px" varStatus="sx" items="${players}">
+						<td class="tournamentmatrix">
+							<c:if test="${sy.index != sx.index}">
+								<c:set var="child" value="${matrix[sx.index][sy.index]}"/>
+								<c:if test="${child.state == 'RUNNING'}">
+									<c:set var="parm" value="${child.turn}"/>
+								</c:if>
+								<c:if test="${child.state == 'FINISHED'}">
+									<c:set var="parm">
+										<fmt:formatNumber pattern="0.#" value="${child.players[0].points}"/>-<fmt:formatNumber pattern="0.#" value="${child.players[1].points}"/>
+									</c:set>
+								</c:if>
+								<a href="${link_game}?id=${child.id}">
+									<fmt:message key="state_${child.state}">
+										<fmt:param value="${parm}"/>
+									</fmt:message>
+								</a>
+							</c:if>
+						</td>
+					</c:forEach>
+					<td style="border-left-style:solid; border-left-width:1px; text-align:right;">
+						<fmt:formatNumber pattern="0.#" value="${py.points}"/>
+					</td>
+				</tr>
+			</c:forEach>
+			
+			<tr>
+				<th style="border-top-style:solid; border-top-width:1px"/>
+				<c:forEach var="px" varStatus="sx" items="${players}">
+					<td style="border-top-style:solid; border-top-width:1px"/>
+				</c:forEach>
+				<td style="border-top-style:solid; border-top-width:1px;"/>
+			</tr>
+	
+		</table>
+	
+		<p>
+			<c:set var="games" scope="request" value="${child_games}"/>
+			<table cellspacing="0" class="list small">
+				<c:import url="/game/list/games_list.dof?columns=id,players,full_state,last_active_at,last_move&amp;row_class=light_dark,active"/>
+			</table>
+		</p>
+	
+		<c:import url="/game/game_parameters.dof?class=tinyattachment"/>
+	
+	</fmt:bundle>
+
+</jsp:root>

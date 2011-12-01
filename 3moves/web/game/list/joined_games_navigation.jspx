@@ -1,0 +1,25 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+>
+	<div class="sidebox">
+
+		<fmt:bundle basename="game_list" prefix="joined_games_navigation.">
+			<div><a class="action" href="?subject=${target}"><fmt:message key="singlegame"/></a></div>
+		</fmt:bundle>
+
+		<fmt:bundle basename="game" prefix="game_tag.">
+			<div><a class="action" href="?subject=${target}&amp;rules=CHESS"><fmt:message key="CHESS"/></a></div>
+			<div><a class="action" href="?subject=${target}&amp;rules=CHECKERS"><fmt:message key="CHECKERS"/></a></div>
+			<div><a class="action" href="?subject=${target}&amp;rules=GO"><fmt:message key="GO"/></a></div>
+			<div><a class="action" href="?subject=${target}&amp;rules=DRAGONCHESS"><fmt:message key="DRAGONCHESS"/></a></div>
+		</fmt:bundle>
+
+		<fmt:bundle basename="game_list" prefix="joined_games_navigation.">
+			<div><a class="action" href="?subject=${target}&amp;rules=gamegroup"><fmt:message key="gamegroup"/></a></div>
+		</fmt:bundle>
+
+	</div>
+
+</jsp:root>

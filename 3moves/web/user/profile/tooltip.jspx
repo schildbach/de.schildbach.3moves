@@ -1,0 +1,9 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+>
+	<c:url var="path_profile_photo" value="/user/profile/profile_photo.bin" />
+
+	<img class="photo" width="72" height="96" src="${path_profile_photo}?user=${name}&amp;height=96" />
+
+</jsp:root>

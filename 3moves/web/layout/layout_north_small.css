@@ -1,0 +1,27 @@
+#north {
+	position: absolute;
+	top: 0px;
+	height: 2.5ex;
+	bottom: auto;
+	left: 0px;
+	right: 0px;
+	width: 100%;
+	padding: 0px; margin: 0px;
+	border-bottom: 1px dashed black;
+}
+
+#north div {
+	font-size: 2.3ex;
+}
+
+#west {
+	top: 3.2ex;
+}
+
+#east {
+	top: 3.2ex;
+}
+
+#center {
+	margin-top: 3.2ex;
+}

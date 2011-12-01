@@ -1,0 +1,25 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+>
+	<c:url var="link_more" value="/user/invite_friends.html"/>
+
+	<fmt:bundle basename="user" prefix="invite_friends_sidebar.">
+
+		<div class="sidebar invite_friends">
+
+			<div class="header">
+				<fmt:message key="header"/>
+			</div>
+			
+			<fmt:message key="message"/>
+			<br/>
+
+			<a class="action" href="${link_more}"><fmt:message key="action"/></a>
+
+		</div>
+
+	</fmt:bundle>
+
+</jsp:root>

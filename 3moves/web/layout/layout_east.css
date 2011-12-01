@@ -1,0 +1,13 @@
+#east {
+	position: absolute;
+	bottom: 0px;
+	height: auto;
+	right: 4px;
+	width: 11em;
+	left: auto;
+	z-index: 1;
+}
+
+#center {
+	margin-right: 11em;
+}

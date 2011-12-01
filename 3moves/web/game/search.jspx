@@ -1,0 +1,142 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:form="http://www.springframework.org/tags/form"
+	xmlns:spring="http://www.springframework.org/tags"
+>
+	<c:set var="page_content" scope="request">
+
+		<fmt:bundle basename="game" prefix="search.">
+
+			<fmt:message var="label_submit" key="submit"/>
+
+			<h3><fmt:message key="header"/></h3>
+
+			<form:form cssClass="border" action="?" method="GET" enctype="multipart/form-data">
+
+				<p>
+
+					<label for="rules">
+						<fmt:message key="rules"/>:
+					</label>
+
+					<form:select path="rules">
+						<fmt:bundle basename="game" prefix="game_tag.">
+							<c:forEach var="rules_option" items="${rules_options}">
+								<form:option value="${rules_option}">
+									<fmt:message key="${displayValue}"/>
+								</form:option>
+							</c:forEach>
+						</fmt:bundle>
+					</form:select>
+					
+				</p>
+
+				<p>
+
+					<label for="aid">
+						<fmt:message key="aid"/>:
+					</label>
+
+					<form:select path="aid">
+						<c:forEach var="aid_option" items="${aid_options}">
+							<form:option value="${aid_option}">
+								<fmt:message key="aid.${displayValue}"/>
+							</form:option>
+						</c:forEach>
+					</form:select>
+
+				</p>
+				
+				<p>
+
+					<label for="player">
+						<fmt:message key="player"/>:
+					</label>
+				
+					<form:input path="player" maxlength="12" size="20"/>
+
+					<spring:bind path="command.player">
+						<c:forEach var="code" items="${status.errorCodes}">
+							<div class="error"><fmt:message key="error_${code}"/></div>
+						</c:forEach>
+					</spring:bind>
+
+				</p>
+
+				<p>
+
+					<label for="states">
+						<fmt:message key="states"/>:
+					</label>
+
+					<fmt:bundle basename="game" prefix="game_state.">
+						<c:forEach var="state_option" items="${state_options}">
+							<form:checkbox path="states" value="${state_option}"/>
+							<fmt:message key="${state_option}"/>&#160;
+						</c:forEach>
+					</fmt:bundle>
+
+				</p>
+
+				<p>
+
+					<label for="parent">
+						<fmt:message key="parent"/>:
+					</label>
+
+					<form:select path="parent">
+						<c:forEach var="parent_option" items="${parent_options}">
+							<form:option value="${parent_option}">
+								<fmt:message key="parent.${displayValue}"/>
+							</form:option>
+						</c:forEach>
+					</form:select>
+
+				</p>
+
+				<p>
+
+					<label for="window">
+						<fmt:message key="window"/>:
+					</label>
+
+					<form:select path="window">
+						<c:forEach var="window_option" items="${window_options}">
+							<form:option value="${window_option}">
+								<fmt:message key="window.${displayValue}"/>
+							</form:option>
+						</c:forEach>
+					</form:select>
+
+				</p>
+
+				<p>
+					<input type="submit" value="&gt;&gt; ${label_submit}"/>
+				</p>
+
+			</form:form>
+
+			<c:if test="${has_results}">
+				<p>
+					<c:choose>
+						<c:when test="${empty games}">
+							<fmt:message key="none" />
+						</c:when>
+						<c:otherwise>
+							<table cellspacing="0" class="list small">
+								<c:import url="list/games_list.dof?columns=id,rules-clock-rating,players,full_state,last_active_at,last_move&amp;row_class=light_dark,active,can_join"/>
+							</table>
+						</c:otherwise>
+					</c:choose>
+				</p>
+			</c:if>
+
+		</fmt:bundle>
+
+	</c:set>
+
+	<c:import url="/layout/standard.dof"/>
+	
+</jsp:root>

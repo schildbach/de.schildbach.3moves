@@ -1,0 +1,99 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:form="http://www.springframework.org/tags/form"
+	xmlns:spring="http://www.springframework.org/tags"
+>
+	<c:set var="page_content" scope="request">
+
+		<fmt:bundle basename="game_forming" prefix="create_game.">
+
+			<fmt:message var="label_previous" key="previous_page" />
+			<fmt:message var="label_submit" key="submit_game" />
+
+			<h3>
+				<fmt:message key="header_tournament_theme"/>
+			</h3>
+
+			<form:form cssClass="border" action="?" method="post" enctype="multipart/form-data">
+				
+				<p>
+					<label for="remote.name">
+						<fmt:message key="name"/>:
+					</label>
+					<form:input path="remote.name" size="32" maxlength="32"/>
+				</p>
+
+				<p>
+					<label>
+						<fmt:message key="opening"/>:
+					</label>
+					<div class="game_board">
+						<c:import url="/game/board/base_board.dof"/>
+					</div>
+
+					<c:forEach var="special_attribute" items="${special_attributes}">
+						<p class="warning">
+							<fmt:message key="special_attribute_${special_attribute}"/>
+						</p>
+					</c:forEach>
+		
+					<p>${game_notation}</p>
+
+					<p>
+						<label for="move">
+							<fmt:message key="${move_label}"/>:
+						</label>
+						<c:choose>
+							<c:when test="${can_set_move}">
+								<form:input path="move" size="7" maxlength="9"/>
+								<input type="submit" name="set_move" value=">>"/>
+								<spring:bind path="command.move">
+									<c:if test="${status.error}">
+										&#160;<span class="error"><fmt:message key="move_error"/></span>
+									</c:if>
+								</spring:bind>
+							</c:when>
+							<c:otherwise>
+								${move_notation}
+							</c:otherwise>
+						</c:choose>
+					</p>
+
+					<p>
+						<c:if test="${can_clear_move}">
+							<div>
+								<a class="action" href="?clear"><fmt:message key="clear_move"/></a>
+							</div>
+						</c:if>
+						<c:if test="${can_execute_move}">
+							<div>
+								<a class="action" href="?execute"><fmt:message key="execute_move"/></a>
+							</div>
+						</c:if>
+						<c:if test="${can_undo_move}">
+							<div>
+								<a class="action" href="?undo"><fmt:message key="undo_move"/></a>
+							</div>
+						</c:if>
+					</p>
+					
+					<div style="clear:both">&#160;</div>
+				</p>
+
+				<p>
+					<input type="submit" name="_target1" value="&lt;&lt; ${label_previous}" />
+					&#160;
+					<input type="submit" name="_finish" value="&gt;&gt; ${label_submit}" />
+				</p>
+
+			</form:form>
+
+		</fmt:bundle>
+
+	</c:set>
+
+	<c:import url="/layout/standard.dof"/>
+
+</jsp:root>

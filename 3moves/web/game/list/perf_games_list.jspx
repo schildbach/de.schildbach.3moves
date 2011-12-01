@@ -1,0 +1,25 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+>
+	<c:url var="href_layout" value="/layout" />
+
+	<html>
+
+		<head>
+			<link rel="stylesheet" type="text/css" href="${href_layout}/standard.css" />
+		</head>
+
+		<jsp:scriptlet>long start = System.currentTimeMillis();</jsp:scriptlet>
+
+		<table cellspacing="0" class="list small">
+			<c:import url="games_list.dof?columns=id,rules-clock-rating,turn,players,rating,last_active_at,last_move,clock&amp;row_class=light_dark"/>
+		</table>
+
+		<jsp:scriptlet>long end = System.currentTimeMillis();</jsp:scriptlet>
+
+		<p><jsp:expression>end-start</jsp:expression> ms</p>
+
+	</html>
+
+</jsp:root>

@@ -1,0 +1,154 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:user="urn:jsptagdir:/WEB-INF/tags/user"
+>
+	<c:url var="img_path" value="/img/tree"/>
+
+	<c:set var="page_content" scope="request">
+	
+		<fmt:bundle basename="forum" prefix="message.">
+
+			<h3><c:out value="${content.name}" escapeXml="true"/></h3>
+			
+			<div class="tree">
+				<table cellspacing="0">
+				
+					<tr>
+						<th><fmt:message key="subject"/></th>
+						<th><fmt:message key="created_by"/></th>
+						<th><fmt:message key="created_at"/></th>
+					</tr>
+					
+					<c:forEach var="child_node" varStatus="child_node_status" items="${content_nodes}">
+		
+						<jsp:element name="tr">
+							<jsp:attribute name="class">${child_node == content ? 'selected' : ''}</jsp:attribute>
+							<jsp:body>
+								<td>
+									<c:forEach var="tree_node" items="${tree[child_node_status.index]}">
+										<img src="${img_path}/${tree_node}.gif"/>
+									</c:forEach>
+									<a href="node.html?id=${child_node.id}">
+										<c:choose>
+											<c:when test="${!empty child_node.name}">
+												<c:out value="${child_node.name}" escapeXml="true"/>
+											</c:when>
+											<c:otherwise>
+												<fmt:message key="no_subject"/>
+											</c:otherwise>
+										</c:choose>
+									</a>
+								</td>
+								<td>
+									<user:username name="${child_node.createdBy.name}" />
+								</td>
+								<jsp:element name="td">
+									<jsp:attribute name="class">${reference_date lt child_node.createdAt ? 'new' : ''}</jsp:attribute>
+									<jsp:body>
+										<fmt:formatDate value="${child_node.createdAt}" type="both" dateStyle="short" timeStyle="short"/>
+									</jsp:body>
+								</jsp:element>
+							</jsp:body>
+						</jsp:element>
+					</c:forEach>
+				</table>
+			</div>
+	
+			<div class="smaller" style="float:right">
+				<fmt:message key="read_count">
+					<fmt:param value="${content.readCount}"/>
+				</fmt:message>
+			</div>
+
+			<div class="headers">
+				<table cellspacing="0">
+					<tr>
+						<td width="10%" rowspan="2">
+							<user:image name="${content.createdBy.name}" />
+						</td>
+						<td width="20%">
+							<label><fmt:message key="created_by" />:</label>
+						</td>
+						<td>
+							<user:username name="${content.createdBy.name}" />
+						</td>
+					</tr>
+					<tr>
+						<td width="20%">
+							<label><fmt:message key="created_at" />:</label>
+						</td>
+						<td>
+							<fmt:formatDate value="${content.createdAt}" type="both" />
+						</td>
+					</tr>
+				</table>
+			</div>
+
+			<div class="body">${body}</div>
+	
+			<c:if test="${is_ip_logged}">
+				<div class="smaller" style="float:right">
+					<c:choose>
+						<c:when test="${!empty created_by_ip}">
+							<fmt:message key="ip_logged">
+								<fmt:param value="${created_by_ip}"/>
+							</fmt:message>
+						</c:when>
+						<c:otherwise>
+							<fmt:message key="ip_logged_anonymous"/>
+						</c:otherwise>
+					</c:choose>
+				</div>
+			</c:if>
+	
+			<div>		
+				<a class="action" href="node.html?id=${content.rootContent.id}">
+					<fmt:message key="action_view_forum"/>
+				</a>
+			</div>
+			
+			<c:if test="${can_post_message}">
+	
+				<div>
+					<a class="action" href="post_message.html?parent_id=${content.id}"><fmt:message key="action_public_reply"/></a>
+				</div>
+	
+				<c:if test="${can_private_reply}">
+					<div>		
+						<c:set var="url">
+							<c:out value="${null}" escapeXml="true">
+								<c:url value="/mail/send_mail.html">
+									<c:param name="recipient" value="${content.createdBy.name}"/>
+									<c:param name="subject" value="Re: ${content.name}"/>
+								</c:url>
+							</c:out>
+						</c:set>
+						<a class="action" href="${url}">
+							<fmt:message key="action_private_reply"/>
+						</a>
+					</div>
+				</c:if>
+	
+			</c:if>
+			
+			<c:if test="${!can_post_message}">
+				<p style="color:red;"><fmt:message key="login_hint"/></p>
+			</c:if>
+			
+			<c:if test="${can_delete_message}">
+				<div>
+					<a class="action" href="delete_message.html?id=${content.id}" onClick="return confirm('really delete message?');">
+						<fmt:message key="action_delete_message"/>
+					</a>
+				</div>
+			</c:if>
+	
+		</fmt:bundle>
+	
+	</c:set>
+	
+	<c:import url="/layout/standard.dof"/>
+
+</jsp:root>

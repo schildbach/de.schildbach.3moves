@@ -1,0 +1,30 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+>
+	<fmt:bundle basename="user_settings" prefix="settings_navigation.">
+
+		<div class="sidebox">
+			<a class="action" href="settings.html"><fmt:message key="settings"/></a>
+			<br/>
+			<a class="action" href="password.html"><fmt:message key="password"/></a>
+			<br/>
+			<a class="action" href="open_id.html"><fmt:message key="open_id"/></a>
+			<br/>
+			<a class="action" href="email.html"><fmt:message key="email"/></a>
+			<br/>
+			<a class="action" href="xmpp.html"><fmt:message key="xmpp"/></a>
+			<br/>
+			<a class="action" href="locale.html"><fmt:message key="locale"/></a>
+			<br/>
+			<a class="action" href="notifications.html"><fmt:message key="notifications"/></a>
+			<br/>
+			<a class="action" href="game_options.html"><fmt:message key="game_options"/></a>
+			<br/>
+			<a class="action" href="screen_resolution.html"><fmt:message key="screen_resolution"/></a>
+		</div>
+
+	</fmt:bundle>
+
+</jsp:root>

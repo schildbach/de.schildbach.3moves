@@ -1,0 +1,65 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:form="http://www.springframework.org/tags/form"
+	xmlns:user="urn:jsptagdir:/WEB-INF/tags/user"
+>
+	<c:set var="page_content" scope="request">
+	
+		<h3>User List</h3>
+
+		<div class="sidebox">
+			<fmt:bundle basename="user" prefix="role_tag.">
+				<a class="action" href="?roleFilter=">all</a>
+				<c:forEach var="role" items="${roles}">
+					<br/>
+					<a class="action" href="?roleFilter=${role}">
+						<fmt:message key="${role}" />
+					</a>
+				</c:forEach>
+			</fmt:bundle>
+		</div>
+
+		<form:form action="?" method="post">
+			Name:
+			<form:input path="nameFilter" size="16" maxlength="64"/>&#160;
+			<input type="submit" name="submitNameFilter" value=">> show"/>&#160;
+			<input type="submit" name="clearNameFilter" value=">> clear"/>
+		</form:form>
+	
+		<table style="clear:both" cellspacing="0" class="list tiny">
+			<tr>
+				<th><a href="?orderBy=name">User Name</a></th>
+				<th>Given &amp; Family Name</th>
+				<th>Lang</th>
+				<th><a href="?orderBy=!createdAt">Created At</a></th>
+				<th><a href="?orderBy=!lastLoginAt">Last Login At</a></th>
+				<th><a href="?orderBy=!lastLogoutAt">Last Logout At</a></th>
+				<th>Last IP</th>
+				<th>User Agent</th>
+				<th>Terms</th>
+			</tr>
+			<c:forEach var="user" varStatus="status" items="${users}">
+				<tr class="${status.index % 2 == 0 ? 'dark' : 'light'}">
+					<td>
+						<user:username name="${user.name}" />
+					</td>
+					<td><c:out value="${user.fullName}" escapeXml="true"/></td>
+					<td>${fn:substring(user.languages,0,6)}${fn:length(user.languages) > 6 ? '...' : ''}</td>
+					<td><fmt:formatDate value="${user.createdAt}" type="both" dateStyle="short" timeStyle="short"/></td>
+					<td><fmt:formatDate value="${user.lastLoginAt}" type="both" dateStyle="short" timeStyle="short"/></td>
+					<td><fmt:formatDate value="${user.lastLogoutAt}" type="both" dateStyle="short" timeStyle="short"/></td>
+					<td>${user.lastIP}</td>
+					<td>${fn:substring(user.lastUserAgent,0,32)}</td>
+					<td>${user.acceptedTerms > 0 ? user.acceptedTerms : ''}</td>
+				</tr>
+			</c:forEach>
+		</table>
+
+	</c:set>
+	
+	<c:import url="/layout/standard.dof"/>
+
+</jsp:root>

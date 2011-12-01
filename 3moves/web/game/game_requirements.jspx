@@ -1,0 +1,57 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+>
+	<fmt:bundle basename="game" prefix="game_requirements.">
+
+		<h4><fmt:message key="header"/></h4>
+
+		<p>
+
+			<table cellspacing="0" style="margin:0px; padding:0px; border:0px; border-spacing:0px;">
+
+				<tr>
+					<td><fmt:message key="invitation"/>:</td>
+					<td><fmt:message key="invitation_${game.closed}"/></td>
+				</tr>
+
+				<c:if test="${game.requiredRatingMode != 'disabled'}">
+					<tr>
+						<td><fmt:message key="rating"/>:</td>
+						<td>
+							<c:choose>
+								<c:when test="${game.requiredRatingMode == 'none'}">
+									<fmt:message key="rating_none"/>
+								</c:when>
+								<c:when test="${game.requiredRatingMode == 'range' and empty game.requiredRatingMin and empty game.requiredRatingMax}">
+									<fmt:message key="rating_exists"/>
+								</c:when>
+								<c:when test="${game.requiredRatingMode == 'range' or game.requiredRatingMode == 'none_or_range'}">
+									<fmt:message key="rating_elo"/>
+									<c:choose>
+										<c:when test="${empty game.requiredRatingMax}">
+											&#8805;
+											${game.requiredRatingMin}
+										</c:when>
+										<c:when test="${empty game.requiredRatingMin}">
+											&#8804;
+											${game.requiredRatingMax}
+										</c:when>
+										<c:otherwise>
+											${game.requiredRatingMin}-${game.requiredRatingMax}
+										</c:otherwise>
+									</c:choose>
+								</c:when>
+							</c:choose>
+						</td>
+					</tr>
+				</c:if>
+
+			</table>
+
+		</p>
+
+	</fmt:bundle>
+
+</jsp:root>

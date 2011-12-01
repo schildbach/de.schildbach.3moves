@@ -1,0 +1,22 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+>
+	<c:url var="link_registration" value="/user/registration/register_user.html"/>
+	<c:url var="link_login" value="/user/login/login.html"/>
+
+	<fmt:bundle basename="user_registration" prefix="quick_registration_small.">
+	
+		<div class="box yellow">
+
+			<fmt:message key="text">
+				<fmt:param value="${link_login}" />
+				<fmt:param value="${link_registration}" />
+			</fmt:message>
+
+		</div>
+
+	</fmt:bundle>
+
+</jsp:root>

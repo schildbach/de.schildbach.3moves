@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+>	
+	<c:url var="img_path" value="/layout"/>
+
+	<fmt:bundle basename="home" prefix="browsers.">
+
+		<fmt:message var="page_title" scope="request" key="header" />
+
+		<c:set var="page_content" scope="request">
+
+			<h3>${page_title}</h3>
+
+			<table cellspacing="0" class="list">
+
+				<tr class="dark">
+					<td style="padding: 4px">
+						<a href="http://getfirefox.com/">
+							<img src="http://sfx-images.mozilla.org/affiliates/Buttons/firefox3/110x32_get_ffx.png"/>
+						</a>
+					</td>
+					<td>
+						<a href="http://getfirefox.com/">
+							Firefox 3.0
+						</a>
+					</td>
+					<td><strong><fmt:message key="support.a" /></strong></td>
+				</tr>
+				<tr class="light">
+					<td/>
+					<td>Firefox 2.0</td>
+					<td><fmt:message key="support.b" /></td>
+				</tr>
+				<tr class="dark">
+					<td style="padding: 4px">
+						<a href="http://www.microsoft.com/windows/ie/default.mspx"><img src="http://technet.microsoft.com/en-us/ie/bb219539.ieGet-trademark(en-us,MSDN.10).gif"/></a>
+					</td>
+					<td>
+						<a href="http://www.microsoft.com/windows/ie/default.mspx">
+							Internet Explorer 7
+						</a>
+					</td>
+					<td><fmt:message key="support.b" /></td>
+				</tr>
+				<tr class="light">
+					<td/>
+					<td>Internet Explorer 6</td>
+					<td><fmt:message key="support.none" /></td>
+				</tr>
+			</table>
+
+		</c:set>
+
+	</fmt:bundle>
+
+	<c:import url="/layout/standard.dof"/>
+
+</jsp:root>

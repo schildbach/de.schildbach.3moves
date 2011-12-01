@@ -1,0 +1,267 @@
+<ehcache>
+
+	<!--
+		Sets the path to the directory where cache .data files are created.
+		
+		If the path is a Java System Property it is replaced by
+		its value in the running VM.
+		
+		The following properties are translated:
+		user.home - User's home directory
+		user.dir - User's current working directory
+		java.io.tmpdir - Default temp file path
+	 -->
+
+	<diskStore path="java.io.tmpdir"/>
+	
+	<!--
+		Default Cache configuration. These will applied to caches programmatically created through
+		the CacheManager.
+	
+		The following attributes are required for defaultCache:
+		
+		maxInMemory       - Sets the maximum number of objects that will be created in memory
+		eternal           - Sets whether elements are eternal. If eternal,  timeouts are ignored and the element
+		                    is never expired.
+		timeToIdleSeconds - Sets the time to idle for an element before it expires. Is only used if the element is not
+		                    eternal. Idle time is now - last accessed time
+		timeToLiveSeconds - Sets the time to live for an element before it expires. Is only used if the element is not
+		                    eternal. TTL is now - creation time       
+		overflowToDisk    - Sets whether elements can overflow to disk when the in-memory cache
+		                    has reached the maxInMemory limit.
+    -->
+    
+	<defaultCache
+		maxElementsInMemory="10000"
+		eternal="false"
+		timeToIdleSeconds="120"
+		timeToLiveSeconds="120"
+		overflowToDisk="true"
+	/>
+	
+	<!--
+		Predefined caches.  Add your cache configuration settings here.
+		If you do not have a configuration for your cache a WARNING will be issued when the
+		CacheManager starts
+		
+		The following attributes are required for defaultCache:
+		
+		name              - Sets the name of the cache. This is used to identify the cache. It must be unique.
+		maxInMemory       - Sets the maximum number of objects that will be created in memory
+		eternal           - Sets whether elements are eternal. If eternal,  timeouts are ignored and the element
+		                    is never expired.
+		timeToIdleSeconds - Sets the time to idle for an element before it expires. Is only used if the element is not
+		                    eternal. Idle time is now - last accessed time
+		timeToLiveSeconds - Sets the time to live for an element before it expires. Is only used if the element is not
+		                    eternal. TTL is now - creation time       
+		overflowToDisk    - Sets whether elements can overflow to disk when the in-memory cache
+		                    has reached the maxInMemory limit.
+	-->
+
+	<cache name="de.schildbach.portal.persistence.user.Subject"
+		maxElementsInMemory="100"
+		eternal="false"
+		timeToIdleSeconds="300"
+		timeToLiveSeconds="600"
+		overflowToDisk="false"
+	/>
+	
+	<cache name="de.schildbach.portal.persistence.user.User.userRoles"
+		maxElementsInMemory="100"
+		eternal="false"
+		timeToIdleSeconds="300"
+		timeToLiveSeconds="600"
+		overflowToDisk="false"
+	/>
+
+	<cache name="de.schildbach.portal.persistence.user.UserRole"
+		maxElementsInMemory="100"
+		eternal="false"
+		timeToIdleSeconds="300"
+		timeToLiveSeconds="600"
+		overflowToDisk="false"
+	/>
+
+	<cache name="de.schildbach.portal.persistence.user.SubjectRelation"
+		maxElementsInMemory="100"
+		eternal="false"
+		timeToIdleSeconds="300"
+		timeToLiveSeconds="600"
+		overflowToDisk="false"
+	/>
+	
+	<cache name="de.schildbach.portal.persistence.user.UserHolidays"
+		maxElementsInMemory="100"
+		eternal="false"
+		timeToIdleSeconds="300"
+		timeToLiveSeconds="600"
+		overflowToDisk="false"
+	/>
+	
+	<cache name="de.schildbach.portal.persistence.user.Image"
+		maxElementsInMemory="100"
+		eternal="false"
+		timeToIdleSeconds="3600"
+		timeToLiveSeconds="3600"
+		overflowToDisk="false"
+	/>
+	
+	<cache name="de.schildbach.portal.persistence.game.Game"
+		maxElementsInMemory="1000"
+		eternal="false"
+		timeToIdleSeconds="300"
+		timeToLiveSeconds="600"
+		overflowToDisk="false"
+	/>
+	
+	<cache name="de.schildbach.portal.persistence.game.GameGroup.childGames"
+		maxElementsInMemory="1000"
+		eternal="false"
+		timeToIdleSeconds="300"
+		timeToLiveSeconds="600"
+		overflowToDisk="false"
+	/>
+	
+	<cache name="de.schildbach.portal.persistence.game.Game.players"
+		maxElementsInMemory="1000"
+		eternal="false"
+		timeToIdleSeconds="300"
+		timeToLiveSeconds="600"
+		overflowToDisk="false"
+	/>
+	
+	<cache name="de.schildbach.portal.persistence.game.Game.invitations"
+		maxElementsInMemory="1000"
+		eternal="false"
+		timeToIdleSeconds="300"
+		timeToLiveSeconds="600"
+		overflowToDisk="false"
+	/>
+	
+	<cache name="de.schildbach.portal.persistence.game.Game.watches"
+		maxElementsInMemory="1000"
+		eternal="false"
+		timeToIdleSeconds="300"
+		timeToLiveSeconds="600"
+		overflowToDisk="false"
+	/>
+
+	<cache name="de.schildbach.portal.persistence.game.GameConditionalMoves"
+		maxElementsInMemory="1000"
+		eternal="false"
+		timeToIdleSeconds="300"
+		timeToLiveSeconds="600"
+		overflowToDisk="false"
+	/>
+
+	<cache name="de.schildbach.portal.persistence.game.GamePlayer"
+		maxElementsInMemory="1000"
+		eternal="false"
+		timeToIdleSeconds="300"
+		timeToLiveSeconds="600"
+		overflowToDisk="false"
+	/>
+
+	<cache name="de.schildbach.portal.persistence.game.GamePlayer.conditionalMoves"
+		maxElementsInMemory="100"
+		eternal="false"
+		timeToIdleSeconds="300"
+		timeToLiveSeconds="600"
+		overflowToDisk="false"
+	/>
+
+	<cache name="de.schildbach.portal.persistence.game.GameInvitation"
+		maxElementsInMemory="1000"
+		eternal="false"
+		timeToIdleSeconds="300"
+		timeToLiveSeconds="600"
+		overflowToDisk="false"
+	/>
+	
+	<cache name="de.schildbach.portal.persistence.game.GameWatch"
+		maxElementsInMemory="1000"
+		eternal="false"
+		timeToIdleSeconds="300"
+		timeToLiveSeconds="600"
+		overflowToDisk="false"
+	/>
+	
+	<cache name="de.schildbach.portal.persistence.game.SubjectRating"
+		maxElementsInMemory="1000"
+		eternal="false"
+		timeToIdleSeconds="300"
+		timeToLiveSeconds="600"
+		overflowToDisk="false"
+	/>
+	
+	<cache name="de.schildbach.portal.persistence.game.SubjectRatingHistory"
+		maxElementsInMemory="1000"
+		eternal="false"
+		timeToIdleSeconds="3600"
+		timeToLiveSeconds="3600"
+		overflowToDisk="false"
+	/>
+
+	<cache name="de.schildbach.portal.persistence.content.Content"
+		maxElementsInMemory="1000"
+		eternal="false"
+		timeToIdleSeconds="300"
+		timeToLiveSeconds="600"
+		overflowToDisk="false"
+	/>
+	
+	<cache name="de.schildbach.portal.persistence.mail.Mail"
+		maxElementsInMemory="1000"
+		eternal="false"
+		timeToIdleSeconds="300"
+		timeToLiveSeconds="600"
+		overflowToDisk="false"
+	/>
+	
+	<cache name="org.hibernate.cache.StandardQueryCache"
+		maxElementsInMemory="200"
+		eternal="false"
+		timeToIdleSeconds="600"
+		timeToLiveSeconds="1800"
+		overflowToDisk="false"
+	/>
+	
+	<cache name="org.hibernate.cache.UpdateTimestampsCache"
+		maxElementsInMemory="200"
+		eternal="false"
+		timeToIdleSeconds="600"
+		timeToLiveSeconds="1800"
+		overflowToDisk="false"
+	/>
+
+	<cache name="fragment.navigation"
+		maxElementsInMemory="200"
+		eternal="true"
+		overflowToDisk="false"
+	/>
+
+	<cache name="fragment.friends"
+		maxElementsInMemory="200"
+		eternal="false"
+		timeToIdleSeconds="20"
+		timeToLiveSeconds="20"
+		overflowToDisk="false"
+	/>
+
+	<cache name="fragment.gameInvitations"
+		maxElementsInMemory="200"
+		eternal="false"
+		timeToIdleSeconds="60"
+		timeToLiveSeconds="60"
+		overflowToDisk="false"
+	/>
+
+	<cache name="fragment.toplist"
+		maxElementsInMemory="200"
+		eternal="false"
+		timeToIdleSeconds="300"
+		timeToLiveSeconds="300"
+		overflowToDisk="false"
+	/>
+
+</ehcache>

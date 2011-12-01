@@ -1,0 +1,1029 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd
+	">
+
+	<!-- performance monitoring -->
+
+	<aop:config>
+		<aop:advisor advice-ref="controllerInterceptor" pointcut-ref="controllers" />
+	</aop:config>
+
+	<bean id="controllerInterceptor" class="org.springframework.aop.interceptor.JamonPerformanceMonitorInterceptor">
+		<property name="trackAllInvocations" value="true" />
+		<property name="logTargetClassInvocation" value="true" />
+		<property name="prefix" value="(controller) " />
+	</bean>
+
+	<bean id="controllers" class="org.springframework.aop.support.annotation.AnnotationMatchingPointcut">
+		<constructor-arg value="org.springframework.stereotype.Controller" />
+	</bean>
+
+	<!-- handler adapters -->
+
+	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+		<property name="cacheSeconds" value="0" />
+		<property name="customArgumentResolver">
+			<bean class="de.schildbach.user.presentation.UserArgumentResolver">
+				<property name="userService" ref="userService" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter" />
+
+	<!-- handler mappings -->
+
+	<bean class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping">
+		<property name="order" value="0" />
+		<property name="alwaysUseFullPath" value="true" />
+	</bean>
+
+	<bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="order" value="1" />
+		<property name="mappings">
+			<props>
+				<prop key="/user/*">userController</prop>
+				<prop key="/user/registration/*">registrationController</prop>
+				<prop key="/user/profile/*">userProfileController</prop>
+				<prop key="/user/relation/*">userRelationController</prop>
+				<prop key="/user/terms/*">userTermsController</prop>
+				<prop key="/game/*">gameController</prop>
+				<prop key="/game/forming/*">formingGameController</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- controller templates -->
+
+	<bean id="controller" abstract="true">
+		<property name="synchronizeOnSession" value="true" />
+		<property name="cacheSeconds" value="0" />
+	</bean>
+
+	<bean id="form" parent="controller" abstract="true">
+		<property name="sessionForm" value="true" />
+	</bean>
+
+	<!-- controllers -->
+
+	<bean name="/" class="de.schildbach.common.presentation.controller.IndexController" parent="controller">
+		<property name="showChessboardThreshold" value="640" />
+		<property name="environment" ref="environment" />
+		<property name="rulesOptions" ref="rules" />
+		<property name="viewNameUser" value="index_user.dof" />
+		<property name="viewNameArrivingGuest" value="index_arriving_guest.jspx" />
+		<property name="viewNameLeavingGuest" value="index_leaving_guest.jspx" />
+	</bean>
+
+	<bean name="/sitemap.xml" class="org.springframework.web.servlet.mvc.ParameterizableViewController"
+		parent="controller">
+		<property name="viewName" value="/sitemap.jspx" />
+	</bean>
+
+	<bean name="/news.atom" class="de.schildbach.forum.presentation.NewsfeedController" parent="controller">
+		<property name="htmlUtils" ref="htmlUtils" />
+		<property name="viewName" value="/forum/newsfeed_atom.jspx" />
+		<property name="pageLength" value="20" />
+		<property name="contentService" ref="contentService" />
+	</bean>
+
+	<bean name="/index_user.dof" class="de.schildbach.common.presentation.controller.IndexUserController"
+		parent="controller">
+		<property name="showMenuThreshold" value="640" />
+		<property name="environment" ref="environment" />
+		<property name="userService" ref="userService" />
+		<property name="viewName" value="index_user.jspx" />
+	</bean>
+
+	<bean name="/misc/faq.html" class="org.springframework.web.servlet.mvc.ParameterizableViewController"
+		parent="controller">
+		<property name="viewName" value="/misc/faq.jspx" />
+	</bean>
+
+	<bean name="/misc/browser_sidebar.dof" class="de.schildbach.misc.presentation.BrowserSidebarController"
+		parent="controller">
+		<property name="viewName" value="/misc/browser_sidebar.jspx" />
+	</bean>
+
+	<bean name="/misc/browsers.html" class="org.springframework.web.servlet.mvc.ParameterizableViewController"
+		parent="controller">
+		<property name="viewName" value="/misc/browsers.jspx" />
+	</bean>
+
+	<bean name="/misc/impressum.html" class="org.springframework.web.servlet.mvc.ParameterizableViewController"
+		parent="controller">
+		<property name="viewName" value="/misc/impressum.jspx" />
+	</bean>
+
+	<bean name="/misc/links.html" class="org.springframework.web.servlet.mvc.ParameterizableViewController"
+		parent="controller">
+		<property name="viewName" value="/misc/links.jspx" />
+	</bean>
+
+	<bean name="/misc/clock.xml" class="de.schildbach.misc.presentation.ClockController" parent="controller">
+		<property name="viewName" value="/misc/clock.jspx" />
+	</bean>
+
+	<bean name="/mem.html" class="de.schildbach.common.presentation.controller.MemController" parent="controller" />
+
+	<!-- layout -->
+
+	<bean name="/layout/standard.dof" class="de.schildbach.layout.presentation.StandardLayoutController"
+		parent="controller">
+		<property name="linkHome" value="/" />
+		<property name="viewName" value="standard.jspx" />
+		<property name="defaultResolution" value="1024" />
+		<property name="rightSidebarResolutionThreshold" value="1024" />
+		<property name="leftSidebarResolutionThreshold" value="640" />
+		<property name="environment" ref="environment" />
+	</bean>
+
+	<bean name="/layout/sidebar_left.dof" class="de.schildbach.layout.presentation.LeftSidebarController"
+		parent="controller">
+		<property name="viewName" value="sidebar_left.jspx" />
+	</bean>
+
+	<bean name="/layout/sidebar_right.dof" class="de.schildbach.layout.presentation.RightSidebarController"
+		parent="controller">
+		<property name="viewName" value="sidebar_right.jspx" />
+	</bean>
+
+	<bean name="/layout/locale_sidebar.dof" class="de.schildbach.layout.presentation.LocaleSidebarController"
+		parent="controller">
+		<property name="viewName" value="locale_sidebar.jspx" />
+		<property name="locales">
+			<list>
+				<value>de</value>
+				<value>en_GB</value>
+				<value>en_US</value>
+			</list>
+		</property>
+		<property name="linkSet" value="/set_locale.html?locale=" />
+		<property name="environment" ref="environment" />
+	</bean>
+
+	<bean name="/set_locale.html" class="de.schildbach.common.presentation.controller.SetLocaleController"
+		parent="controller">
+		<property name="viewName" value="redirect:/" />
+		<property name="environment" ref="environment" />
+	</bean>
+
+	<bean name="/layout/screen_resolution_sidebar.dof"
+		class="de.schildbach.layout.presentation.ScreenResolutionSidebarController" parent="controller">
+		<property name="viewName" value="screen_resolution_sidebar.jspx" />
+		<property name="screenResolutions">
+			<list>
+				<value>320</value>
+				<value>640</value>
+				<value>1280</value>
+			</list>
+		</property>
+		<property name="linkSet" value="/layout/set_screen_resolution.html?resolution=" />
+		<property name="environment" ref="environment" />
+	</bean>
+
+	<bean name="/layout/set_screen_resolution.html"
+		class="de.schildbach.layout.presentation.SetScreenResolutionController" parent="controller">
+		<property name="viewName" value="redirect:/" />
+		<property name="environment" ref="environment" />
+	</bean>
+
+	<bean name="/layout/navigation_sidebar.dof" class="de.schildbach.layout.presentation.NavigationSidebarController"
+		parent="controller">
+		<property name="viewName" value="navigation_sidebar.jspx" />
+	</bean>
+
+	<bean name="/layout/horizontal_navigation.dof" class="de.schildbach.layout.presentation.NavigationSidebarController"
+		parent="controller">
+		<property name="viewName" value="horizontal_navigation.jspx" />
+	</bean>
+
+	<!-- user -->
+
+	<bean name="/people/*/" class="de.schildbach.user.presentation.profile.ProfileController" parent="controller">
+		<property name="userService" ref="userService" />
+		<property name="presenceService" ref="presenceService" />
+		<property name="htmlUtils" ref="htmlUtils" />
+		<property name="viewName" value="/user/profile/profile.jspx" />
+		<property name="viewNameAsGuest" value="/user/profile/profile_as_guest.jspx" />
+		<property name="viewNameNotFound" value="/user/profile/profile_not_found.jspx" />
+		<property name="viewNameSystemAccount" value="/user/profile/profile_system_account.jspx" />
+	</bean>
+
+	<bean name="/people/*/tooltip.html" class="de.schildbach.user.presentation.profile.TooltipController"
+		parent="controller">
+		<property name="viewName" value="/user/profile/tooltip.jspx" />
+	</bean>
+
+	<bean name="/user/user_sidebar.dof" class="de.schildbach.user.presentation.UserSidebarController"
+		parent="controller">
+		<property name="viewName" value="user_sidebar.jspx" />
+	</bean>
+
+	<bean name="/user/donations.html" class="de.schildbach.user.presentation.DonationsController" parent="controller">
+		<property name="viewName" value="donations.jspx" />
+	</bean>
+
+	<bean name="/user/invite_friends.html" class="de.schildbach.user.presentation.InviteFriendsController">
+		<property name="emailValidator" ref="emailValidator" />
+		<property name="userService" ref="userService" />
+		<property name="view" value="invite_friends.jspx" />
+		<property name="successView" value="home" />
+	</bean>
+
+	<bean name="/user/suggest_user_names.html" class="de.schildbach.user.presentation.SuggestUserNamesController"
+		parent="controller">
+		<property name="userService" ref="userService" />
+		<property name="viewName" value="/user/suggest_user_names.jspx" />
+	</bean>
+
+	<bean name="/user/login/login.html" class="de.schildbach.user.presentation.login.LoginController">
+		<property name="userAuthenticationService" ref="userAuthenticationService" />
+		<property name="authenticationHelper" ref="authenticationHelper" />
+		<property name="consumerManager" ref="consumerManager" />
+		<property name="environment" ref="environment" />
+		<property name="view" value="login.jspx" />
+		<property name="successView" value="redirect:/" />
+	</bean>
+
+	<bean name="/user/login/logout.html" class="de.schildbach.user.presentation.login.LogoutController"
+		parent="controller">
+		<property name="userAuthenticationService" ref="userAuthenticationService" />
+		<property name="authenticationHelper" ref="authenticationHelper" />
+		<property name="viewName" value="redirect:/" />
+	</bean>
+
+	<bean name="/user/login/turn_into_user.html" class="de.schildbach.user.presentation.login.TurnIntoUserController"
+		parent="controller">
+		<property name="userAuthenticationService" ref="userAuthenticationService" />
+		<property name="authenticationHelper" ref="authenticationHelper" />
+		<property name="viewName" value="redirect:/" />
+	</bean>
+
+	<bean id="userController" class="de.schildbach.user.presentation.controller.UserController" parent="controller">
+		<property name="methodNameResolver" ref="internalPathMethodNameResolver" />
+		<property name="userService" ref="userService" />
+		<property name="presenceService" ref="presenceService" />
+		<property name="permanentLoginCookieHelper" ref="permanentLoginCookieHelper" />
+	</bean>
+
+	<bean name="/user/registration/" class="org.springframework.web.servlet.mvc.ParameterizableViewController"
+		parent="controller">
+		<property name="viewName" value="redirect:register_user.html" />
+	</bean>
+
+	<bean name="/user/registration/quick_registration.dof"
+		class="de.schildbach.user.presentation.registration.QuickRegistrationController" parent="controller">
+		<property name="showGenderThreshold" value="800" />
+		<property name="smallThreshold" value="640" />
+		<property name="environment" ref="environment" />
+		<property name="viewName" value="quick_registration.jspx" />
+		<property name="smallViewName" value="quick_registration_small.jspx" />
+	</bean>
+
+	<!-- legacy -->
+	<bean name="/user/registration/view_register_user_form.html"
+		class="org.springframework.web.servlet.mvc.ParameterizableViewController" parent="controller">
+		<property name="viewName" value="redirect:register_user.html" />
+	</bean>
+
+	<bean name="/user/registration/register_user.html"
+		class="de.schildbach.user.presentation.registration.RegisterUserController" parent="form">
+		<property name="userNameValidator" ref="userNameValidator" />
+		<property name="passwordsValidator" ref="passwordsValidator" />
+		<property name="userAuthenticationService" ref="userAuthenticationService" />
+		<property name="authenticationHelper" ref="authenticationHelper" />
+		<property name="encryptedCookieHelper" ref="userTrackingCookieHelper" />
+		<property name="formView" value="register_user_form.jspx" />
+		<property name="successView" value="user_terms" />
+	</bean>
+
+	<bean name="/user/registration/check_name.html"
+		class="de.schildbach.user.presentation.registration.CheckNameController" parent="controller">
+		<property name="userService" ref="userService" />
+		<property name="viewName" value="/user/registration/check_name.jspx" />
+	</bean>
+
+	<bean id="registrationController" class="de.schildbach.user.presentation.controller.RegistrationController"
+		parent="controller">
+		<property name="addressValidationEncryptionHelper" ref="addressValidationEncryptionHelper" />
+		<property name="methodNameResolver" ref="internalPathMethodNameResolver" />
+		<property name="userService" ref="userService" />
+	</bean>
+
+	<bean name="/user/settings/settings.html" class="de.schildbach.user.presentation.settings.SettingsController">
+		<property name="view" value="settings.jspx" />
+	</bean>
+
+	<bean name="/user/settings/password.html" class="de.schildbach.user.presentation.settings.PasswordController">
+		<property name="passwordsValidator" ref="passwordsValidator" />
+		<property name="userService" ref="userService" />
+		<property name="view" value="password.jspx" />
+		<property name="successView" value="user_settings" />
+	</bean>
+
+	<bean name="/user/settings/open_id.html" class="de.schildbach.user.presentation.settings.OpenIdController">
+		<property name="userAuthenticationService" ref="userAuthenticationService" />
+		<property name="userService" ref="userService" />
+		<property name="consumerManager" ref="consumerManager" />
+		<property name="view" value="open_id.jspx" />
+		<property name="successView" value="user_settings" />
+	</bean>
+
+	<bean name="/user/settings/email.html" class="de.schildbach.user.presentation.settings.EmailController">
+		<property name="emailValidator" ref="emailValidator" />
+		<property name="addressValidationEncryptionHelper" ref="addressValidationEncryptionHelper" />
+		<property name="userService" ref="userService" />
+		<property name="view" value="email.jspx" />
+		<property name="successView" value="user_settings" />
+		<property name="validateView" value="validate_address.jspx" />
+	</bean>
+
+	<bean name="/user/settings/xmpp.html" class="de.schildbach.user.presentation.settings.XmppController">
+		<property name="emailValidator" ref="emailValidator" />
+		<property name="addressValidationEncryptionHelper" ref="addressValidationEncryptionHelper" />
+		<property name="userService" ref="userService" />
+		<property name="view" value="xmpp.jspx" />
+		<property name="successView" value="user_settings" />
+		<property name="validateView" value="validate_address.jspx" />
+	</bean>
+
+	<bean name="/user/settings/locale.html" class="de.schildbach.user.presentation.settings.LocaleController">
+		<property name="userService" ref="userService" />
+		<property name="authenticationHelper" ref="authenticationHelper" />
+		<property name="view" value="locale.jspx" />
+		<property name="successView" value="user_settings" />
+		<property name="availableLocales">
+			<list>
+				<value>de</value>
+				<value>en_GB</value>
+				<value>en_US</value>
+			</list>
+		</property>
+		<property name="environment" ref="environment" />
+	</bean>
+
+	<bean name="/user/settings/notifications.html"
+		class="de.schildbach.user.presentation.settings.NotificationsController">
+		<property name="userService" ref="userService" />
+		<property name="view" value="notifications.jspx" />
+		<property name="successView" value="user_settings" />
+	</bean>
+
+	<bean name="/user/settings/game_options.html"
+		class="de.schildbach.user.presentation.settings.GameOptionsController">
+		<property name="userService" ref="userService" />
+		<property name="view" value="game_options.jspx" />
+		<property name="successView" value="user_settings" />
+	</bean>
+
+	<bean name="/user/settings/screen_resolution.html"
+		class="de.schildbach.user.presentation.settings.ScreenResolutionController">
+		<property name="userService" ref="userService" />
+		<property name="authenticationHelper" ref="authenticationHelper" />
+		<property name="view" value="screen_resolution.jspx" />
+		<property name="successView" value="user_settings" />
+		<property name="availableResolutions">
+			<list>
+				<value>320</value>
+				<value>640</value>
+				<value>800</value>
+				<value>1024</value>
+				<value>1152</value>
+				<value>1280</value>
+				<value>1400</value>
+				<value>1600</value>
+			</list>
+		</property>
+		<property name="environment" ref="environment" />
+	</bean>
+
+	<bean name="/user/profile/set_profile.html" class="de.schildbach.user.presentation.profile.OwnProfileController"
+		parent="form">
+		<property name="userService" ref="userService" />
+		<property name="formView" value="set_profile_form.jspx" />
+		<property name="successView" value="user_profile" />
+	</bean>
+
+	<bean name="/user/profile/profile_photo.bin"
+		class="de.schildbach.user.presentation.profile.ProfilePhotoController">
+		<property name="userService" ref="userService" />
+		<property name="imageOperations" ref="imageOperations" />
+	</bean>
+
+	<bean name="/user/profile/profile.html" class="de.schildbach.user.presentation.profile.LegacyProfileController"
+		parent="controller">
+		<property name="viewName" value="redirect:/people/{0}/" />
+	</bean>
+
+	<bean name="/user/profile/add_user_role.html" class="de.schildbach.user.presentation.profile.AddUserRoleController"
+		parent="controller">
+		<property name="userService" ref="userService" />
+		<property name="viewName" value="redirect:/user/profile/profile.html" />
+	</bean>
+
+	<bean name="/user/profile/remove_user_role.html"
+		class="de.schildbach.user.presentation.profile.RemoveUserRoleController" parent="controller">
+		<property name="userService" ref="userService" />
+		<property name="viewName" value="redirect:/user/profile/profile.html" />
+	</bean>
+
+	<bean name="/user/profile/title.html" class="de.schildbach.user.presentation.profile.TitleController">
+		<property name="userService" ref="userService" />
+		<property name="view" value="title.jspx" />
+		<property name="successView" value="redirect:/user/profile/profile.html" />
+	</bean>
+
+	<bean id="userProfileController" class="de.schildbach.user.presentation.controller.UserProfileController"
+		parent="controller">
+		<property name="methodNameResolver" ref="internalPathMethodNameResolver" />
+		<property name="userService" ref="userService" />
+		<property name="imageOperations" ref="imageOperations" />
+	</bean>
+
+	<bean name="/user/relation/friends_sidebar.dof"
+		class="de.schildbach.user.presentation.relation.FriendsSidebarController" parent="controller">
+		<property name="userService" ref="userService" />
+		<property name="viewName" value="friends_sidebar.jspx" />
+	</bean>
+
+	<bean id="userRelationController" class="de.schildbach.user.presentation.controller.UserRelationController"
+		parent="controller">
+		<property name="methodNameResolver" ref="internalPathMethodNameResolver" />
+		<property name="userService" ref="userService" />
+		<property name="authenticationHelper" ref="authenticationHelper" />
+	</bean>
+
+	<bean id="userTermsController" class="de.schildbach.user.presentation.controller.UserTermsController"
+		parent="controller">
+		<property name="methodNameResolver" ref="internalPathMethodNameResolver" />
+		<property name="userService" ref="userService" />
+	</bean>
+
+	<bean name="/user/list/online_user_list_sidebar.xml"
+		class="de.schildbach.user.presentation.list.OnlineUserListSidebarController" parent="controller">
+		<property name="userService" ref="userService" />
+		<property name="presenceService" ref="presenceService" />
+		<property name="viewName" value="online_user_list_sidebar.jspx" />
+		<property name="linkDonations" value="/user/donations.html" />
+		<property name="linkChat" value="/user/chat/private.html" />
+		<property name="linkMore" value="/user/list/users_online.html" />
+	</bean>
+
+	<bean name="/user/list/users_online.html" class="de.schildbach.user.presentation.list.UsersOnlineController"
+		parent="controller">
+		<property name="userService" ref="userService" />
+		<property name="presenceService" ref="presenceService" />
+		<property name="viewName" value="users_online.jspx" />
+	</bean>
+
+	<bean name="/user/list/users_list.dof" class="de.schildbach.user.presentation.list.UsersListController"
+		parent="controller">
+		<property name="userService" ref="userService" />
+		<property name="presenceService" ref="presenceService" />
+		<property name="viewName" value="users_list.jspx" />
+	</bean>
+
+	<bean name="/user/chat/private.html" class="de.schildbach.user.presentation.chat.PrivateChatController"
+		parent="form">
+		<property name="presenceService" ref="presenceService" />
+		<property name="formView" value="private_chat.jspx" />
+	</bean>
+
+	<bean name="/user/admin/user_list.html" class="de.schildbach.user.presentation.admin.UserListController"
+		parent="form">
+		<property name="userService" ref="userService" />
+		<property name="formView" value="user_list.jspx" />
+	</bean>
+
+	<bean name="/user/admin/user_statistics.html" parent="controller"
+		class="de.schildbach.user.presentation.admin.UserStatisticsController">
+		<property name="presenceService" ref="presenceService" />
+	</bean>
+
+	<!-- game -->
+
+	<bean name="/game/view_game.html" class="de.schildbach.game.presentation.ViewGameController" parent="form">
+		<property name="bigScreenThreshold" value="640" />
+		<property name="environment" ref="environment" />
+		<property name="gameViewHelper" ref="gameViewHelper" />
+		<property name="gameService" ref="gameService" />
+		<property name="presenceService" ref="presenceService" />
+		<property name="formView" value="game.jspx" />
+		<property name="viewGameNotFound" value="game_not_found.jspx" />
+	</bean>
+
+	<bean name="/game/single_game.dof" class="de.schildbach.game.presentation.SingleGameController" parent="form">
+		<property name="showHintThreshold" value="640" />
+		<property name="environment" ref="environment" />
+		<property name="gameViewHelper" ref="gameViewHelper" />
+		<property name="gameService" ref="gameService" />
+		<property name="presenceService" ref="presenceService" />
+		<property name="formView" value="single_game.jspx" />
+	</bean>
+
+	<bean name="/game/gamegroup.dof" class="de.schildbach.game.presentation.ViewGroupedGameController"
+		parent="form">
+		<property name="formView" value="gamegroup.jspx" />
+		<property name="linkGame" value="/game/view_game.html" />
+		<property name="gameViewHelper" ref="gameViewHelper" />
+	</bean>
+
+	<bean name="/game/*/widget.html" class="de.schildbach.game.presentation.SingleGameWidgetController"
+		parent="controller">
+		<property name="gameService" ref="gameService" />
+		<property name="viewName" value="/game/single_game_widget.jspx" />
+	</bean>
+
+	<bean name="/game/*/tooltip.html" class="de.schildbach.game.presentation.TooltipController"
+		parent="controller">
+		<property name="gameService" ref="gameService" />
+		<property name="viewName" value="/game/tooltip.jspx" />
+	</bean>
+
+	<bean name="/game/game_header.dof" class="de.schildbach.game.presentation.GameHeaderController"
+		parent="controller">
+		<property name="viewName" value="game_header.jspx" />
+		<property name="linkGame" value="/game/view_game.html" />
+		<property name="gameViewHelper" ref="gameViewHelper" />
+	</bean>
+
+	<bean name="/game/game_parameters.dof" class="de.schildbach.game.presentation.GameParametersController"
+		parent="controller">
+		<property name="viewName" value="game_parameters.jspx" />
+		<property name="gameViewHelper" ref="gameViewHelper" />
+	</bean>
+
+	<bean name="/game/search.html" class="de.schildbach.game.presentation.SearchController">
+		<property name="rulesOptions" ref="rules" />
+		<property name="userService" ref="userService" />
+		<property name="gameService" ref="gameService" />
+		<property name="view" value="search.jspx" />
+	</bean>
+
+	<bean name="/game/subject_game_statistics.html"
+		class="de.schildbach.game.presentation.SubjectStatisticsController" parent="form">
+		<property name="gameService" ref="gameService" />
+		<property name="formView" value="subject_game_statistics.jspx" />
+	</bean>
+
+	<bean name="/game/notation.html" class="de.schildbach.game.presentation.NotationController" parent="controller">
+		<property name="gameService" ref="gameService" />
+		<property name="viewName" value="notation.jspx" />
+	</bean>
+
+	<bean name="/game/check_clock_timeout.html" class="de.schildbach.game.presentation.job.CheckClockTimeoutController"
+		parent="controller">
+		<property name="gameService" ref="gameService" />
+	</bean>
+
+	<bean name="/game/check_forming_games.html" class="de.schildbach.game.presentation.job.CheckFormingGamesController"
+		parent="controller">
+		<property name="gameService" ref="gameService" />
+	</bean>
+
+	<bean name="/game/check_inactive_disqualify.html"
+		class="de.schildbach.game.presentation.job.CheckInactiveDisqualifyController" parent="controller">
+		<property name="gameService" ref="gameService" />
+	</bean>
+
+	<bean name="/game/check_ready_games.html" class="de.schildbach.game.presentation.job.CheckReadyGamesController"
+		parent="controller">
+		<property name="gameService" ref="gameService" />
+	</bean>
+
+	<bean name="/game/check_running_games.html" class="de.schildbach.game.presentation.job.CheckRunningGamesController"
+		parent="controller">
+		<property name="gameService" ref="gameService" />
+	</bean>
+
+	<bean name="/game/check_send_system_reminder.html"
+		class="de.schildbach.game.presentation.job.CheckSendSystemReminderController" parent="controller">
+		<property name="gameService" ref="gameService" />
+	</bean>
+
+	<bean name="/game/check_unaccomplished_games.html"
+		class="de.schildbach.game.presentation.job.CheckUnaccomplishedGamesController" parent="controller">
+		<property name="gameService" ref="gameService" />
+	</bean>
+
+	<bean name="/game/update_rating_index.html" class="de.schildbach.game.presentation.job.UpdateRatingIndexController"
+		parent="controller">
+		<property name="gameService" ref="gameService" />
+	</bean>
+
+	<bean id="gameController" class="de.schildbach.game.presentation.controller.GameController" parent="controller">
+		<property name="methodNameResolver" ref="internalPathMethodNameResolver" />
+		<property name="gameService" ref="gameService" />
+	</bean>
+
+	<bean name="/game/forming/create_game.html" class="de.schildbach.game.presentation.forming.CreateGameController"
+		parent="form">
+		<property name="gameService" ref="gameService" />
+		<property name="rulesOptions" ref="rules" />
+		<property name="pages">
+			<list>
+				<value>create_game_form_basic.jspx</value>
+				<value>create_game_form_advanced.jspx</value>
+				<value>create_game_form_theme.jspx</value>
+			</list>
+		</property>
+		<property name="successView" value="game" />
+		<property name="requireSession" value="true" />
+	</bean>
+
+	<bean name="/game/forming/create_mini_tournament.html"
+		class="de.schildbach.game.presentation.forming.CreateMiniTournamentController" parent="form">
+		<property name="gameService" ref="gameService" />
+		<property name="rulesOptions" ref="tournamentRules" />
+		<property name="pages">
+			<list>
+				<value>create_mini_tournament_form_basic.jspx</value>
+				<value>create_mini_tournament_form_advanced.jspx</value>
+				<value>create_mini_tournament_form_theme.jspx</value>
+			</list>
+		</property>
+		<property name="successView" value="game" />
+		<property name="requireSession" value="true" />
+	</bean>
+
+	<bean name="/game/forming/create_tournament.html"
+		class="de.schildbach.game.presentation.forming.CreateTournamentController" parent="form">
+		<property name="gameService" ref="gameService" />
+		<property name="rulesOptions" ref="tournamentRules" />
+		<property name="pages">
+			<list>
+				<value>create_tournament_form_basic.jspx</value>
+				<value>create_tournament_form_advanced.jspx</value>
+				<value>create_tournament_form_theme.jspx</value>
+			</list>
+		</property>
+		<property name="successView" value="redirect:/game/list/owned_gamegroups.html" />
+		<property name="requireSession" value="true" />
+	</bean>
+
+	<bean name="/game/forming/form_game.dof" class="de.schildbach.game.presentation.forming.FormGameController"
+		parent="form">
+		<property name="gameViewHelper" ref="gameViewHelper" />
+		<property name="gameService" ref="gameService" />
+		<property name="userService" ref="userService" />
+		<property name="formView" value="form_game.jspx" />
+		<property name="requireSession" value="true" />
+	</bean>
+
+	<bean name="/game/forming/invite_user.html" class="de.schildbach.game.presentation.forming.InviteUserController"
+		parent="form">
+		<property name="gameInvitationEncryptionHelper" ref="gameInvitationEncryptionHelper" />
+		<property name="emailValidator" ref="emailValidator" />		
+		<property name="gameService" ref="gameService" />
+		<property name="userService" ref="userService" />
+		<property name="formView" value="invite_user.jspx" />
+		<property name="successView" value="game" />
+		<property name="requireSession" value="true" />
+	</bean>
+
+	<bean name="/game/forming/personal_game_invitations_sidebar.dof"
+		class="de.schildbach.game.presentation.forming.PersonalGameInvitationsSidebarController" parent="controller">
+		<property name="gameService" ref="gameService" />
+		<property name="viewName" value="personal_game_invitations_sidebar.jspx" />
+	</bean>
+
+	<bean id="formingGameController" class="de.schildbach.game.presentation.controller.FormingGameController"
+		parent="controller">
+		<property name="methodNameResolver" ref="internalPathMethodNameResolver" />
+		<property name="gameInvitationEncryptionHelper" ref="gameInvitationEncryptionHelper" />
+		<property name="gameService" ref="gameService" />
+	</bean>
+
+	<bean name="/game/list/joined_games.html" class="de.schildbach.game.presentation.list.JoinedGamesController"
+		parent="controller">
+		<property name="gameService" ref="gameService" />
+		<property name="userService" ref="userService" />
+		<property name="presenceService" ref="presenceService" />
+		<property name="viewNameSingleGames" value="joined_single_games.jspx" />
+		<property name="viewNameGamegroups" value="joined_gamegroups.jspx" />
+		<property name="viewNameNotAllowed" value="joined_games_not_allowed.jspx" />
+		<property name="requireSession" value="true" />
+	</bean>
+
+	<bean name="/game/list/active_games_sidebar.xml"
+		class="de.schildbach.game.presentation.list.ActiveGamesSidebarController" parent="controller">
+		<property name="gameService" ref="gameService" />
+		<property name="viewName" value="active_games_sidebar.jspx" />
+		<property name="linkGame" value="/game/view_game.html" />
+		<property name="linkMore" value="/game/list/active_games.html" />
+		<property name="requireSession" value="true" />
+	</bean>
+
+	<bean name="/game/list/active_games.html" class="de.schildbach.game.presentation.list.ActiveGamesController"
+		parent="controller">
+		<property name="gameService" ref="gameService" />
+		<property name="presenceService" ref="presenceService" />
+		<property name="viewName" value="active_games.jspx" />
+		<property name="requireSession" value="true" />
+	</bean>
+
+	<bean name="/game/list/personal_game_invitations.html"
+		class="de.schildbach.game.presentation.list.PersonalGameInvitationsController" parent="controller">
+		<property name="gameService" ref="gameService" />
+		<property name="presenceService" ref="presenceService" />
+		<property name="viewName" value="personal_game_invitations.jspx" />
+		<property name="requireSession" value="true" />
+	</bean>
+
+	<bean name="/game/list/open_game_invitations.html"
+		class="de.schildbach.game.presentation.list.OpenGameInvitationsController" parent="controller">
+		<property name="gameService" ref="gameService" />
+		<property name="presenceService" ref="presenceService" />
+		<property name="viewName" value="open_game_invitations.jspx" />
+		<property name="viewNameGamegroup" value="open_gamegroup_invitations.jspx" />
+		<property name="linkCreateGame" value="/game/forming/create_game.html" />
+		<property name="requireSession" value="true" />
+	</bean>
+
+	<bean name="/game/list/owned_gamegroups.html" class="de.schildbach.game.presentation.list.OwnedGamegroupsController"
+		parent="controller">
+		<property name="gameService" ref="gameService" />
+		<property name="presenceService" ref="presenceService" />
+		<property name="rulesOptions" ref="tournamentRules" />
+		<property name="viewName" value="owned_gamegroups.jspx" />
+		<property name="requireSession" value="true" />
+	</bean>
+
+	<bean name="/game/list/running_gamegroups.html"
+		class="de.schildbach.game.presentation.list.RunningGamegroupsController" parent="controller">
+		<property name="gameService" ref="gameService" />
+		<property name="viewName" value="running_gamegroups.jspx" />
+	</bean>
+
+	<bean name="/game/list/watched_games.html" class="de.schildbach.game.presentation.list.WatchedGamesController"
+		parent="controller">
+		<property name="gameService" ref="gameService" />
+		<property name="presenceService" ref="presenceService" />
+		<property name="viewName" value="watched_games.jspx" />
+		<property name="requireSession" value="true" />
+	</bean>
+
+	<bean name="/game/list/perf_games_list.html" class="de.schildbach.game.presentation.list.PerfGamesListController"
+		parent="controller">
+		<property name="viewName" value="perf_games_list.jspx" />
+	</bean>
+
+	<bean name="/game/list/games_list.dof" class="de.schildbach.game.presentation.list.GamesListController"
+		parent="controller">
+		<property name="viewName" value="games_list.jspx" />
+	</bean>
+
+	<bean name="/game/list/games_teaser.dof" class="de.schildbach.game.presentation.list.GamesTeaserController"
+		parent="controller">
+		<property name="resolutionThresholds">
+			<map>
+				<entry key="0" value="1" />
+				<entry key="800" value="2" />
+			</map>
+		</property>
+		<property name="environment" ref="environment" />
+		<property name="viewName" value="games_teaser.jspx" />
+	</bean>
+
+	<bean name="/game/list/forming_single_games_teaser.dof"
+		class="de.schildbach.game.presentation.list.FormingSingleGamesTeaserController" parent="controller">
+		<property name="viewName" value="forming_single_games_teaser.jspx" />
+		<property name="gameService" ref="gameService" />
+	</bean>
+
+	<bean name="/game/list/forming_gamegroups_teaser.dof"
+		class="de.schildbach.game.presentation.list.FormingGamegroupsTeaserController" parent="controller">
+		<property name="viewName" value="forming_gamegroups_teaser.jspx" />
+		<property name="gameService" ref="gameService" />
+	</bean>
+
+	<bean name="/game/list/running_single_games_teaser.dof"
+		class="de.schildbach.game.presentation.list.RunningSingleGamesTeaserController" parent="controller">
+		<property name="viewName" value="running_single_games_teaser.jspx" />
+		<property name="gameService" ref="gameService" />
+	</bean>
+
+	<bean name="/game/list/running_gamegroups_teaser.dof"
+		class="de.schildbach.game.presentation.list.RunningGamegroupsTeaserController" parent="controller">
+		<property name="viewName" value="running_gamegroups_teaser.jspx" />
+		<property name="gameService" ref="gameService" />
+	</bean>
+
+	<bean name="/game/rating/toplist_sidebar.dof"
+		class="de.schildbach.game.presentation.rating.ToplistSidebarController" parent="controller">
+		<property name="viewName" value="toplist_sidebar.jspx" />
+		<property name="gameService" ref="gameService" />
+	</bean>
+
+	<bean name="/game/rating/rating_lists.html" class="de.schildbach.game.presentation.rating.RatingListsController"
+		parent="controller">
+		<property name="viewName" value="rating_lists.jspx" />
+		<property name="presenceService" ref="presenceService" />
+		<property name="resolutionThresholds">
+			<map>
+				<entry key="640" value="2" />
+				<entry key="800" value="3" />
+				<entry key="1280" value="4" />
+			</map>
+		</property>
+		<property name="defaultNumberOfColumns" value="2" />
+		<property name="environment" ref="environment" />
+	</bean>
+
+	<bean name="/game/rating/rating_list.dof" class="de.schildbach.game.presentation.rating.RatingListController"
+		parent="controller">
+		<property name="viewName" value="rating_list.jspx" />
+		<property name="gameService" ref="gameService" />
+	</bean>
+
+	<bean name="/game/rating/ratings_of_subject.dof"
+		class="de.schildbach.game.presentation.rating.RatingsOfSubjectController" parent="controller">
+		<property name="viewName" value="ratings_of_subject.jspx" />
+		<property name="gameService" ref="gameService" />
+	</bean>
+
+	<bean name="/game/rating/rating_history.html" class="de.schildbach.game.presentation.rating.RatingHistoryController"
+		parent="form">
+		<property name="formView" value="rating_history.jspx" />
+		<property name="gameService" ref="gameService" />
+	</bean>
+
+	<bean name="/game/board/game_table.dof" class="de.schildbach.game.presentation.board.GameTableController"
+		parent="controller">
+		<property name="largeBoardThreshold" value="1280" />
+		<property name="environment" ref="environment" />
+		<property name="viewName" value="game_table.jspx" />
+	</bean>
+
+	<bean name="/game/board/base_board.dof" class="de.schildbach.game.presentation.board.BaseBoardController"
+		parent="controller">
+		<property name="viewName" value="chessboard.jspx" />
+		<property name="dragonchessViewName" value="dragonchess_board.jspx" />
+	</bean>
+
+	<bean name="/game/board/captured_pieces_row.dof"
+		class="de.schildbach.game.presentation.board.CapturedPiecesRowController" parent="controller" />
+
+	<bean name="/game/board/freestyle.html" class="de.schildbach.game.presentation.board.FreestyleBoardController"
+		parent="form">
+		<property name="largeBoardThreshold" value="1280" />
+		<property name="environment" ref="environment" />
+		<property name="presenceService" ref="presenceService" />
+		<property name="formView" value="freestyle.jspx" />
+	</bean>
+
+	<bean name="/game/demo_game.html" class="de.schildbach.game.presentation.DemoGameController" parent="form">
+		<property name="showHintThreshold" value="640" />
+		<property name="environment" ref="environment" />
+		<property name="rulesOptions" ref="demoRules" />
+		<property name="formView" value="demo_game.jspx" />
+		<property name="synchronizeOnSession" value="true" />
+	</bean>
+
+	<bean name="/game/admin/games.html" class="de.schildbach.game.presentation.admin.ViewGamesController"
+		parent="controller">
+		<property name="gameService" ref="gameService" />
+		<property name="viewName" value="games.jspx" />
+	</bean>
+
+	<!-- mail -->
+
+	<bean name="/mail/mail_sidebar.dof" class="de.schildbach.mail.presentation.MailSidebarController"
+		parent="controller">
+		<property name="mailService" ref="mailService" />
+		<property name="viewName" value="mail_sidebar.jspx" />
+	</bean>
+
+	<bean name="/mail/inbox.html" class="de.schildbach.mail.presentation.ViewInboxController"
+		parent="controller">
+		<property name="mailService" ref="mailService" />
+		<property name="presenceService" ref="presenceService" />
+		<property name="viewName" value="inbox.jspx" />
+	</bean>
+
+	<bean name="/mail/outbox.html" class="de.schildbach.mail.presentation.ViewOutboxController"
+		parent="controller">
+		<property name="mailService" ref="mailService" />
+		<property name="presenceService" ref="presenceService" />
+		<property name="viewName" value="outbox.jspx" />
+	</bean>
+
+	<bean name="/mail/mail.html" class="de.schildbach.mail.presentation.ViewMailController" parent="controller">
+		<property name="mailService" ref="mailService" />
+		<property name="presenceService" ref="presenceService" />
+		<property name="htmlUtils" ref="htmlUtils" />
+		<property name="viewName" value="mail.jspx" />
+	</bean>
+
+	<bean name="/mail/send_mail.html" class="de.schildbach.mail.presentation.SendMailController" parent="form">
+		<property name="mailService" ref="mailService" />
+		<property name="formView" value="send_mail_form.jspx" />
+		<property name="successView" value="mail_inbox" />
+		<property name="requireSession" value="true" />
+	</bean>
+
+	<bean name="/mail/delete.html" class="de.schildbach.mail.presentation.DeleteMailController" parent="controller">
+		<property name="mailService" ref="mailService" />
+	</bean>
+
+	<bean name="/mail/mark_mail.html" class="de.schildbach.mail.presentation.MarkMailController" parent="controller">
+		<property name="mailService" ref="mailService" />
+	</bean>
+
+	<!-- forum -->
+
+	<bean name="/forum/node.html" class="de.schildbach.forum.presentation.ViewNodeController"
+		parent="controller">
+		<property name="contentService" ref="contentService" />
+		<property name="presenceService" ref="presenceService" />
+		<property name="htmlUtils" ref="htmlUtils" />
+		<property name="forumView" value="forum.jspx" />
+		<property name="messageView" value="message.dof" />
+	</bean>
+
+	<bean name="/forum/message.dof" class="de.schildbach.forum.presentation.ViewMessageController"
+		parent="controller">
+		<property name="contentService" ref="contentService" />
+		<property name="htmlUtils" ref="htmlUtils" />
+		<property name="viewName" value="message.jspx" />
+	</bean>
+
+	<bean name="/forum/post_message.html" class="de.schildbach.forum.presentation.PostMessageController">
+		<property name="contentService" ref="contentService" />
+		<property name="htmlUtils" ref="htmlUtils" />
+		<property name="view" value="post_message.jspx" />
+		<property name="successView" value="forum_node" />
+	</bean>
+
+	<bean name="/forum/delete_message.html" class="de.schildbach.forum.presentation.DeleteMessageController"
+		parent="controller">
+		<property name="contentService" ref="contentService" />
+		<property name="viewName" value="forum_node" />
+	</bean>
+
+	<bean name="/forum/create_forum.html" class="de.schildbach.forum.presentation.CreateForumController"
+		parent="form">
+		<property name="contentService" ref="contentService" />
+		<property name="formView" value="create_forum.jspx" />
+		<property name="successView" value="forum_node" />
+		<property name="requireSession" value="true" />
+	</bean>
+
+	<!-- debug -->
+
+	<bean name="/debug/null_pointer_exception.html" class="de.schildbach.presentation.NullPointerExceptionController"
+		parent="controller" />
+
+	<bean name="/admin/profile_report.html" class="de.schildbach.admin.presentation.ProfileReportController"
+		parent="controller">
+		<property name="viewName" value="/admin/profile_report.jspx" />
+	</bean>
+
+	<bean name="/admin/cache_report.html" class="de.schildbach.admin.presentation.CacheReportController">
+		<property name="cacheManager" ref="cacheManager" />
+		<property name="view" value="/admin/cache_report.jspx" />
+		<property name="viewKeys" value="/admin/cache_report_keys.jspx" />
+	</bean>
+
+	<bean id="internalPathMethodNameResolver"
+		class="org.springframework.web.servlet.mvc.multiaction.InternalPathMethodNameResolver" />
+
+	<!-- common configuration -->
+
+	<util:list id="demoRules">
+		<value>CHESS</value>
+		<value>CHESS_960</value>
+		<value>CHESS_SUICIDE</value>
+		<value>CHESS_ANTIKING</value>
+		<value>DRAGONCHESS</value>
+		<value>CHECKERS</value>
+		<value>CHECKERS_SUICIDE</value>
+		<value>GO_CAPTURE</value>
+	</util:list>
+
+	<util:list id="rules">
+		<value>CHESS</value>
+		<value>CHESS_960</value>
+		<value>CHESS_SUICIDE</value>
+		<value>CHESS_ANTIKING</value>
+		<value>DRAGONCHESS</value>
+		<value>CHECKERS</value>
+		<value>GO_CAPTURE</value>
+	</util:list>
+
+	<util:list id="tournamentRules">
+		<value>CHESS</value>
+		<value>CHESS_960</value>
+		<value>CHESS_SUICIDE</value>
+		<value>CHESS_ANTIKING</value>
+		<value>DRAGONCHESS</value>
+		<value>CHECKERS</value>
+	</util:list>
+
+</beans>

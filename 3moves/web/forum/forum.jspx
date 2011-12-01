@@ -1,0 +1,99 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:user="urn:jsptagdir:/WEB-INF/tags/user"
+>
+	<c:url var="img_path" value="/img/tree"/>
+	<c:set var="MAX_THREADS" value="50"/>
+
+	<c:set var="page_content" scope="request">
+	
+		<fmt:bundle basename="forum" prefix="forum.">
+
+			<h3>${content.name}</h3>
+			
+			<div>${description}</div>
+
+			<c:if test="${can_post_message}">
+				<p>
+					<a class="action" href="post_message.html?subject=&amp;parent_id=${content.id}"><fmt:message key="action_start_thread"/></a>
+				</p>
+			</c:if>
+			
+			<c:if test="${!empty content.childs}">
+				<p><fmt:message key="header"/>:</p>
+				<table cellspacing="0" class="list">
+					<colgroup><col width="8px;"/></colgroup>
+					<tr>
+						<th/>
+						<th><fmt:message key="subject"/></th>
+						<th><fmt:message key="created_by"/></th>
+						<th><fmt:message key="created_at"/></th>
+						<th><fmt:message key="inherited_changed_by"/></th>
+						<th><fmt:message key="inherited_changed_at"/></th>
+					</tr>
+					<c:forEach var="thread" varStatus="status" items="${content.childs}" end="${MAX_THREADS-1}">
+						<c:set var="date_color" value="${reference_date lt thread.childsCreatedAt ? 'red' : ''}"/>
+						<tr class="${status.index % 2 == 0 ? 'dark' : 'light'}">
+							<td>
+								<a href="node.html?id=${thread.id}">
+									<c:choose>
+										<c:when test="${empty thread.childs}">
+											<img src="${img_path}/o.gif"/>
+										</c:when>
+										<c:otherwise>
+											<img src="${img_path}/p.gif"/>
+										</c:otherwise>
+									</c:choose>
+								</a>
+							</td>
+							<td>
+								<a href="node.html?id=${thread.id}">
+									<c:choose>
+										<c:when test="${!empty thread.name}">
+											<c:out value="${fn:substring(thread.name,0,46)}${fn:length(thread.name) > 46 ? '...' : ''}" escapeXml="true"/>
+										</c:when>
+										<c:otherwise>
+											<fmt:message key="no_subject"/>
+										</c:otherwise>
+									</c:choose>
+								</a>
+							</td>
+							<td>
+								<user:username name="${thread.createdBy.name}" />
+							</td>
+							<td>
+								<fmt:formatDate value="${thread.createdAt}" type="both" dateStyle="short" timeStyle="short"/>
+							</td>
+							<td style="color:${date_color};">
+								<user:username name="${thread.inheritedChangedBy.name}" />
+							</td>
+							<td style="color:${date_color};">
+								<fmt:formatDate value="${thread.inheritedChangedAt}" type="both" dateStyle="short" timeStyle="short"/>
+							</td>
+						</tr>
+					</c:forEach>
+				</table>
+			</c:if>
+			
+			<c:if test="${can_post_message}">
+				<p>
+					<a class="action" href="post_message.html?subject=&amp;parent_id=${content.id}">
+						<fmt:message key="action_start_thread"/>
+					</a>
+				</p>
+			</c:if>
+			
+			<c:if test="${!can_post_message}">
+				<p style="color:red;"><fmt:message key="login_hint"/></p>
+			</c:if>
+		
+		</fmt:bundle>
+	
+	</c:set>
+	
+	<c:import url="/layout/standard.dof"/>
+
+</jsp:root>

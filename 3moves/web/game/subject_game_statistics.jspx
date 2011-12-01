@@ -1,0 +1,285 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:form="http://www.springframework.org/tags/form"
+>
+	<c:url var="link_user_games" value="/game/list/joined_games.html"/>
+	<c:url var="img_path" value="/img"/>
+
+	<c:set var="page_content" scope="request">
+
+		<fmt:bundle basename="game" prefix="subject_game_statistics.">
+
+			<fmt:message var="label_submit" key="option_submit"/>
+		
+			<h3>
+				<fmt:message key="header">
+					<fmt:param value="${subject}"/>
+				</fmt:message>
+			</h3>
+
+			<c:import url="/user/profile/profile_navigation.jspx?subject=${subject}"/>
+			
+			<form:form action="?">
+				<c:if test="${!self}">
+					<div>
+						<form:checkbox path="againstMe"/>
+						<span style="font-weight:bold;">
+							<fmt:message key="option_against_me"/>
+						</span>
+					</div>
+				</c:if>
+				<br/>
+				<div>
+					<span style="font-weight:bold;">
+						<fmt:message key="option_window"/>
+					</span>
+					&#160;
+					<form:select path="window">
+						<c:forEach var="window" items="${windows}">
+							<form:option value="${window}">
+								<fmt:message key="option_window.${displayValue}"/>
+							</form:option>
+						</c:forEach>
+					</form:select>
+					&#160;&#160;&#160;&#160;
+					<input type="submit" value="${label_submit}"/>
+				</div>
+			</form:form>
+
+			<table cellspacing="0" class="statistics transparent" style="clear:both; width:100%;">
+				<c:forEach var="stats_entry" items="${stats}">
+					<c:set var="game_stats" value="${stats_entry.value}"/>
+					<c:set var="total" value="${game_stats.total-game_stats.unaccomplished}"/>
+					<tr style="height:8px"><td></td></tr>
+					<tr>
+						<th style="font-weight:bold">
+							<a href="${link_user_games}?subject=${subject}&amp;rules=${stats_entry.key}">
+								<fmt:message key="header_game">
+									<fmt:param>
+										<fmt:bundle basename="game" prefix="game_tag.">
+											<fmt:message key="${stats_entry.key}"/>
+										</fmt:bundle>
+									</fmt:param>
+								</fmt:message>
+							</a>
+						</th>
+						<th class="num">${total}</th>
+						<th/>
+					</tr>
+					<tr>
+						<td>
+							<img src="${img_path}/tree/x.gif"/>
+							<fmt:message key="forming"/>
+						</td>
+						<td class="num">${game_stats.forming}</td>
+						<td>
+							<fmt:message key="of_total">
+								<fmt:param><fmt:formatNumber value="${game_stats.forming/total}" type="percent"/></fmt:param>
+							</fmt:message>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<img src="${img_path}/tree/x.gif"/>
+							<fmt:message key="ready"/>
+						</td>
+						<td class="num">${game_stats.ready}</td>
+						<td>
+							<fmt:message key="of_total">
+								<fmt:param><fmt:formatNumber value="${game_stats.ready/total}" type="percent"/></fmt:param>
+							</fmt:message>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<img src="${img_path}/tree/x.gif"/>
+							<fmt:message key="running"/>
+						</td>
+						<td class="num">${game_stats.running}</td>
+						<td>
+							<fmt:message key="of_total">
+								<fmt:param><fmt:formatNumber value="${game_stats.running/total}" type="percent"/></fmt:param>
+							</fmt:message>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<img src="${img_path}/tree/e.gif"/>
+							<fmt:message key="finished"/>
+						</td>
+						<td class="num">${game_stats.finished}</td>
+						<td>
+							<fmt:message key="of_total">
+								<fmt:param><fmt:formatNumber value="${game_stats.finished/total}" type="percent"/></fmt:param>
+							</fmt:message>
+						</td>
+					</tr>
+					<c:if test="${game_stats.finished > 0}">
+						<tr>
+							<td>
+								<img src="${img_path}/tree/n.gif"/>
+								<img src="${img_path}/tree/x.gif"/>
+								<fmt:message key="draws"/>
+							</td>
+							<td class="num">${game_stats.draws}</td>
+							<td>
+								<fmt:message key="of_finished">
+									<fmt:param><fmt:formatNumber value="${game_stats.draws/game_stats.finished}" type="percent"/></fmt:param>
+								</fmt:message>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<img src="${img_path}/tree/n.gif"/>
+								<img src="${img_path}/tree/x.gif"/>
+								<fmt:message key="wins"/>
+							</td>
+							<td class="num">${game_stats.wins}</td>
+							<td>
+								<fmt:message key="of_finished">
+									<fmt:param><fmt:formatNumber value="${game_stats.wins/game_stats.finished}" type="percent"/></fmt:param>
+								</fmt:message>
+							</td>
+						</tr>
+						<c:if test="${game_stats.wins > 0}">
+							<tr>
+								<td>
+									<img src="${img_path}/tree/n.gif"/>
+									<img src="${img_path}/tree/l.gif"/>
+									<img src="${img_path}/tree/x.gif"/>
+									<fmt:message key="regular"/>
+								</td>
+								<td class="num">${game_stats.wins_regular}</td>
+								<td>
+									<fmt:message key="of_wins">
+										<fmt:param><fmt:formatNumber value="${game_stats.wins_regular/game_stats.wins}" type="percent"/></fmt:param>
+									</fmt:message>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<img src="${img_path}/tree/n.gif"/>
+									<img src="${img_path}/tree/l.gif"/>
+									<img src="${img_path}/tree/x.gif"/>
+									<fmt:message key="resign"/>
+								</td>
+								<td class="num">${game_stats.wins_resign}</td>
+								<td>
+									<fmt:message key="of_wins">
+										<fmt:param><fmt:formatNumber value="${game_stats.wins_resign/game_stats.wins}" type="percent"/></fmt:param>
+									</fmt:message>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<img src="${img_path}/tree/n.gif"/>
+									<img src="${img_path}/tree/l.gif"/>
+									<img src="${img_path}/tree/x.gif"/>
+									<fmt:message key="timeout"/>
+								</td>
+								<td class="num">${game_stats.wins_timeout}</td>
+								<td>
+									<fmt:message key="of_wins">
+										<fmt:param><fmt:formatNumber value="${game_stats.wins_timeout/game_stats.wins}" type="percent"/></fmt:param>
+									</fmt:message>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<img src="${img_path}/tree/n.gif"/>
+									<img src="${img_path}/tree/l.gif"/>
+									<img src="${img_path}/tree/e.gif"/>
+									<fmt:message key="disqualification"/>
+								</td>
+								<td class="num">${game_stats.wins_disqualification}</td>
+								<td>
+									<fmt:message key="of_wins">
+										<fmt:param><fmt:formatNumber value="${game_stats.wins_disqualification/game_stats.wins}" type="percent"/></fmt:param>
+									</fmt:message>
+								</td>
+							</tr>
+						</c:if>
+						<tr>
+							<td>
+									<img src="${img_path}/tree/n.gif"/>
+									<img src="${img_path}/tree/e.gif"/>
+								<fmt:message key="losses"/>
+							</td>
+							<td class="num">${game_stats.losses}</td>
+							<td>
+								<fmt:message key="of_finished">
+									<fmt:param><fmt:formatNumber value="${game_stats.losses/game_stats.finished}" type="percent"/></fmt:param>
+								</fmt:message>
+							</td>
+						</tr>
+						<c:if test="${game_stats.losses > 0}">
+							<tr>
+								<td>
+									<img src="${img_path}/tree/n.gif"/>
+									<img src="${img_path}/tree/n.gif"/>
+									<img src="${img_path}/tree/x.gif"/>
+									<fmt:message key="regular"/>
+								</td>
+								<td class="num">${game_stats.losses_regular}</td>
+								<td>
+									<fmt:message key="of_losses">
+										<fmt:param><fmt:formatNumber value="${game_stats.losses_regular/game_stats.losses}" type="percent"/></fmt:param>
+									</fmt:message>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<img src="${img_path}/tree/n.gif"/>
+									<img src="${img_path}/tree/n.gif"/>
+									<img src="${img_path}/tree/x.gif"/>
+									<fmt:message key="resign"/>
+								</td>
+								<td class="num">${game_stats.losses_resign}</td>
+								<td>
+									<fmt:message key="of_losses">
+										<fmt:param><fmt:formatNumber value="${game_stats.losses_resign/game_stats.losses}" type="percent"/></fmt:param>
+									</fmt:message>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<img src="${img_path}/tree/n.gif"/>
+									<img src="${img_path}/tree/n.gif"/>
+									<img src="${img_path}/tree/x.gif"/>
+									<fmt:message key="timeout"/>
+								</td>
+								<td class="num">${game_stats.losses_timeout}</td>
+								<td>
+									<fmt:message key="of_losses">
+										<fmt:param><fmt:formatNumber value="${game_stats.losses_timeout/game_stats.losses}" type="percent"/></fmt:param>
+									</fmt:message>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<img src="${img_path}/tree/n.gif"/>
+									<img src="${img_path}/tree/n.gif"/>
+									<img src="${img_path}/tree/e.gif"/>
+									<fmt:message key="disqualification"/>
+								</td>
+								<td class="num">${game_stats.losses_disqualification}</td>
+								<td>
+									<fmt:message key="of_losses">
+										<fmt:param><fmt:formatNumber value="${game_stats.losses_disqualification/game_stats.losses}" type="percent"/></fmt:param>
+									</fmt:message>
+								</td>
+							</tr>
+						</c:if>
+					</c:if>
+				</c:forEach>
+			</table>
+		
+		</fmt:bundle>
+
+	</c:set>
+
+	<c:import url="/layout/standard.dof"/>
+
+</jsp:root>

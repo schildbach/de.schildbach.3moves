@@ -1,0 +1,26 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+>
+	<c:if test="${show_browser_warning}">
+
+		<c:url var="link_details" value="/misc/browsers.html"/>
+
+		<fmt:bundle basename="home" prefix="browser_sidebar.">
+
+			<div class="sidebar browser">
+
+				<div class="header">
+					<a href="${link_details}">
+						<fmt:message key="warning"/>
+					</a>
+				</div>
+
+			</div>
+
+		</fmt:bundle>
+
+	</c:if>
+
+</jsp:root>

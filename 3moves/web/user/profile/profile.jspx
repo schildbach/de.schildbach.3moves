@@ -1,0 +1,428 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:user="urn:jsptagdir:/WEB-INF/tags/user"
+>
+	<c:url var="img_path" value="/user/img"/>
+	<c:url var="path_user" value="/user"/>
+	<c:url var="path_profile" value="/user/profile"/>
+	<c:url var="path_relation" value="/user/relation"/>
+	<c:url var="path_mail" value="/mail"/>
+	<c:url var="path_login" value="/user/login"/>
+	<c:url var="path_game" value="/game"/>
+
+	<fmt:bundle basename="user_profile" prefix="profile.">
+
+		<c:set var="page_content" scope="request">
+
+			<h3>
+				<fmt:message key="header">
+					<fmt:param value="${name}"/>
+				</fmt:message>&#160;<c:if test="${is_online}">
+					<fmt:message key="is_online"/>
+				</c:if>
+			</h3>
+			
+			<c:import url="profile_navigation.jspx?subject=${name}"/>
+
+			<div style="float:left; width:96px; height:128px; margin-left:4px; margin-right:12px; margin-bottom:8px">
+				<c:if test="${can_set_photo}">
+					<a class="action" href="${path_profile}/photo_upload.html"><fmt:message key="edit"/></a>
+				</c:if>
+				<c:if test="${can_clear_photo}">
+					<a class="action" href="${path_profile}/clear_photo.html"><fmt:message key="clear"/></a>
+				</c:if>
+				<user:image name="${name}" height="128" />
+			</div>
+
+			<c:if test="${!empty description}">
+				${description}
+			</c:if>
+
+			<div style="clear:both;"><br/></div>
+
+			<c:if test="${can_turn_into_user}">
+				<a class="action" href="${path_login}/turn_into_user.html?user=${name}">
+					<fmt:message key="turn_into_user">
+						<fmt:param value="${name}"/>
+					</fmt:message>
+				</a>
+			</c:if>
+
+			<table cellspacing="0">
+				
+				<caption>
+					<fmt:message key="basis_data"/>
+					<c:if test="${can_edit_profile}">
+						(<a class="action" href="${path_profile}/set_profile.html"><fmt:message key="edit"/></a>)
+					</c:if>
+				</caption>
+
+				<tr>
+					<td><fmt:message key="name"/>:</td>
+					<td><c:out value="${name}" escapeXml="true"/></td>
+				</tr>
+
+				<c:if test="${!empty full_name}">
+					<tr>
+						<td><fmt:message key="full_name"/>:</td>
+						<td><c:out value="${full_name}" escapeXml="true"/></td>
+					</tr>
+				</c:if>
+				
+				<c:if test="${!empty gender}">
+					<tr>
+						<td><fmt:message key="gender"/>:</td>
+						<td><fmt:message key="gender_${gender}"/></td>
+					</tr>
+				</c:if>
+
+				<c:if test="${!empty age}">
+					<tr>
+						<td><fmt:message key="age"/>:</td>
+						<td>${age}</td>
+					</tr>
+				</c:if>
+
+				<c:if test="${!empty country}">
+					<tr>
+						<td><fmt:message key="country"/>:</td>
+						<td><c:out value="${country}" escapeXml="true"/></td>
+					</tr>
+				</c:if>
+
+				<c:if test="${!empty city}">
+					<tr>
+						<td><fmt:message key="city"/>:</td>
+						<td><c:out value="${city}" escapeXml="true"/></td>
+					</tr>
+				</c:if>
+
+				<c:if test="${!empty occupation}">
+					<tr>
+						<td><fmt:message key="occupation"/>:</td>
+						<td><c:out value="${occupation}" escapeXml="true"/></td>
+					</tr>
+				</c:if>
+
+				<c:if test="${!empty languages}">
+					<tr>
+						<td><fmt:message key="languages"/>:</td>
+						<td>
+							<c:forEach var="language" varStatus="status" items="${fn:split(languages,',')}">
+								<c:if test="${!status.first}">, </c:if>
+								<c:choose>
+									<c:when test="${fn:length(language) == 2}">
+										<fmt:message key="languages_${language}"/>
+									</c:when>
+									<c:otherwise><c:out value="${language}" escapeXml="true"/></c:otherwise>
+								</c:choose>
+							</c:forEach>
+						</td>
+					</tr>
+				</c:if>
+
+			</table>
+
+			<table cellspacing="0">
+
+				<caption>
+					<fmt:message key="title"/>
+					<c:if test="${can_edit_profile}">
+						(<a class="action" href="${path_profile}/title.html"><fmt:message key="edit"/></a>)
+					</c:if>
+				</caption>
+
+				<tr>
+					<td><user:title title="${title}" /></td>
+				</tr>
+
+			</table>
+
+			<c:if test="${!empty user_holidays}">
+				<table cellspacing="0">
+					<caption>
+						<fmt:message key="holidays"/>
+						<c:if test="${can_edit_holidays}">
+							(<a class="action" href="${path_user}/edit_user_holidays.html"><fmt:message key="edit"/></a>)
+						</c:if>
+					</caption>
+					<c:forEach var="holidays" items="${user_holidays}">
+						<tr>
+							<td><fmt:formatDate value="${holidays.beginAt}" type="date" dateStyle="medium"/></td>
+							<td>-</td>
+							<td><fmt:formatDate value="${holidays.endAt}" type="date" dateStyle="medium"/></td>
+							<td>
+								(<fmt:message key="days">
+									<fmt:param>
+										<!-- kludge! -->
+										<fmt:formatNumber pattern="0" value="${holidays.length/(24*60*60*1000)}"/>
+									</fmt:param>
+								</fmt:message>)
+							</td>
+						</tr>
+					</c:forEach>
+				</table>
+			</c:if>
+			
+			<c:if test="${!empty user_roles || !empty user_roles_to_add}">
+				<table cellspacing="0">
+					<caption>
+						<fmt:message key="roles"/>
+					</caption>
+					<c:forEach var="role" items="${user_roles}">
+						<tr>
+							<td>
+								<c:choose>
+									<c:when test="${role == 'USER'}">
+										<img src="${img_path}/face.png"/>
+									</c:when>
+									<c:when test="${role == 'SPONSOR' || role == 'GAME_ADMIN'}">
+										<img src="${img_path}/crown.png"/>
+									</c:when>
+									<c:when test="${role == 'ADMIN'}"><span style="color:brown">admin</span></c:when>
+									<c:when test="${role == 'BETATESTER'}"><span style="font-weight:bold;color:brown">&#946;</span></c:when>
+								</c:choose>
+							</td>
+							<td>
+								<fmt:bundle basename="user" prefix="role_tag.">
+									<fmt:message key="${role}"/>
+								</fmt:bundle>
+							</td>
+							<c:if test="${can_remove_user_roles}">
+								<td>
+									<a class="action" href="${path_profile}/remove_user_role.html?user=${user.name}&amp;role=${role}"><fmt:message key="remove"/></a>
+								</td>
+							</c:if>
+						</tr>
+					</c:forEach>
+					<c:forEach var="role" items="${user_roles_to_add}">
+						<tr>
+							<td/>
+							<td style="color:grey">
+								<fmt:bundle basename="user" prefix="role_tag.">
+									<fmt:message key="${role}"/>
+								</fmt:bundle>
+							</td>
+							<td>
+								<a class="action" href="${path_profile}/add_user_role.html?user=${user.name}&amp;role=${role}"><fmt:message key="add"/></a>
+							</td>
+						</tr>
+					</c:forEach>
+				</table>
+			</c:if>
+
+			<c:import url="/game/rating/ratings_of_subject.dof?subject=${user.name}"/>
+			
+			<table cellspacing="0">
+				<caption>
+					<fmt:message key="statistics"/>
+				</caption>
+
+				<tr>
+					<td><fmt:message key="created_at"/>:</td>
+					<td><fmt:formatDate value="${created_at}" type="date"/></td>
+				</tr>
+
+				<c:if test="${is_admin_role}">
+					<tr>
+						<td>Number of Logins:</td>
+						<td>${user.numberOfLogins}</td>
+					</tr>
+				</c:if>
+
+				<c:if test="${!empty user.lastLoginAt}">
+					<tr>
+						<td><fmt:message key="last_accessed_at"/>:</td>
+						<td><fmt:formatDate value="${user.lastLoginAt}" type="date"/></td>
+					</tr>
+				</c:if>
+				
+				<c:if test="${is_admin_role}">
+
+					<c:if test="${!empty user.lastLogoutAt}">
+						<tr>
+							<td><fmt:message key="last_logout_at"/>:</td>
+							<td><fmt:formatDate value="${user.lastLogoutAt}" type="date"/></td>
+						</tr>
+					</c:if>
+
+					<c:if test="${!empty user.lastIP}">
+						<tr>
+							<td><fmt:message key="last_ip"/>:</td>
+							<td>
+								${user.lastIP}
+								<c:if test="${!empty last_hostname}">
+									<br/>
+									(${last_hostname})
+								</c:if>
+							</td>
+						</tr>
+					</c:if>
+
+					<c:if test="${!empty user.referredAt}">
+						<tr>
+							<td><fmt:message key="referred_at"/>:</td>
+							<td><fmt:formatDate value="${user.referredAt}" type="date"/></td>
+						</tr>
+					</c:if>
+
+					<c:if test="${show_referred_from}">
+						<tr>
+							<td><fmt:message key="referred_from"/>:</td>
+							<td>
+								<c:choose>
+									<c:when test="${show_referred_from_as_link}">
+										<c:set var="referred_from_escaped"><c:out value="${user.referredFrom}" escapeXml="true"/></c:set>
+										<a href="${referred_from_escaped}">
+											<c:out value="${fn:substring(user.referredFrom,0,64)}${fn:length(user.referredFrom) > 64 ? '...' : ''}" escapeXml="true"/>
+										</a>
+									</c:when>
+									<c:otherwise>
+										<c:out value="${fn:substring(user.referredFrom,0,64)}${fn:length(user.referredFrom) > 64 ? '...' : ''}" escapeXml="true"/>
+									</c:otherwise>
+								</c:choose>
+							</td>
+						</tr>
+					</c:if>
+
+					<c:if test="${!empty user.referredTo}">
+						<tr>
+							<td><fmt:message key="referred_to"/>:</td>
+							<td><c:out value="${fn:substring(user.referredTo,0,64)}${fn:length(user.referredTo) > 64 ? '...' : ''}" escapeXml="true"/></td>
+						</tr>
+					</c:if>
+					
+					<c:if test="${user.acceptedTerms > 0}">
+						<tr>
+							<td><fmt:message key="accepted_terms"/>:</td>
+							<td>Version ${user.acceptedTerms} (<fmt:formatDate type="date" value="${user.acceptedTermsAt}"/>)</td>
+						</tr>
+					</c:if>
+
+					<tr>
+						<td>User Agent:</td>
+						<td>${user.lastUserAgent}</td>
+					</tr>
+
+				</c:if>
+
+			</table>
+			
+			<br/>
+
+			<c:if test="${show_relation}">
+
+				<h3><fmt:message key="header_relations"/></h3>
+				
+				<c:choose>
+
+					<c:when test="${!empty relation and relation.type == 'friend' and !empty reverse_relation and reverse_relation.type == 'friend'}">
+
+						<p><fmt:message key="double_confirmed_friend"><fmt:param value="${user.name}"/></fmt:message></p>
+
+					</c:when>
+
+					<c:otherwise>
+					
+						<c:choose>
+						
+							<c:when test="${!empty relation and relation.friend}">
+								<c:choose>
+									<c:when test="${empty relation.confirmed}">
+										<p><fmt:message key="friend_unconfirmed"><fmt:param value="${user.name}"/></fmt:message></p>
+									</c:when>
+									<c:when test="${relation.confirmed}">
+										<p><fmt:message key="friend_confirm_true"><fmt:param value="${user.name}"/></fmt:message></p>
+									</c:when>
+									<c:when test="${!relation.confirmed}">
+										<p><fmt:message key="friend_confirm_false"><fmt:param value="${user.name}"/></fmt:message></p>
+									</c:when>
+								</c:choose>
+							</c:when>
+
+							<c:when test="${!empty relation and relation.banned}">
+								<p><fmt:message key="banned"><fmt:param value="${user.name}"/></fmt:message></p>
+							</c:when>
+							
+							<c:when test="${!empty reverse_relation and reverse_relation.friend}">
+								<c:choose>
+									<c:when test="${empty reverse_relation.confirmed}">
+										<p><fmt:message key="reverse_friend_unconfirmed"><fmt:param value="${user.name}"/></fmt:message></p>
+									</c:when>
+									<c:when test="${reverse_relation.confirmed}">
+										<p><fmt:message key="reverse_friend_confirm_true"><fmt:param value="${user.name}"/></fmt:message></p>
+									</c:when>
+									<c:when test="${!reverse_relation.confirmed}">
+										<p><fmt:message key="reverse_friend_confirm_false"><fmt:param value="${user.name}"/></fmt:message></p>
+									</c:when>
+								</c:choose>
+							</c:when>
+						
+						</c:choose>
+
+					</c:otherwise>
+
+				</c:choose>
+
+				<p>
+					<c:choose>
+						<c:when test="${empty relation}">
+							<a class="action" href="${path_relation}/add_user_relation.html?target=${user.name}&amp;type=friend">
+								<fmt:message key="action_add_friend"/>
+							</a>
+							<br/>
+							<a class="action" href="${path_relation}/add_user_relation.html?target=${user.name}&amp;type=banned">
+								<fmt:message key="action_add_banned"/>
+							</a>
+							<br/>
+						</c:when>
+						<c:when test="${relation.friend}">
+							<a class="action" href="${path_relation}/remove_user_relation.html?target=${user.name}">
+								<fmt:message key="action_remove_friend"/>
+							</a>
+							<br/>
+							<a class="action" href="${path_relation}/add_user_relation.html?target=${user.name}&amp;type=banned">
+								<fmt:message key="action_add_banned"/>
+							</a>
+							<br/>
+						</c:when>
+						<c:when test="${relation.banned}">
+							<a class="action" href="${path_relation}/remove_user_relation.html?target=${user.name}">
+								<fmt:message key="action_remove_banned"/>
+							</a>
+							<br/>
+							<a class="action" href="${path_relation}/add_user_relation.html?target=${user.name}&amp;type=friend">
+								<fmt:message key="action_add_friend"/>
+							</a>
+							<br/>
+						</c:when>
+					</c:choose>
+				</p>
+
+				<h3><fmt:message key="mail"/></h3>
+
+				<p>
+					<div>
+						<a class="action" href="${path_mail}/send_mail.html?recipient=${user.name}">
+							<fmt:message key="action_send_mail"/>
+						</a>
+					</div>
+					<div>
+						<a class="action" href="${path_game}/forming/create_game.html?invite_user=${user.name}">
+							<fmt:message key="action_invite_user_to_game"/>
+						</a>
+					</div>
+				</p>
+
+			</c:if>
+		
+		</c:set>
+		
+	</fmt:bundle>
+	
+	<c:import url="/layout/standard.dof"/>
+
+</jsp:root>

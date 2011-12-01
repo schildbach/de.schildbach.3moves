@@ -1,0 +1,9 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+>
+	<div class="clock">
+		<fmt:formatDate value="${now}" type="time" timeStyle="short" />&#160;<fmt:formatDate value="${now}" pattern="z" />
+	</div>
+
+</jsp:root>

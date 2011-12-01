@@ -1,0 +1,52 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+>
+	<table cellspacing="0" class="game_board">
+
+		<c:if test="${!empty name[0] || !empty clock[0]}">
+			<tr>
+				<td>
+					<c:import url="/user/profile/player_bar.dof">
+						<c:param name="color" value="${color[0]}"/>
+						<c:param name="user" value="${name[0]}"/>
+						<c:param name="clock" value="${clock[0]}"/>
+					</c:import>
+				</td>
+			</tr>
+		</c:if>
+
+		<tr>
+			<td>
+				<c:import url="/game/board/captured_pieces_row.dof?pos=1&amp;size=${size}"/>
+			</td>
+		</tr>
+
+		<tr>
+			<td>
+				<c:import url="/game/board/base_board.dof?size=${size}"/>
+			</td>
+		</tr>
+
+		<tr>
+			<td>
+				<c:import url="/game/board/captured_pieces_row.dof?pos=0&amp;size=${size}"/>
+			</td>
+		</tr>
+
+		<c:if test="${!empty name[1] || !empty clock[1]}">
+			<tr>
+				<td>
+					<c:import url="/user/profile/player_bar.dof">
+						<c:param name="color" value="${color[1]}"/>
+						<c:param name="user" value="${name[1]}"/>
+						<c:param name="clock" value="${clock[1]}"/>
+					</c:import>
+				</td>
+			</tr>
+		</c:if>
+
+	</table>
+	
+</jsp:root>

@@ -1,0 +1,30 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+>
+	<c:url var="link_users" value="/user/admin/user_list.html"/>
+	<c:url var="link_games" value="/game/admin/games.html"/>
+	<c:url var="link_user" value="/user/profile/profile.html"/>
+	<c:url var="link_game" value="/game/view_game.html"/>
+	<c:url var="link_profile_report" value="/admin/profile_report.html"/>
+	<c:url var="link_cache_report" value="/admin/cache_report.html"/>
+
+	<div class="sidebar admin">
+		<h1>admin</h1>
+		<a class="action" href="${link_users}">user list</a>
+		<br/>
+		<a class="action" href="${link_games}">game list</a>
+		<br/>
+		<a class="action" href="${link_profile_report}">profile</a>
+		<br/>
+		<a class="action" href="${link_cache_report}">cache</a>
+		<br/>
+		<form action="${link_user}">
+			user: <input type="text" name="user" size="7"/>
+		</form>
+		<form action="${link_game}">
+			game: <input type="text" name="id" size="7"/>
+		</form>
+	</div>
+
+</jsp:root>

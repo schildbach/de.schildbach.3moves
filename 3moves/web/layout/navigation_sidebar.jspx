@@ -1,0 +1,26 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:x="http://java.sun.com/jsp/jstl/xml"
+>
+	<div class="sidebar navigation">
+
+		<c:import url="/layout/navigation.jspx" var="doc" />
+		<x:parse doc="${doc}" var="xml" />
+
+		<x:forEach var="item" select="$xml//item">
+			<x:set var="role" select="string(role/text())" />
+			<c:if test="${auth[role]}">
+				<x:set var="depth" select="string(count(ancestor::*)-1)" />
+				<x:set var="label" select="string(label[not(@language) or @language = $language]/text())" />
+				<x:set var="action" select="string(action[not(@language) or @language = $language]/text())" />
+				<c:url var="link_action" value="${action}" />
+				<jsp:element name="h${depth}">
+					<a href="${link_action}">${label}</a>
+				</jsp:element>
+			</c:if>
+		</x:forEach>
+
+	</div>
+
+</jsp:root>

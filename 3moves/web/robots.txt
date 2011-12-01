@@ -1,0 +1,15 @@
+# mail support@3moves.net for constructive criticism
+
+User-agent: *
+Disallow: /game
+Disallow: /chess
+Disallow: /user
+Allow: /user/login/
+Allow: /user/registration/
+Disallow: /forum
+Disallow: /mail
+Disallow: /layout
+Disallow: /img
+Disallow: /misc/impressum.html
+
+Sitemap: http://3moves.net/sitemap.xml

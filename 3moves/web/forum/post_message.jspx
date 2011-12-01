@@ -1,0 +1,63 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:form="http://www.springframework.org/tags/form"
+>
+	<c:set var="page_content" scope="request">
+	
+		<fmt:bundle basename="forum" prefix="post_message.">
+		
+			<fmt:message var="label_submit" key="action_submit"/>
+		
+			<h3><fmt:message key="header"/></h3>
+
+			<form:form method="post" action="?" enctype="multipart/form-data">
+
+				<p>
+					<label><fmt:message key="created_by" />:</label>
+					${created_by}
+				</p>
+
+				<p>
+					<label for="subject"><fmt:message key="subject" />:</label>
+					<br/>
+					<form:input path="subject" size="40" />
+				</p>
+
+				<p>
+					<label for="text"><fmt:message key="body"/>:</label>
+					<br/>
+					<form:textarea path="text" cssStyle="font-family:Verdana,Arial,Geneva; font-size:13px" cols="67" rows="20" />
+				</p>
+
+				<input type="submit" value="${label_submit}"/>
+
+			</form:form>
+			
+			<p>
+				<a class="action" href="node.html?id=${parent_content.id}"><fmt:message key="action_back"/></a>
+			</p>
+		
+			<c:if test="${!empty parent_body}">
+		
+				<fmt:message key="header_quote"/>
+		
+				<hr noshade="noshade" style="color:grey; height:1px;"/>
+		
+				<p><fmt:message key="created_by"/>: ${parent_content.createdBy.name}</p>
+				
+				<p>
+					<c:out value="${parent_body}" escapeXml="false"/>
+				</p>
+
+			</c:if>
+	
+		</fmt:bundle>
+	
+	</c:set>
+	
+	<c:import url="/layout/standard.dof"/>
+
+</jsp:root>

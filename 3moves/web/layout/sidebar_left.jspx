@@ -1,0 +1,27 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+>
+	<table cellspacing="0" style="height:100%">
+		<tr>
+			<td style="vertical-align:top">
+				<c:if test="${show_locale_sidebar}">
+					<c:import url="/layout/locale_sidebar.dof"/>
+				</c:if>
+				<c:if test="${show_screen_resolution_sidebar}">
+					<c:import url="/layout/screen_resolution_sidebar.dof"/>
+				</c:if>
+				<c:import url="/layout/navigation_sidebar.dof"/>
+			</td>
+		</tr>
+		<tr>
+			<td style="vertical-align:bottom">
+				<div class="sidebar copyright">
+					Copyright &#169; 2002-<fmt:formatDate value="${now}" pattern="yyyy"/><br/>
+					<a href="http://schildbach.de">Dipl.-Inf.&#160;Univ. Andreas&#160;Schildbach</a>
+				</div>
+			</td>
+		</tr>
+	</table>
+</jsp:root>

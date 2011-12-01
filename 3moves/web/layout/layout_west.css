@@ -1,0 +1,13 @@
+#west {
+	position: absolute;
+	bottom: 0px;
+	height: auto;
+	left: 4px;
+	width: 11em;
+	right: auto;
+	z-index: 1;
+}
+
+#center {
+	margin-left: 11em;
+}

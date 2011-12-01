@@ -1,0 +1,58 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+>
+	<c:set var="page_content" scope="request">
+
+		<c:url var="url_back" value="/user/settings/settings.html" />
+	
+		<fmt:bundle basename="user_settings" prefix="validate_address.">
+	
+			<h3>
+				<fmt:message key="header">
+					<fmt:param><fmt:message key="transport.${transport}"/></fmt:param>
+				</fmt:message>
+			</h3>
+	
+			<c:choose>
+
+				<c:when test="${!empty expired}">
+				
+					<p>			
+						<fmt:message key="hello">
+							<fmt:param value="${username}"/>
+						</fmt:message>
+					</p>
+				
+					<p>
+						<fmt:message key="expired"/>
+					</p>
+					
+				</c:when>
+	
+				<c:when test="${!empty invalid}">
+				
+					<p>
+						<fmt:message key="invalid"/>
+					</p>
+					
+				</c:when>
+	
+				<c:otherwise>
+				
+					<p><fmt:message key="success"/></p>
+					
+				</c:otherwise>
+	
+			</c:choose>
+
+			<a class="action" href="${url_back}"><fmt:message key="action.back" /></a>
+
+		</fmt:bundle>
+	
+	</c:set>
+	
+	<c:import url="/layout/standard.dof"/>
+
+</jsp:root>

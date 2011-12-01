@@ -1,0 +1,14 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+>
+	<c:url var="img_path" value="/piece/checkers"/>
+
+	<c:if test="${show}">
+		<div class="captured_pieces ${size}">
+			${number}
+			&#215;
+			<img style="width:15px;height:15px;vertical-align:bottom" src="${img_path}/${piece}.png"/>
+		</div>
+	</c:if>
+</jsp:root>

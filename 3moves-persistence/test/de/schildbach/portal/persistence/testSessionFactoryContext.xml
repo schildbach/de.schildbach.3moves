@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+
+		<property name="configurationClass" value="org.hibernate.cfg.AnnotationConfiguration" />
+
+		<property name="annotatedPackages">
+			<list>
+				<value>de.schildbach.portal.persistence</value>
+			</list>
+		</property>
+
+		<property name="packagesToScan">
+			<list>
+				<value>de.schildbach.portal.persistence.content</value>
+				<value>de.schildbach.portal.persistence.mail</value>
+				<value>de.schildbach.portal.persistence.user</value>
+				<value>de.schildbach.portal.persistence.game</value>
+			</list>
+		</property>
+
+		<property name="hibernateProperties">
+			<map>
+				<entry key="hibernate.connection.isolation" value="4" />
+				<entry key="hibernate.max_fetch_depth" value="1" />
+				<entry key="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect" />
+				<entry key="hibernate.query.substitutions" value="true 1, false 0, yes 'Y', no 'N'" />
+				<entry key="hibernate.hbm2ddl.auto" value="create" />
+			</map>
+		</property>
+
+		<property name="dataSource" ref="dataSource" />
+
+	</bean>
+
+</beans>

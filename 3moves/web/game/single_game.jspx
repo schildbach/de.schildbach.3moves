@@ -1,0 +1,281 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:spring="http://www.springframework.org/tags"
+>
+	<fmt:bundle basename="game" prefix="single_game.">
+	
+		<c:import url="/game/game_header.dof"/>
+
+		<div class="game_board">
+
+			<c:forEach var="special_attribute" items="${special_attributes}">
+				<div class="warning">
+					<fmt:message key="special_attribute_${special_attribute}"/>
+				</div>
+			</c:forEach>
+
+			<c:import url="/game/board/game_table.dof">
+				<c:param name="name_0" value="${players[0].subject.name}"/>
+				<c:param name="name_1" value="${players[1].subject.name}"/>
+				<c:param name="color_0" value="${color[0]}"/>
+				<c:param name="color_1" value="${color[1]}"/>
+				<c:param name="clock_0" value="${!empty clock ? clock[0] : null}"/>
+				<c:param name="clock_1" value="${!empty clock ? clock[1] : null}"/>
+			</c:import>
+
+		</div>
+
+		<c:import url="/game/game_parameters.dof?class=sidebox+game_parameters"/>
+	
+		<c:if test="${remis_offer}">
+			<p class="warning">
+				<fmt:message key="remis_offer"/>
+			</p>
+		</c:if>
+
+		<c:if test="${fn:length(notation_array) > 0}">
+			<p class="game_history">
+				<c:forEach var="element" items="${notation_array}">
+					<c:choose>
+						<c:when test="${!element.label}">
+							<c:choose>
+								<c:when test="${element.index == notation_array_cursor_index}">
+									<a class="cursor ${notation_array_class[element]}" href="?cursor=${element.index}">${element.notation}
+									</a>
+								</c:when>
+								<c:otherwise>
+									<a class="${notation_array_class[element]}" href="?cursor=${element.index}">${element.notation}
+									</a>
+								</c:otherwise>
+							</c:choose>
+						</c:when>
+						<c:otherwise>
+							<span class="${notation_array_class[element]}_label">${element.notation}
+							</span>
+						</c:otherwise>
+					</c:choose>
+				</c:forEach>
+			</p>
+		</c:if>
+
+		<c:if test="${show_history_controls}">
+
+			<p style="font-weight:bold;">
+	
+				<c:choose>
+					<c:when test="${!empty history_back_index}">
+						<a href="?cursor=${history_back_index}"><![CDATA[&lt;&lt;]]></a>
+					</c:when>
+					<c:otherwise>
+						<![CDATA[&lt;&lt;]]>
+					</c:otherwise>
+				</c:choose>
+				&#160;
+				<c:choose>
+					<c:when test="${!empty history_forward_index}">
+						<a href="?cursor=${history_forward_index}"><![CDATA[&gt;&gt;]]></a>
+					</c:when>
+					<c:otherwise>
+						<![CDATA[&gt;&gt;]]>
+					</c:otherwise>
+				</c:choose>
+	
+			</p>
+
+		</c:if>
+
+		<c:if test="${!empty hint}">
+			<div class="instruction" style="float:right; clear:right; width:30%">
+				<fmt:message key="hint_${hint}"/>
+			</div>
+		</c:if>
+		
+		<c:if test="${show_disqualify_active_player_confirm}">
+
+			<div class="instruction" style="float:right; clear:right; width:30%">
+
+				<fmt:message key="disqualify_active_player_confirm.header"/>
+				
+				<p>
+					<fmt:message key="disqualify_active_player_confirm.question">
+						<fmt:param value="${active_player.subject.name}"/>
+					</fmt:message>
+				</p>
+				
+				<p>
+					<div>
+						<a class="action" href="?disqualify_active_player=confirm"><fmt:message key="disqualify_active_player_confirm.yes"/></a>
+					</div>
+	
+					<div>
+						<a class="action" href="?"><fmt:message key="disqualify_active_player_confirm.no"/></a>
+					</div>
+				</p>
+
+			</div>
+	
+		</c:if>
+
+		<p>
+			<form action="?" method="post" enctype="multipart/form-data" accept-charset="UTF-8">
+				<span style="font-weight:bold;">
+					<fmt:message key="${move_label}"/>
+					<c:if test="${can_set_move}">
+						<spring:bind path="command.move">:
+							<input id="move_field" type="text" name="${status.expression}" value="${status.value}" size="22" maxlength="128"/>
+							<script type="text/javascript">
+								document.getElementById('move_field').focus();
+							</script>
+							<input type="submit" name="set_move" value=">>"/>
+							<c:if test="${status.error}">
+								<br/><span class="error"><fmt:message key="move_error"/></span>
+							</c:if>
+						</spring:bind>
+					</c:if>
+					<br/>
+				</span>
+			</form>
+		</p>
+		
+		<p>
+
+			<c:if test="${can_commit_move}">
+				<div>
+					<a class="action warning" href="?commit_move"><fmt:message key="commit_move"/></a>
+				</div>
+				<div>&#160;</div>
+			</c:if>
+
+			<c:if test="${can_add_conditional_moves}">
+				<div>
+					<a class="action" style="font-weight:bold" href="?add_conditional_moves"><fmt:message key="add_conditional_moves"/></a>
+				</div>
+			</c:if>
+
+			<c:if test="${can_back_from_history}">
+				<div>
+					<a class="action" href="?back_from_history"><fmt:message key="back_to_game"/></a>
+				</div>
+			</c:if>
+
+			<c:if test="${can_undo_move}">
+				<div>
+					<a class="action" href="?undo_move"><fmt:message key="undo_move"/></a>
+				</div>
+			</c:if>
+
+			<c:if test="${can_undo_irreal}">
+				<div>
+					<a class="action" href="?undo_irreal"><fmt:message key="undo_irreal"/></a>
+				</div>
+			</c:if>
+
+			<c:if test="${can_undo_all}">
+				<div>
+					<a class="action" href="?undo_all"><fmt:message key="undo_all"/></a>
+				</div>
+			</c:if>
+
+			<c:if test="${can_clear_move}">
+				<div>
+					<a class="action" href="?clear_move"><fmt:message key="clear_move"/></a>
+				</div>
+			</c:if>
+
+			<c:if test="${can_remis}">
+				<div>			
+					<a class="action" href="?remis"><fmt:message key="remis"/></a>
+				</div>
+			</c:if>
+			
+			<c:if test="${can_resign_game}">
+				<div>
+					<a class="action" href="?resign_game"><fmt:message key="resign"/></a>
+				</div>
+			</c:if>
+
+			<c:if test="${can_view_notation}">
+				<div>			
+					<a class="action" href="notation.html?game_id=${game_id}">pgn/pdn</a>
+				</div>
+			</c:if>
+
+			<div>			
+				<a class="action" href="board/freestyle.html?flip=${flip_board}&amp;rules=${rules}&amp;board=${board_notation}"><fmt:message key="freestyle_analysis"/></a>
+			</div>
+
+			<div>
+				<a class="action" href="?flip_board"><fmt:message key="flip_board"/></a>
+			</div>
+
+			<c:if test="${can_remind_active_player}">
+				<div>
+					<a class="action" href="remind_active_player_form.html?game_id=${game_id}"><fmt:message key="remind_active_player"/></a>
+				</div>
+			</c:if>
+
+			<c:if test="${can_disqualify_active_player}">
+				<div>
+					<a class="action" href="?disqualify_active_player"><fmt:message key="disqualify_active_player"/></a>
+				</div>
+			</c:if>
+			
+			<c:if test="${can_invite_for_second_leg}">
+				<div>
+					<a class="action" href="forming/invite_for_second_leg_confirm.html?game_id=${game_id}"><fmt:message key="invite_for_second_leg"/></a>
+				</div>
+			</c:if>
+		
+		</p>
+
+		<c:if test="${show_resign_confirm}">
+			<p>
+				<div style="font-weight:bold"><fmt:message key="confirm_resign"/></div>
+				<a class="action" href="?resign_game&amp;confirm=true"><fmt:message key="yes"/></a>
+				<br/>
+				<a class="action" href="?resign_game&amp;confirm=false"><fmt:message key="no"/></a>
+			</p>
+		</c:if>
+
+		<c:if test="${show_claim_remis_confirm}">
+			<p>
+				<div style="font-weight:bold"><fmt:message key="confirm_${remis_right}_remis"/></div>
+				<a class="action" href="?remis&amp;confirm=true"><fmt:message key="yes"/></a>
+				<br/>
+				<a class="action" href="?remis&amp;confirm=false"><fmt:message key="no"/></a>
+			</p>
+		</c:if>
+
+		<c:if test="${offer_remis}">
+			<p>
+				<div style="font-weight:bold"><fmt:message key="remis_offered"/></div>
+				<a class="action" href="?remis"><fmt:message key="revoke_remis"/></a>
+			</p>
+		</c:if>
+
+		<c:if test="${is_admin_role}">
+			<div style="clear:right; margin-top:8px">
+				<form>
+					<input style="font-size:9px;" type="text" name="game_notation" value="${actual_position_notation}" size="80" maxlength="512" readonly="readonly"/>
+				</form>
+			</div>
+		</c:if>
+
+		<c:if test="${!empty conditional_moves}">
+			<p>
+				<div style="font-weight:bold"><fmt:message key="conditional_moves"/>:</div>
+				<c:forEach var="moves_entry" items="${conditional_moves}">
+					<div>
+						${moves_entry.value}
+						<a class="action" href="?remove_conditional_moves=${moves_entry.key}"><fmt:message key="remove_conditional_moves"/></a>
+					</div>
+				</c:forEach>
+			</p>
+		</c:if>
+
+	</fmt:bundle>
+
+</jsp:root>

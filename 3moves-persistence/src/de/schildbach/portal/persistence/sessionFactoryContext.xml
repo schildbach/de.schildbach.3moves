@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+
+		<property name="configurationClass" value="org.hibernate.cfg.AnnotationConfiguration" />
+
+		<property name="annotatedPackages">
+			<list>
+				<value>de.schildbach.portal.persistence</value>
+			</list>
+		</property>
+
+		<property name="packagesToScan">
+			<list>
+				<value>de.schildbach.portal.persistence.content</value>
+				<value>de.schildbach.portal.persistence.mail</value>
+				<value>de.schildbach.portal.persistence.user</value>
+				<value>de.schildbach.portal.persistence.game</value>
+			</list>
+		</property>
+
+		<property name="hibernateProperties">
+			<map>
+				<entry key="hibernate.connection.isolation" value="4" />
+				<entry key="hibernate.max_fetch_depth" value="1" />
+				<entry key="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
+				<entry key="hibernate.cache.use_query_cache" value="true" />
+				<entry key="hibernate.query.substitutions" value="true 1, false 0, yes 'Y', no 'N'" />
+				<!--<entry key="hibernate.hbm2ddl.auto" value="update" />-->
+			</map>
+		</property>
+
+		<property name="dataSource" ref="dataSource" />
+
+		<property name="cacheProvider">
+			<bean class="de.schildbach.portal.persistence.InjectableEhCacheProvider">
+				<property name="cacheManager" ref="cacheManager" />
+			</bean>
+		</property>
+
+		<property name="entityCacheStrategies">
+			<props>
+				<prop key="de.schildbach.portal.persistence.user.Image">nonstrict-read-write</prop>
+				<prop key="de.schildbach.portal.persistence.user.Subject">read-write</prop>
+				<prop key="de.schildbach.portal.persistence.user.SubjectRelation">read-write</prop>
+				<prop key="de.schildbach.portal.persistence.user.UserHolidays">read-write</prop>
+				<prop key="de.schildbach.portal.persistence.user.UserRole">read-write</prop>
+				<prop key="de.schildbach.portal.persistence.mail.Mail">read-write</prop>
+				<prop key="de.schildbach.portal.persistence.content.Content">read-write</prop>
+				<prop key="de.schildbach.portal.persistence.game.Game">read-write</prop>
+				<prop key="de.schildbach.portal.persistence.game.GameInvitation">read-write</prop>
+				<prop key="de.schildbach.portal.persistence.game.GamePlayer">read-write</prop>
+				<prop key="de.schildbach.portal.persistence.game.GameConditionalMoves">read-write</prop>
+				<prop key="de.schildbach.portal.persistence.game.GameWatch">read-write</prop>
+				<prop key="de.schildbach.portal.persistence.game.SubjectRating">read-write</prop>
+				<prop key="de.schildbach.portal.persistence.game.SubjectRatingHistory">nonstrict-read-write</prop>
+			</props>
+		</property>
+
+		<property name="collectionCacheStrategies">
+			<props>
+				<prop key="de.schildbach.portal.persistence.game.GameGroup.childGames">read-write</prop>
+				<prop key="de.schildbach.portal.persistence.game.Game.players">read-write</prop>
+				<prop key="de.schildbach.portal.persistence.game.Game.invitations">read-write</prop>
+				<prop key="de.schildbach.portal.persistence.game.Game.watches">nonstrict-read-write</prop>
+				<prop key="de.schildbach.portal.persistence.game.GamePlayer.conditionalMoves">read-write</prop>
+				<prop key="de.schildbach.portal.persistence.user.User.userRoles">read-write</prop>
+			</props>
+		</property>
+
+	</bean>
+
+</beans>

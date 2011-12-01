@@ -1,0 +1,104 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:user="urn:jsptagdir:/WEB-INF/tags/user"
+>
+	<c:set var="page_content" scope="request">
+	
+		<fmt:bundle basename="mail" prefix="mail.">
+
+			<h3>
+				<c:choose>
+					<c:when test="${!empty mail.subject}">
+						<c:out value="${mail.subject}" escapeXml="true"/>
+					</c:when>
+					<c:otherwise>
+						<fmt:message key="no_subject"/>
+					</c:otherwise>
+				</c:choose>
+			</h3>
+
+			<c:import url="navigation.jspx"/>
+
+			<table cellspacing="0">
+				<tr>
+					<td width="6%" rowspan="4">
+						<user:image name="${mail.sender.name}" />
+					</td>
+					<td width="20%">
+						<label><fmt:message key="sender" />:</label>
+					</td>
+					<td>
+						<user:username name="${mail.sender.name}" />
+					</td>
+				</tr>
+				<tr>
+					<td width="20%">
+						<label><fmt:message key="recipient" />:</label>
+					</td>
+					<td>
+						<user:username name="${mail.recipient.name}" />
+					</td>
+				</tr>
+				<tr>
+					<td width="20%">
+						<label><fmt:message key="created_at" />:</label>
+					</td>
+					<td>
+						<fmt:formatDate value="${mail.createdAt}" type="both" />
+					</td>
+				</tr>
+				<c:if test="${show_flags}">
+					<tr>
+						<td width="20%">
+							<label><fmt:message key="flags" />:</label>
+						</td>
+						<td>
+							<c:if test="${mail.important}">
+								<fmt:message key="important" />&#160;
+							</c:if>
+							<c:if test="${mail.repliedTo}">
+								<fmt:message key="replied_to" />&#160;
+							</c:if>
+						</td>
+					</tr>
+				</c:if>
+			</table>
+
+			<div class="body">
+				<c:out value="${body}" escapeXml="false"/>
+			</div>
+
+			<p>
+				<div>
+					<c:if test="${can_reply}">
+						<c:set var="url">
+							<c:url value="send_mail.html">
+								<c:param name="recipient" value="${mail.sender.name}"/>
+								<c:param name="subject" value="Re: ${mail.subject}"/>
+								<c:param name="reply_to" value="${mail.id}"/>
+							</c:url>
+						</c:set>
+						<a class="action" href="${url}"><fmt:message key="reply_to_mail"/></a>
+						<br/>
+						<c:choose>
+							<c:when test="${mail.important}">
+								<a class="action" href="mark_mail.html?id=${mail.id}&amp;amp;important=false"><fmt:message key="mark_as_unimportant"/></a>
+							</c:when>
+							<c:otherwise>
+								<a class="action" href="mark_mail.html?id=${mail.id}&amp;amp;important=true"><fmt:message key="mark_as_important"/></a>
+							</c:otherwise>
+						</c:choose>
+							
+					</c:if>
+				</div>
+			</p>
+		
+		</fmt:bundle>
+		
+	</c:set>
+	
+	<c:import url="/layout/standard.dof"/>
+
+</jsp:root>

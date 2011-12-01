@@ -1,0 +1,264 @@
+/* general */
+
+div.sidebar {
+	font-size: 11px;
+	text-align: center;
+	margin-bottom: 6px;
+	padding: 4px 0px;
+	border-width: 1px;
+	border-style: solid;
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+}
+
+div.sidebar h1.selected,div.sidebar h2.selected {
+	font-weight: bold;
+}
+
+div.sidebar h1 {
+	padding-left: 4px;
+}
+
+div.sidebar h2 {
+	padding-left: 12px;
+}
+
+div.sidebar table {
+	width: 100%;
+}
+
+div.sidebar th,div.sidebar h1 {
+	font-weight: bold;
+}
+
+div.sidebar a {
+	color: #600;
+}
+
+div.sidebar a:hover {
+	color: #a00;
+}
+
+/* locale */
+
+div.sidebar.locale {
+	background-color: #eee;
+	border-color: #ddd;
+	text-align: left;
+}
+
+/* screen resolution */
+
+div.sidebar.screen_resolution {
+	background-color: #eee;
+	border-color: #ddd;
+	text-align: left;
+}
+
+/* navigation */
+
+div.sidebar.navigation {
+	background-color: #eee;
+	border-color: #ddd;
+	text-align: left;
+	white-space: nowrap;
+}
+
+div.sidebar.navigation h1 {
+	background-color: #ddd;
+	padding: 1px;
+	padding-left: 4px;
+	margin-top: 6px;
+}
+
+/* security */
+
+div.sidebar.security {
+	color: red;
+	background-color: #ffc;
+	border-color: #eeb;
+	text-align: center;
+}
+
+div.sidebar.security *.header {
+	text-decoration: blink;
+	background-color: #eeb;
+	font-weight: bold;
+}
+
+/* browser */
+
+div.sidebar.browser {
+	color: red;
+	background-color: #ffc;
+	border-color: #eeb;
+	text-align: center;
+}
+
+div.sidebar.browser *.header {
+	background-color: #eeb;
+	font-weight: bold;
+}
+
+/* user */
+
+div.sidebar.user_sidebar {
+	background-color: #fee;
+	border-color: #edd;
+}
+
+div.sidebar.user_sidebar *.status {
+	background-color: #edd;
+}
+
+div.sidebar.user_sidebar *.login {
+	text-align: left;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	padding-left: 16px;
+	padding-right: 12px;
+	margin-top: 4px;
+	margin-bottom: 4px;
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
+}
+
+/* mail */
+
+div.sidebar.mail {
+	background-color: #ffc;
+	border-color: #eeb;
+	text-align: center;
+}
+
+div.sidebar.mail a {
+	color: red;
+	font-weight: bold;
+}
+
+/* friends */
+
+div.sidebar.friends {
+	background-color: #eef;
+	border-color: #dde;
+}
+
+div.sidebar.friends h1 {
+	background-color: #dde;
+}
+
+/* invitations */
+
+div.sidebar.invitations {
+	background-color: #fee;
+	border-color: #edd;
+}
+
+div.sidebar.invitations th {
+	background-color: #edd;
+}
+
+/* active games */
+
+div.sidebar.active_games {
+	background-color: #eef;
+	border-color: #dde;
+}
+
+div.sidebar.active_games th {
+	background-color: #dde;
+}
+
+div.sidebar.active_games *.header {
+	text-align: center;
+}
+
+div.sidebar.active_games *.user {
+	text-align: left;
+}
+
+div.sidebar.active_games *.game {
+	text-align: right;
+}
+
+/* toplist */
+
+div.sidebar.elo_toplist {
+	background-color: #e6e6ff;
+	border-color: #d6d6f0;
+}
+
+div.sidebar.elo_toplist th {
+	background-color: #d6d6f0;
+}
+
+div.sidebar.elo_toplist *.user {
+	text-align: left;
+}
+
+div.sidebar.elo_toplist *.elo {
+	text-align: right;
+}
+
+/* online user list */
+
+div.sidebar.online_user_list {
+	background-color: #eef;
+	border-color: #dde;
+}
+
+div.sidebar.online_user_list h1 {
+	background-color: #dde;
+}
+
+/* invite friends */
+
+div.sidebar.invite_friends {
+	background-color: #fee;
+	border-color: #edd;
+}
+
+div.sidebar.invite_friends div.header {
+	background-color: #edd;
+	font-weight: bold;
+}
+
+/* donations */
+
+div.sidebar.donations {
+	background-color: #e6e6ff;
+	border-color: #d6d6f0;
+}
+
+div.sidebar.donations div.header {
+	background-color: #d6d6f0;
+	font-weight: bold;
+}
+
+/* admin */
+
+div.sidebar.admin {
+	background-color: #eee;
+	border-color: #ddd;
+}
+
+div.sidebar.admin h1 {
+	background-color: #ddd;
+}
+
+/* copyright */
+
+div.sidebar.copyright {
+	border: none;
+	font-size: 10px;
+	text-align: left;
+	color: gray;
+}
+
+div.sidebar.copyright a {
+	color: gray;
+}
+
+div.sidebar.copyright a:hover {
+	color: #444;
+}

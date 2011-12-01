@@ -1,0 +1,54 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+>
+	<c:url var="img_path" value="/img"/>
+
+	<c:set var="page_content" scope="request">
+	
+		<fmt:bundle basename="user_profile" prefix="photo_upload.">
+
+			<fmt:message var="label_submit" key="upload_photo"/>
+	
+			<h3><fmt:message key="header"/></h3>
+			
+			<form action="upload_photo.html" method="post" enctype="multipart/form-data" accept-charset="UTF-8">
+				<p>
+					<img src="${img_path}/1.png" title="1"/>&#160;
+					<input type="file" name="photo" maxlength="150000"/><br/>
+				</p>
+				<p>
+					<img src="${img_path}/2.png" title="2"/>&#160;
+					<input type="submit" value="${label_submit}"/>
+				</p>
+			</form>
+
+			<c:if test="${show_photo}">
+				<p>
+					<img class="photo" src="uploaded_photo.bin?height=128"/>&#160;
+					<img class="photo" src="uploaded_photo.bin?height=96"/>&#160;
+					<img class="photo" src="uploaded_photo.bin?height=64"/>&#160;
+					<img class="photo" src="uploaded_photo.bin?height=48"/>&#160;	
+					<img class="photo" src="uploaded_photo.bin?height=32"/>&#160;	
+				</p>
+
+				<a class="action" href="accept_uploaded_photo.html"><fmt:message key="accept_photo"/></a>
+				<br/>
+				<a class="action" href="discard_uploaded_photo.html"><fmt:message key="discard_photo"/></a>
+				
+			</c:if>
+			
+			<c:if test="${!show_photo}">
+				<p><fmt:message key="tech_comment"/></p>
+				<p><fmt:message key="legal_comment"/></p>
+			</c:if>
+
+		</fmt:bundle>
+	
+	</c:set>
+	
+	<c:import url="/layout/standard.dof"/>
+
+</jsp:root>

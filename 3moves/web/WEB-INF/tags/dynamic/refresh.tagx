@@ -1,0 +1,16 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+>
+	<jsp:directive.attribute name="id"/>
+	<jsp:directive.attribute name="url"/>
+	<jsp:directive.attribute name="interval"/>
+	
+	<div id="${id}"><c:import url="${url}"/></div>
+	
+	<c:url var="expanded_url" value="${url}"/>
+
+	<script type="text/javascript"><![CDATA[
+		var refresh_${id} = new common.Refresh('${id}', '${expanded_url}', ${interval});
+	]]></script>
+</jsp:root>

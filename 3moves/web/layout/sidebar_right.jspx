@@ -1,0 +1,31 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:dynamic="urn:jsptagdir:/WEB-INF/tags/dynamic"
+>
+	<c:choose>
+		<c:when test="${user_mode}">
+			<c:import url="/user/security_sidebar.dof"/>
+			<c:import url="/user/user_sidebar.dof"/>
+			<c:import url="/mail/mail_sidebar.dof"/>
+			<c:import url="/user/relation/friends_sidebar.dof"/>
+			<dynamic:refresh id="active_games_sidebar" url="/game/list/active_games_sidebar.xml?max=5" interval="120000"/>
+			<c:import url="/game/forming/personal_game_invitations_sidebar.dof"/>
+			<c:import url="/game/rating/toplist_sidebar.dof?max=5"/>
+			<dynamic:refresh id="online_user_list_sidebar" url="/user/list/online_user_list_sidebar.xml?max=15" interval="30000"/>
+			<c:import url="/user/invite_friends_sidebar.jspx"/>
+			<c:import url="/user/donations_sidebar.jspx"/>
+		</c:when>
+		<c:otherwise>
+			<c:import url="/user/user_sidebar.dof"/>
+			<c:import url="/misc/browser_sidebar.dof"/>
+			<c:import url="/game/rating/toplist_sidebar.dof?max=5"/>
+			<dynamic:refresh id="online_user_list_sidebar" url="/user/list/online_user_list_sidebar.xml?max=30" interval="30000"/>
+		</c:otherwise>
+	</c:choose>
+
+	<c:if test="${show_admin_sidebar}">
+		<c:import url="/layout/admin/admin_sidebar.jspx"/>
+	</c:if>
+
+</jsp:root>

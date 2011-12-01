@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+>
+	<navigation>
+
+		<menu>
+
+			<item><action>/user/settings/settings.html</action><label language="de">benutzer</label><label>user</label></item>
+			<menu>
+				<item><action>/user/login/login.html</action><label language="de">anmeldung</label><label>login</label><role>none</role></item>
+				<item><action>/user/registration/register_user.html</action><label language="de">registrierung</label><label>registration</label><role>none</role></item>
+				<item><action>/user/settings/settings.html</action><label language="de">einstellungen</label><label>settings</label><role>user</role></item>
+				<item><action>/user/profile/profile.html</action><label language="de">profil</label><label>profile</label><role>user</role></item>
+				<item><action>/mail/inbox.html</action><label language="de">post</label><label>mail</label><role>user</role></item>
+				<item><action>/user/relation/user_relations.html</action><label language="de">freunde/verbannte</label><label>friends/banned</label><role>user</role></item>
+				<item><action>/user/edit_user_holidays.html</action><label language="de">urlaub</label><label>holidays</label><role>user</role></item>
+			</menu>
+
+			<item><action>/game/list/open_game_invitations.html?rules=CHESS</action><label language="de">schach-spiele</label><label>chess games</label></item>
+			<menu>
+				<item><action>/game/list/open_game_invitations.html?rules=CHESS</action><label language="de">offene einladungen</label><label>open invitations</label></item>
+				<item><action>/game/list/joined_games.html?rules=CHESS</action><label language="de">deine spiele</label><label>your games</label><role>user</role></item>
+				<item><action>/game/forming/create_game.html?rules=CHESS</action><label language="de">neues spiel</label><label>create game</label><role>user</role></item>
+			</menu>
+
+			<item><action>/game/list/open_game_invitations.html?rules=CHECKERS</action><label language="de">dame-spiele</label><label>checkers games</label></item>
+			<menu>
+				<item><action>/game/list/open_game_invitations.html?rules=CHECKERS</action><label language="de">offene einladungen</label><label>open invitations</label></item>
+				<item><action>/game/list/joined_games.html?rules=CHECKERS</action><label language="de">deine spiele</label><label>your games</label><role>user</role></item>
+				<item><action>/game/forming/create_game.html?rules=CHECKERS</action><label language="de">neues spiel</label><label>create game</label><role>user</role></item>
+			</menu>
+
+			<item><action>/game/list/open_game_invitations.html?rules=GO</action><label language="de">go-spiele</label><label>go games</label></item>
+			<menu>
+				<item><action>/game/list/open_game_invitations.html?rules=GO</action><label language="de">offene einladungen</label><label>open invitations</label></item>
+				<item><action>/game/list/joined_games.html?rules=GO</action><label language="de">deine spiele</label><label>your games</label><role>user</role></item>
+				<item><action>/game/forming/create_game.html?rules=GO_CAPTURE</action><label language="de">neues spiel</label><label>create game</label><role>user</role></item>
+			</menu>
+
+			<item><action>/game/list/open_game_invitations.html?rules=DRAGONCHESS</action><label>dragonchess</label></item>
+			<menu>
+				<item><action>/game/list/open_game_invitations.html?rules=DRAGONCHESS</action><label language="de">offene einladungen</label><label>open invitations</label></item>
+				<item><action>/game/list/joined_games.html?rules=DRAGONCHESS</action><label language="de">deine spiele</label><label>your games</label><role>user</role></item>
+				<item><action>/game/forming/create_game.html?rules=DRAGONCHESS</action><label language="de">neues spiel</label><label>create game</label><role>user</role></item>
+			</menu>
+
+			<item><action>/game/search.html</action><label language="de">spiele</label><label>games</label><role>user</role></item>
+			<menu>
+				<item><action>/game/search.html</action><label language="de">suche</label><label>search</label><role>user</role></item>
+				<item><action>/game/list/watched_games.html</action><label language="de">beobachtete spiele</label><label>watched games</label><role>user</role></item>
+				<item><action>/game/subject_game_statistics.html</action><label language="de">spiel-statistik</label><label>game statistics</label><role>user</role></item>
+			</menu>
+
+			<item><action>/game/list/open_game_invitations.html?rules=gamegroup</action><label language="de">turniere</label><label>tournaments</label></item>
+			<menu>
+				<item><action>/game/list/open_game_invitations.html?rules=gamegroup</action><label language="de">offene einladungen</label><label>open invitations</label></item>
+				<item><action>/game/list/joined_games.html?rules=gamegroup</action><label language="de">deine turniere</label><label>your tournaments</label><role>user</role></item>
+				<item><action>/game/list/running_gamegroups.html</action><label language="de">laufende turniere</label><label>running tnmts</label><role>user</role></item>
+				<item><action>/game/forming/create_tournament.html</action><label language="de">neues turnier</label><label>create tournament</label><role>game_admin</role></item>
+				<item><action>/game/forming/create_mini_tournament.html</action><label language="de">neues mini-turnier</label><label>create mini tnmt</label><role>user</role></item>
+				<item><action>/game/list/owned_gamegroups.html</action><label language="de">eigene turniere</label><label>own tournaments</label><role>user</role></item>
+			</menu>
+
+			<item>
+				<action language="de">/forum/node.html?tag=allgemein</action>
+				<action>/forum/node.html?tag=general</action>
+				<label>forum</label>
+			</item>
+			<menu>
+				<item><action>/forum/node.html?tag=allgemein</action><label>allgemein (de)</label></item>
+				<item><action>/forum/node.html?tag=general</action><label>general (en)</label></item>
+				<item><action>/forum/node.html?tag=chess</action><label>fragen zu schach</label></item>
+				<item><action>/forum/node.html?tag=dame</action><label>fragen zu dame</label></item>
+				<item><action>/forum/node.html?tag=beta</action><label>betaforum</label><role>betatester</role></item>
+				<item><action>/forum/create_forum.html</action><label>create forum</label><role>admin</role></item>
+			</menu>
+
+			<item><action>/misc/links.html</action><label language="de">regeln</label><label>rules</label></item>
+			<menu>
+				<item><action>/game/demo_game.html?rules=CHESS</action><label language="de">demospiel</label><label>demo game</label></item>
+				<item>
+					<action language="de">http://de.wikipedia.org/wiki/Schach#Spielregeln_und_Begriffe</action>
+					<action>http://en.wikipedia.org/wiki/Rules_of_chess</action>
+					<label language="de">schach</label><label>chess</label>
+				</item>
+				<item>
+					<action language="de">http://de.wikipedia.org/wiki/R%C3%A4uberschach</action>
+					<action>http://en.wikipedia.org/wiki/Antichess</action>
+					<label language="de">räuberschach</label><label>suicide chess</label>
+				</item>
+				<item>
+					<action language="de">http://de.wikipedia.org/wiki/Fischer_Random_Chess</action>
+					<action>http://en.wikipedia.org/wiki/Chess960</action>
+					<label>chess960</label>
+				</item>
+				<item>
+					<action>http://www.chessvariants.com/diffobjective.dir/anti-king-chess.html</action>
+					<label>anti-king chess</label>
+				</item>
+				<item>
+					<action>http://www.chessvariants.org/3d.dir/dragonchess.html</action>
+					<label>dragonchess rules</label>
+				</item>
+				<item>
+					<action>http://en.wikipedia.org/wiki/International_draughts</action>
+					<label language="de">intl. dame</label><label>intl. checkers</label>
+				</item>
+			</menu>
+
+			<item><action>/misc/links.html</action><label language="de">diverses</label><label>miscellaneous</label></item>
+			<menu>
+				<item><action>/misc/faq.html</action><label>faq</label></item>
+				<item><action>/mail/send_mail.html?recipient=goonie</action><label>feedback</label><role>user</role></item>
+				<item><action>/user/terms/terms.html</action><label language="de">agb</label><label>terms</label></item>
+				<item><action>/misc/impressum.html</action><label>impressum</label></item>
+			</menu>
+
+		</menu>
+
+	</navigation>
+
+</jsp:root>

@@ -1,0 +1,91 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:user="urn:jsptagdir:/WEB-INF/tags/user"
+>
+	<c:url var="img_path" value="/user/img"/>
+
+	<fmt:bundle basename="user_list" prefix="users_list.">
+
+		<tr>
+			<c:forTokens var="column" items="${param.columns}" delims=",">
+				<c:choose>
+					<c:when test="${column == 'last_accessed_at'}">
+						<th class="num">
+							<fmt:message key="${column}"/>
+						</th>
+					</c:when>
+					<c:otherwise>
+						<th>
+							<fmt:message key="${column}"/>
+						</th>
+					</c:otherwise>
+				</c:choose>
+			</c:forTokens>
+		</tr>
+
+		<c:forEach var="user" varStatus="status" items="${users}">
+
+			<tr class="${row_classes[status.index % fn:length(row_classes)]}">
+
+				<c:forTokens var="column" items="${param.columns}" delims=",">
+					<c:choose>
+						<c:when test="${column == 'image'}">
+							<td>
+								<user:image name="${user.name}" />
+							</td>
+						</c:when>
+						<c:when test="${column == 'name'}">
+							<td>
+								<user:username name="${user.name}" />
+								<c:choose>
+									<c:when test="${roles[status.index] == 'SPONSOR'}">&#160;<img src="${img_path}/crown.png"/></c:when>
+									<c:when test="${roles[status.index] == 'USER'}">&#160;<img src="${img_path}/face.png"/></c:when>
+								</c:choose>
+								<c:if test="${is_new[status.index]}">&#160;<img src="${img_path}/star.png"/></c:if>
+								<br />
+								<user:title title="${user.title}" />
+							</td>
+						</c:when>
+						<c:when test="${column == 'gender'}">
+							<td>
+								<c:if test="${!empty user.gender}">
+									<img src="${img_path}/${fn:toLowerCase(user.gender)}.gif"/>
+								</c:if>
+							</td>
+						</c:when>
+						<c:when test="${column == 'age'}">
+							<td>
+								${ages[status.index]}
+							</td>
+						</c:when>
+						<c:when test="${column == 'location'}">
+							<td>
+								<c:out value="${locations[status.index]}" escapeXml="true"/>
+							</td>
+						</c:when>
+						<c:when test="${column == 'languages'}">
+							<td>
+								<c:out value="${fn:join(fn:split(user.languages,','),', ')}" escapeXml="true"/>
+							</td>
+						</c:when>
+						<c:when test="${column == 'last_activity'}">
+							<td>
+								<c:if test="${!empty last_activities[user.name]}"><fmt:message key="activity.${last_activities[user.name]}"/>,
+								</c:if>
+								<fmt:message key="last_activity.ago">
+									<fmt:param value="${last_activity_at[status.index]}" />
+								</fmt:message>
+							</td>
+						</c:when>
+					</c:choose>
+				</c:forTokens>
+			</tr>
+
+		</c:forEach>
+
+	</fmt:bundle>
+
+</jsp:root>

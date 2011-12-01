@@ -1,0 +1,37 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+>
+	<fmt:bundle basename="game" prefix="notation.">
+	
+		<c:set var="page_content" scope="request">
+		
+			<h3><fmt:message key="header"><fmt:param value="${game.id}"/></fmt:message></h3>
+		
+			<p class="pgn">
+				[Event "${empty game.parentGame ? 'Game' : 'Tournament'} ${empty game.parentGame ? game.id : game.parentGame.id} @ 3moves.net"]<br/>
+				[Site "<fmt:message key="site"><fmt:param value="${game.id}"/></fmt:message>"]<br/>
+				[Date "<fmt:formatDate pattern="yyyy.MM.dd" value="${game.startedAt}"/>"]<br/>
+				[Time "<fmt:formatDate pattern="HH:mm:ss" value="${game.startedAt}"/>"]<br/>
+				[Round "${game.id}"]<br/>
+				[White "${game.players[0].subject.name}"]<br/>
+				[Black "${game.players[1].subject.name}"]<br/>
+				[Result "${result}"]<br/>
+			</p>
+			
+			<p class="pgn">
+				${notation_array}
+			</p>
+			
+			<p>
+				<a class="action" href="view_game.html?id=${game.id}"><fmt:message key="action_back"/></a>
+			</p>
+		
+		</c:set>
+		
+	</fmt:bundle>
+	
+	<c:import url="/layout/standard.dof"/>
+	
+</jsp:root>

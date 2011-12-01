@@ -1,0 +1,185 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:form="http://www.springframework.org/tags/form"
+	xmlns:spring="http://www.springframework.org/tags"
+>
+	<c:set var="page_content" scope="request">
+	
+		<fmt:bundle basename="user_profile" prefix="set_profile.">
+		
+			<h3><fmt:message key="header"/></h3>
+			
+			<fmt:message key="disclaimer"/>
+	
+			<form:form method="post" cssClass="set_profile" action="?" enctype="multipart/form-data">
+	
+				<table cellspacing="0">
+					
+					<tr>
+						<th/>
+						<th/>
+						<th><fmt:message key="permission"/></th>
+					</tr>
+
+					<tr>
+						<th>
+							<label for="fullName"><fmt:message key="full_name" /></label>
+						</th>
+						<td>
+							<form:input path="fullName" size="32" maxlength="64" />
+						</td>
+						<td>
+							<form:select path="fullNamePermission">
+								<c:forEach var="permission" items="${permissions}">
+									<form:option value="${permission}">
+										<fmt:message key="permission.${displayValue}"/>
+									</form:option>
+								</c:forEach>
+							</form:select>
+						</td>
+					</tr>
+
+					<tr>
+						<th>
+							<label for="gender"><fmt:message key="gender" /></label>
+						</th>
+						<td>
+							<c:forEach var="gender" items="${genders}">
+								<div>
+									<form:radiobutton path="gender" value="${gender}"/><fmt:message key="gender.${gender}"/>
+								</div>
+							</c:forEach>
+						</td>
+						<td><fmt:message key="permission.USER"/></td>
+					</tr>				
+
+					<tr>
+						<th>
+							<label for="birthday"><fmt:message key="birthday" /></label>
+						</th>
+						<td>
+							<form:input path="birthday" size="16" maxlength="16"/>
+							<spring:bind path="command.birthday">
+								<c:if test="${status.error}">
+									<div class="error"><fmt:message key="error.birthday.${status.errorCode}"/></div>
+								</c:if>
+							</spring:bind>
+							<!--&#160;<fmt:message key="birthday_hint"/>-->
+						</td>
+						<td>
+							<form:select path="agePermission">
+								<c:forEach var="permission" items="${permissions}">
+									<form:option value="${permission}">
+										<fmt:message key="permission.${displayValue}"/>
+									</form:option>
+								</c:forEach>
+							</form:select>
+						</td>
+					</tr>
+
+					<tr>
+						<th>
+							<label for="country"><fmt:message key="country" /></label>
+						</th>
+						<td>
+							<form:input path="country" size="32" maxlength="16" />
+						</td>
+						<td>
+							<form:select path="countryPermission">
+								<c:forEach var="permission" items="${permissions}">
+									<form:option value="${permission}">
+										<fmt:message key="permission.${displayValue}"/>
+									</form:option>
+								</c:forEach>
+							</form:select>
+						</td>
+					</tr>
+
+					<tr>
+						<th>
+							<label for="city"><fmt:message key="city"/></label>
+						</th>
+						<td>
+							<form:input path="city" size="32" maxlength="16" />
+						</td>
+						<td>
+							<form:select path="cityPermission">
+								<c:forEach var="permission" items="${permissions}">
+									<form:option value="${permission}">
+										<fmt:message key="permission.${displayValue}"/>
+									</form:option>
+								</c:forEach>
+							</form:select>
+						</td>
+					</tr>				
+
+					<tr>
+						<th>
+							<label for="occupation"><fmt:message key="occupation" /></label>
+						</th>
+						<td>
+							<form:input path="occupation" size="32" maxlength="64"/>
+						</td>
+						<td>
+							<form:select path="occupationPermission">
+								<c:forEach var="permission" items="${permissions}">
+									<form:option value="${permission}">
+										<fmt:message key="permission.${displayValue}"/>
+									</form:option>
+								</c:forEach>
+							</form:select>
+						</td>
+					</tr>				
+
+					<tr>
+						<th>
+							<label for="languages"><fmt:message key="languages" /></label>
+						</th>
+						<td>
+							<c:forEach var="language" items="${standard_languages}">
+								<div>
+									<form:checkbox path="languages" value="${language}"/>
+									<fmt:message key="languages.${language}"/>
+								</div>
+							</c:forEach>
+							<fmt:message key="languages_other"/>:
+							<form:input path="otherLanguages" size="16" maxlength="16"/>
+						</td>
+						<td>
+							<fmt:message key="permission.USER" />
+						</td>
+					</tr>				
+
+					<tr>
+						<th>
+							<label for="description"><fmt:message key="description" /></label>
+						</th>
+						<td>
+							<form:textarea path="description" cols="40" rows="10" />
+						</td>
+						<td>
+							<fmt:message key="permission.USER" />
+						</td>
+					</tr>
+
+					<tr>
+						<td />
+						<td>
+							<fmt:message var="label_submit" key="submit"/>
+							<input type="submit" value="${label_submit}"/>
+						</td>
+					</tr>
+				
+				</table>
+				
+			</form:form>
+	
+		</fmt:bundle>
+	
+	</c:set>
+	
+	<c:import url="/layout/standard.dof"/>
+
+</jsp:root>

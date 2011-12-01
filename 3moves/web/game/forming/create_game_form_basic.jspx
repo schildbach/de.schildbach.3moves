@@ -1,0 +1,112 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:form="http://www.springframework.org/tags/form"
+>
+	<c:set var="page_content" scope="request">
+
+		<fmt:bundle basename="game_forming" prefix="create_game.">
+		
+			<fmt:message var="label_submit" key="submit_game"/>
+			<fmt:message var="label_continue_to_advanced" key="continue_to_advanced"/>
+
+			<h3>
+				<fmt:message key="header_game_basic"/>
+			</h3>
+
+			<form:form cssClass="border" action="?" method="post" enctype="multipart/form-data">
+			
+				<c:if test="${!empty invite_user}">
+					<p>
+						<label>
+							<fmt:message key="invite_user"/>:
+						</label>
+						${invite_user}
+					</p>
+				</c:if>
+
+				<p>
+					<label for="remote.rules">
+						<fmt:message key="rules" />:
+					</label>
+
+					<form:select path="remote.rules">
+						<fmt:bundle basename="game" prefix="game_tag.">
+							<c:forEach var="rules_option" items="${rules_options}">
+								<form:option value="${rules_option}">
+									<fmt:message key="${displayValue}"/>
+								</form:option>
+							</c:forEach>
+						</fmt:bundle>
+					</form:select>
+				</p>
+				
+				<p>
+					<label for="remote.aid">
+						<fmt:message key="aid" />:
+					</label>
+
+					<c:forEach var="type" items="${aids}">
+						<div>
+							<form:radiobutton path="remote.aid" value="${type}"/>
+							<fmt:message key="aid.${type}"/>
+						</div>
+					</c:forEach>
+				</p>
+
+				<p>
+					<label for="remote.invitationType">
+						<fmt:message key="invitation_type" />:
+					</label>
+
+					<c:forEach var="type" items="${invitation_types}">
+						<div>
+							<form:radiobutton path="remote.invitationType" value="${type}"/>
+							<fmt:message key="invitation_type.${type}"/>
+						</div>
+					</c:forEach>
+				</p>
+				
+				<p>
+					<label for="remote.orderType">
+						<fmt:message key="order_type" />:
+					</label>
+					
+					<c:forEach var="type" items="${order_types}">
+						<div>
+							<form:radiobutton path="remote.orderType" value="${type}"/>
+							<fmt:message key="order_type.${type}"/>
+						</div>
+					</c:forEach>
+				</p>
+
+				<p>
+					<label for="remote.clockConstraint">
+						<fmt:message key="clock_constraint"/>:
+					</label>
+
+					<form:select path="remote.clockConstraint">
+						<c:forEach var="clock_constraint" items="${clock_constraints}">
+							<form:option value="${clock_constraint}">
+								<fmt:message key="clock_constraint.${displayValue}"/>
+							</form:option>
+						</c:forEach>
+					</form:select>
+				</p>
+
+				<p>
+					<input type="submit" name="_finish" value="&gt;&gt; ${label_submit}"/>
+					&#160;
+					<input type="submit" name="_target1" value="&gt;&gt; ${label_continue_to_advanced}"/>
+				</p>
+
+			</form:form>
+
+		</fmt:bundle>
+
+	</c:set>
+
+	<c:import url="/layout/standard.dof"/>
+	
+</jsp:root>

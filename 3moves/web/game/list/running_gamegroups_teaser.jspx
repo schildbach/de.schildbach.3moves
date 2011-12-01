@@ -1,0 +1,26 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+>
+	<c:url var="link_more" value="/game/list/running_gamegroups.html"/>
+
+	<fmt:bundle basename="game_list" prefix="game_teaser.">
+
+		<table cellspacing="0" class="box blue list small">
+			<tr>
+				<th colspan="2">
+					<div style="position: relative">
+						<fmt:message key="header_running_gamegroups"/>
+						<a class="action" style="position: absolute; right: 0px; font-weight: normal;" href="${link_more}">
+							<fmt:message key="more"/>
+						</a>
+					</div>
+				</th>
+			</tr>
+			<c:import url="/game/list/games_list.dof?columns=rules-clock-rating-action,players&amp;row_class=light_dark&amp;header=false"/>
+		</table>
+	
+	</fmt:bundle>
+
+</jsp:root>

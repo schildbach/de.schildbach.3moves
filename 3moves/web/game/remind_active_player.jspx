@@ -1,0 +1,58 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+>
+	<c:url var="link_game" value="/game/view_game.html"/>
+
+	<c:set var="page_content" scope="request">
+	
+		<fmt:bundle basename="game" prefix="remind_active_player.">
+
+			<fmt:message var="label_submit" key="submit"/>
+
+			<h3>
+				<fmt:message key="header"/>
+			</h3>
+		
+			<form action="remind_active_player.html" method="post" enctype="multipart/form-data" accept-charset="UTF-8">
+
+				<p>
+					<fmt:message key="personal_message"/>
+				</p>
+
+				<div><!--style="background-color:#ddd;"-->
+					<textarea rows="6" cols="70" name="text">Hallo...</textarea>
+<!--<pre>
+<fmt:message key="mail_text_remind_active_player">
+	<fmt:param value="${game.id}"/>
+	<fmt:param value="${game.lastActiveAt}"/>
+	<fmt:param>
+		<fmt:message key="link_view_match">
+			<fmt:param value="${game.id}"/>
+		</fmt:message>
+	</fmt:param>
+	<fmt:param value="${game.activePlayer.subject.name}"/>
+	<fmt:param value="3moves.net Gamemaster"/>
+</fmt:message></pre>
+					<p style="font-style:italic;"><fmt:message key="message_will_be_translated"/></p>-->
+				</div>
+
+				<p>
+					<input type="hidden" name="game_id" value="${game_id}"/>
+					<input type="submit" value="${label_submit}"/>
+				</p>
+
+			</form>
+			
+			<p>
+				<a class="action" href="${link_game}?id=${game_id}"><fmt:message key="back"/></a>
+			</p>
+
+		</fmt:bundle>
+
+	</c:set>
+	
+	<c:import url="/layout/standard.dof"/>
+
+</jsp:root>

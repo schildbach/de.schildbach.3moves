@@ -1,0 +1,87 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:spring="http://www.springframework.org/tags"
+>
+	<c:set var="page_content" scope="request">
+	
+		<fmt:bundle basename="game_forming" prefix="invite_user.">
+		
+			<fmt:message var="label_submit_known" key="by_username_submit"/>
+			<fmt:message var="label_submit_unknown" key="by_email_submit"/>
+		
+			<h3><fmt:message key="header"/></h3>
+			<h4><fmt:message key="by_username"/></h4>
+			<p><fmt:message key="by_username_message"/></p> 
+
+			<spring:bind path="command.username">
+				<form action="?" method="post" enctype="multipart/form-data" accept-charset="UTF-8">
+					<input type="text" name="${status.expression}" value="${status.value}" size="20" maxlength="16"/>
+					<input type="submit" name="submit_known" value="&gt;&gt; ${label_submit_known}"/>
+				</form>
+				<c:if test="${status.error}">
+					<span class="error"><fmt:message key="error.${status.errorCode}"/></span>
+				</c:if>
+			</spring:bind>
+
+			<h4><fmt:message key="by_email"/></h4>
+			<p><fmt:message key="by_email_message"/></p>
+
+			<form action="?" method="post" enctype="multipart/form-data" accept-charset="UTF-8">
+				<table cellspacing="0">
+					<tr>
+						<spring:bind path="command.fromName">
+							<td><fmt:message key="email_yourname"/></td>
+							<td><input type="text" name="${status.expression}" value="${status.value}" size="60" maxlength="64"/></td>
+							<c:if test="${status.error}">
+								<td class="error"><fmt:message key="error.${status.errorCode}"/></td>
+							</c:if>
+						</spring:bind>
+					</tr>
+					<tr>
+						<spring:bind path="command.fromAddr">
+							<td><fmt:message key="email_youraddr"/></td>
+							<td><input type="text" name="${status.expression}" value="${status.value}" size="60" maxlength="64"/></td>
+							<c:if test="${status.error}">
+								<td class="error"><fmt:message key="error.${status.errorCode}"/></td>
+							</c:if>
+						</spring:bind>
+					</tr>
+					<tr>
+						<spring:bind path="command.toAddr">
+							<td><fmt:message key="email_rcptaddr"/></td>
+							<td><input type="text" name="${status.expression}" value="${status.value}" size="60" maxlength="64"/></td>
+							<c:if test="${status.error}">
+								<td class="error"><fmt:message key="error.${status.errorCode}"/></td>
+							</c:if>
+						</spring:bind>
+					</tr>
+					<tr>
+						<spring:bind path="command.subject">
+							<td><fmt:message key="email_subject"/></td>
+							<td><input type="text" name="${status.expression}" value="${status.value}" size="60" maxlength="64"/></td>
+							<c:if test="${status.error}">
+								<td class="error"><fmt:message key="error.${status.errorCode}"/></td>
+							</c:if>
+						</spring:bind>
+					</tr>
+				</table>
+				<fmt:message key="email_personalmessage"/><br/>
+				<div style="background-color:#ddd;">
+					<spring:bind path="command.text">
+						<textarea rows="6" cols="70" name="${status.expression}">${status.value}</textarea>
+					</spring:bind>
+					<pre>${static_text}</pre>
+				</div>
+				<input type="submit" name="submit_unknown" value="&gt;&gt; ${label_submit_unknown}"/>
+			</form>
+			<em><fmt:message key="disclaimer"/></em>
+		
+		</fmt:bundle>
+	
+	</c:set>
+	
+	<c:import url="/layout/standard.dof"/>
+
+</jsp:root>

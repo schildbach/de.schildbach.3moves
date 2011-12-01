@@ -1,0 +1,85 @@
+/* common to chess and dragonchess */
+
+table.chessboard, table.dragonchess_board {
+	font-family: Verdana, Arial, Geneva, sans-serif;
+	font-size: 12px;
+	border-spacing: 0px;
+	border-collapse: separate;
+}
+
+/* special styles for chess or dragonchess */
+
+table.chessboard					{ table-layout: fixed; margin: 0px; border: 1px solid #eee;
+									-moz-border-radius: 8px; -webkiz-border-radius: 8px; }
+table.chessboard td					{ padding: 0px; margin: 0px; text-align: center; vertical-align: middle; }
+table.chessboard img				{ display: block; behavior: url(/layout/iepngfix.htc); }
+
+table.chessboard.tiny tr			{ height: 18px; }
+table.chessboard.tiny td			{ width: 18px; }
+table.chessboard.tiny img			{ width: 18px; height: 18px; }
+
+table.chessboard.small tr			{ height: 23px; }
+table.chessboard.small td			{ width: 23px; }
+table.chessboard.small img			{ width: 23px; height: 23px; }
+
+table.chessboard.large tr			{ height: 46px; }
+table.chessboard.large td			{ width: 46px; }
+table.chessboard.large img			{ width: 46px; height: 46px; }
+
+table.chessboard tr.label, table.chessboard tr.label td
+									{ height: 16px; }
+table.chessboard td.label			{ width: 16px; }
+
+table.chessboard td.dark, table.dragonchess_board td.dark
+									{ background-color: #bfbfbf; border: 1px solid #bfbfbf; }
+table.chessboard td.light, table.dragonchess_board td.light
+									{ background-color: #cfcfcf; border: 1px solid #cfcfcf; }
+table.chessboard td.dark_highlighted, table.dragonchess_board td.dark_highlighted
+									{ background-color: #bfd8bf; border: 1px solid #bfd8bf; }
+table.chessboard td.light_highlighted, table.dragonchess_board td.light_highlighted
+									{ background-color: #cfe8cf; border: 1px solid #cfe8cf; }
+table.chessboard td.cursor, table.dragonchess_board td.cursor
+									{ border: 1px dashed black; }
+
+table.captured_pieces 				{ table-layout: fixed; empty-cells: show; text-align: center; vertical-align: middle; }
+table.captured_pieces td			{ padding: 0px; margin: 0px; }
+table.captured_pieces img			{ display: block; }
+
+table.captured_pieces.small tr		{ height: 16px; }
+table.captured_pieces.small td		{ width: 16px; }
+table.captured_pieces.small img		{ height: 16px; width: 16px; }
+
+table.captured_pieces.large tr		{ height: 23px; }
+table.captured_pieces.large td		{ width: 23px; }
+table.captured_pieces.large img		{ height: 23px; width: 23px; }
+
+table.dragonchess_board				{ table-layout: fixed; margin: 0px; border: 1px solid #eee;
+									-moz-border-radius: 8px; -webkit-border-radius: 8px; }
+table.dragonchess_board tr			{ height: 20px; }
+table.dragonchess_board td			{ width: 20px; padding: 0px; margin: 0px; text-align: center; vertical-align: middle; }
+table.dragonchess_board img			{ display: block; width: 20px; height: 20px; }
+
+table.dragonchess_board tr.label, table.dragonchess_board tr.label td
+									{ height: 16px; }
+table.dragonchess_board td.label	{ width: 16px; }
+
+table.dragonchess_board *.gold, table.dragonchess_board *.gold a:link, table.dragonchess_board *.gold a:visited
+									{ color:#60a000; font-weight:bold; }
+table.dragonchess_board *.scarlet, table.dragonchess_board *.scarlet a:link, table.dragonchess_board *.scarlet a:visited
+									{ color:#c04040; font-weight:bold; }
+
+/* player bar */
+
+*.player_bar {
+	width: 100%;
+	padding: 0px;
+	background-color: #bbb;
+	font-weight:bold;
+	border: 1px solid #a8a8a8;
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+}
+*.player_bar { margin: 6px 0px; }
+*.player_bar td { padding: 0px 2px; margin: 0px; font-size: 11px; }
+*.player_bar.white, *.player_bar.white a { color: white; }
+*.player_bar.black, *.player_bar.black a { color: black; }

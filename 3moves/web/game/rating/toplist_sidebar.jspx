@@ -1,0 +1,39 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:user="urn:jsptagdir:/WEB-INF/tags/user"
+>
+	<c:url var="link_more" value="/game/rating/rating_lists.html"/>
+
+	<fmt:bundle basename="game_rating" prefix="toplist_sidebar.">
+
+		<div class="sidebar elo_toplist">
+
+			<table cellspacing="0">
+
+				<tr>
+					<th colspan="2"><fmt:message key="rating.${rating}"/></th>
+				</tr>
+
+				<c:forEach var="subject_rating" items="${subject_ratings}" end="4">
+					<tr>
+						<td class="user">
+							<user:username name="${subject_rating.subject.name}" ignorerelation="true" />
+						</td>
+						<td class="elo">${subject_rating.value}</td>
+					</tr>
+				</c:forEach>
+
+				<tr>
+					<td colspan="2" style="text-align:right;">
+						<a class="action" href="${link_more}"><fmt:message key="action_more"/></a>
+					</td>
+				</tr>
+
+			</table>
+		</div>
+
+	</fmt:bundle>
+
+</jsp:root>

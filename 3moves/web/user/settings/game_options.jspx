@@ -1,0 +1,43 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:form="http://www.springframework.org/tags/form"
+>
+	<c:set var="page_content" scope="request">
+	
+		<fmt:bundle basename="user_settings" prefix="game_options.">
+
+			<fmt:message var="label_submit" key="submit"/>
+		
+			<h3><fmt:message key="header"/></h3>
+
+			<c:import url="settings_navigation.jspx"/>
+
+			<form:form cssClass="border" method="post" action="?">
+
+				<p>				
+					<form:checkbox path="autoMove" />
+
+					<label for="autoMove">
+						<fmt:message key="auto_move"/>
+					</label>
+				</p>
+
+				<p>
+					<fmt:message key="auto_move_explain"/>
+				</p>
+
+				<p>
+					<input type="submit" value="${label_submit}"/>
+				</p>
+
+			</form:form>
+	
+		</fmt:bundle>
+		
+	</c:set>
+	
+	<c:import url="/layout/standard.dof"/>
+
+</jsp:root>

@@ -1,0 +1,74 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+>
+	<c:url var="link_submit" value="/user/registration/register_user.html"/>
+	<c:url var="server_message_path" value="/user/registration/check_name.html?name="/>
+
+	<fmt:bundle basename="user_registration" prefix="registration.">
+
+		<fmt:message var="label_submit" key="registration_submit"/>
+
+		<form action="${link_submit}" method="post" enctype="multipart/form-data" accept-charset="UTF-8">
+
+			<table cellspacing="0" class="box yellow" style="width:auto">
+				<tr>
+					<th colspan="3" style="text-align:center;"><fmt:message key="registration_header"/></th>
+				</tr>
+				<tr><td class="spacer"/></tr>
+				<tr>
+					<td class="highlight">
+						<fmt:message key="registration_name"/>
+					</td>
+					<td>
+						<input type="text" id="name" name="name" size="16" maxlength="12" onchange="javascript:serverMessage('${server_message_path}', 'name', 'name_status');"/>
+					</td>
+					<td id="name_status" class="error"/>
+				</tr>
+				<tr><td class="spacer"/></tr>
+				<tr>
+					<td class="highlight">
+						<fmt:message key="registration_password"/>
+					</td>
+					<td><input type="password" name="passwords[0]" size="16" maxlength="16"/></td>
+				</tr>
+				<tr><td class="spacer"/></tr>
+				<tr>
+					<td class="highlight">
+						<fmt:message key="registration_password_repeat"/>
+					</td>
+					<td><input type="password" name="passwords[1]" size="16" maxlength="16"/></td>
+				</tr>
+				<c:if test="${show_gender}">
+					<tr><td class="spacer"/></tr>
+					<tr>
+						<td class="highlight">
+							<fmt:message key="registration_gender"/>
+						</td>
+						<td>
+							<div><input type="radio" name="gender" value="MALE"/><fmt:message key="registration_gender_male"/></div>
+							<div><input type="radio" name="gender" value="FEMALE"/><fmt:message key="registration_gender_female"/></div>
+						</td>
+					</tr>
+				</c:if>
+				<tr><td class="spacer"/></tr>
+				<tr>
+					<td />
+					<td>
+						<input id="timezone_offset" type="hidden" name="timezoneOffset"/>
+						<input type="submit" value="${label_submit}"/>
+					</td>
+				</tr>
+				<tr><td class="spacer"/></tr>
+			</table>
+
+		</form>
+
+		<script type="text/javascript">
+			document.getElementById('timezone_offset').value = new Date().getTimezoneOffset();
+		</script>
+
+	</fmt:bundle>
+
+</jsp:root>

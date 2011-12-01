@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd 
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+	">
+
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<value>de/schildbach/portal/service/user_message</value>
+				<value>de/schildbach/portal/service/game_message</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- performance monitoring -->
+
+	<aop:config>
+		<aop:advisor advice-ref="serviceInterceptor" pointcut-ref="services" />
+		<aop:advisor advice-ref="repositoryInterceptor" pointcut-ref="repositories" />
+	</aop:config>
+
+	<bean id="serviceInterceptor" class="org.springframework.aop.interceptor.JamonPerformanceMonitorInterceptor">
+		<property name="trackAllInvocations" value="true" />
+		<property name="logTargetClassInvocation" value="true" />
+		<property name="prefix" value="(service) " />
+	</bean>
+
+	<bean id="repositoryInterceptor" class="org.springframework.aop.interceptor.JamonPerformanceMonitorInterceptor">
+		<property name="trackAllInvocations" value="true" />
+		<property name="logTargetClassInvocation" value="true" />
+		<property name="prefix" value="(repository) " />
+	</bean>
+
+	<bean id="services" class="org.springframework.aop.support.annotation.AnnotationMatchingPointcut">
+		<constructor-arg value="org.springframework.stereotype.Service" />
+	</bean>
+
+	<bean id="repositories" class="org.springframework.aop.support.annotation.AnnotationMatchingPointcut">
+		<constructor-arg value="org.springframework.stereotype.Repository" />
+	</bean>
+
+	<!-- transaction configuration -->
+
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+	<!-- user service -->
+
+	<bean id="userService" class="de.schildbach.portal.service.user.UserServiceImpl">
+		<property name="userDao" ref="userDao" />
+		<property name="subjectRelationDao" ref="subjectRelationDao" />
+		<property name="imageDao" ref="imageDao" />
+		<property name="messageDao" ref="messageDao" />
+	</bean>
+
+	<!-- user authentication service -->
+
+	<bean id="userAuthenticationService" class="de.schildbach.portal.service.user.UserAuthenticationServiceImpl">
+		<property name="userDao" ref="userDao" />
+	</bean>
+
+	<!-- user event service -->
+
+	<bean id="userEventService" class="de.schildbach.portal.service.user.UserEventServiceImpl">
+		<property name="userDao" ref="userDao" />
+		<property name="messageDao" ref="messageDao" />
+	</bean>
+
+	<!-- presence service -->
+
+	<bean id="presenceService" class="de.schildbach.portal.service.user.PresenceServiceImpl" />
+
+	<!-- mail service -->
+
+	<bean id="mailService" class="de.schildbach.portal.service.mail.MailServiceImpl">
+		<property name="userDao" ref="userDao" />
+		<property name="userService" ref="userService" />
+		<property name="mailDao" ref="mailDao" />
+	</bean>
+
+	<!-- content service -->
+
+	<bean id="contentService" class="de.schildbach.portal.service.content.ContentServiceImpl">
+		<property name="userDao" ref="userDao" />
+		<property name="contentDao" ref="contentDao" />
+	</bean>
+
+	<!-- game service -->
+
+	<bean id="gameService" class="de.schildbach.portal.service.game.GameServiceImpl">
+		<property name="userDao" ref="userDao" />
+		<property name="userService" ref="userService" />
+		<property name="gameDao" ref="gameDao" />
+		<property name="subjectRatingDao" ref="subjectRatingDao" />
+		<property name="messageDao" ref="messageDao" />
+		<property name="ratingActivity" ref="ratingActivity" />
+	</bean>
+
+	<bean id="ratingActivity" class="de.schildbach.portal.service.game.RatingActivityImpl" />
+
+	<!-- game event service -->
+
+	<bean id="gameEventService" class="de.schildbach.portal.service.game.GameEventServiceImpl">
+		<property name="userDao" ref="userDao" />
+		<property name="gameDao" ref="gameDao" />
+	</bean>
+
+</beans>

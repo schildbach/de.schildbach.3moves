@@ -1,0 +1,51 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+>
+	<c:url var="resource_details" value="/img/action.gif"/>
+
+	<fmt:bundle basename="game_list" prefix="active_games_sidebar.">
+
+		<div xmlns="http://www.w3.org/1999/xhtml" class="sidebar active_games" style="display: ${show ? 'block' : 'none'}">
+			<table cellspacing="0">
+				<tr>
+					<th colspan="2"><fmt:message key="its_your_turn_in"/></th>
+				</tr>
+
+				<c:forEach var="row" items="${rows}">
+					<tr>
+						<c:choose>
+							<c:when test="${fn:length(row.opponents) == 1}">
+								<td class="user">
+									<a class="gametooltip ${relations[row.opponents[0]]}" href="${link_game}?id=${row.id}" name="${row.id}">${row.opponents[0]}</a>
+								</td>
+								<td class="game">
+									<a class="gametooltip" href="${link_game}?id=${row.id}" name="${row.id}">${row.id}</a>
+								</td>
+							</c:when>
+							<c:otherwise>
+								<td colspan="2">
+									<a class="gametooltip" href="${link_game}?id=${row.id}" name="${row.id}"><fmt:message key="game"/> ${row.id}</a>
+								</td>
+							</c:otherwise>
+						</c:choose>
+					</tr>
+				</c:forEach>
+				
+				<tr>
+					<td colspan="2" style="text-align:right">
+						<a href="${link_more}">
+							<img src="${resource_details}"/>
+							<c:if test="${has_more}">
+								<fmt:message key="more"/>
+							</c:if>
+						</a>
+					</td>
+				</tr>
+			</table>
+		</div>
+
+	</fmt:bundle>
+</jsp:root>

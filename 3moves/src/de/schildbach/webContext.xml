@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+	">
+
+	<!-- multipart resolver -->
+
+	<bean name="filterMultipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="defaultEncoding" value="UTF-8" />
+	</bean>
+
+	<!-- session scoped beans -->
+
+	<bean id="environment" class="de.schildbach.user.presentation.Environment" scope="session">
+		<aop:scoped-proxy />
+	</bean>
+
+	<bean id="authentication" class="de.schildbach.user.presentation.Authentication" scope="session">
+		<aop:scoped-proxy />
+	</bean>
+
+	<!-- servlet filters -->
+
+	<bean id="navigationFragmentCache" class="de.schildbach.layout.presentation.SidebarFragmentCachingFilter">
+		<property name="cacheManager" ref="cacheManager" />
+		<property name="cacheName" value="fragment.navigation" />
+		<property name="cacheKeyUserSensitive" value="false" />
+		<property name="cacheKeyRoleSensitive" value="true" />
+	</bean>
+
+	<bean id="friendsFragmentCache" class="de.schildbach.layout.presentation.SidebarFragmentCachingFilter">
+		<property name="cacheManager" ref="cacheManager" />
+		<property name="cacheName" value="fragment.friends" />
+	</bean>
+
+	<bean id="gameInvitationsFragmentCache" class="de.schildbach.layout.presentation.SidebarFragmentCachingFilter">
+		<property name="cacheManager" ref="cacheManager" />
+		<property name="cacheName" value="fragment.gameInvitations" />
+	</bean>
+
+	<bean id="toplistFragmentCache" class="de.schildbach.layout.presentation.SidebarFragmentCachingFilter">
+		<property name="cacheManager" ref="cacheManager" />
+		<property name="cacheName" value="fragment.toplist" />
+		<property name="cacheKeyUserSensitive" value="false" />
+	</bean>
+
+	<bean id="userTrackingFilter" class="de.schildbach.web.UserTrackingFilter">
+		<property name="encryptedCookieHelper" ref="userTrackingCookieHelper" />
+	</bean>
+
+	<bean id="environmentFilter" class="de.schildbach.user.presentation.EnvironmentFilter">
+		<property name="environment" ref="environment" />
+	</bean>
+
+	<bean id="authenticationFilter" class="de.schildbach.user.presentation.AuthenticationFilter">
+		<property name="userAuthenticationService" ref="userAuthenticationService" />
+		<property name="authenticationHelper" ref="authenticationHelper" />
+		<property name="permanentLoginCookieHelper" ref="permanentLoginCookieHelper" />
+		<property name="environment" ref="environment" />
+		<property name="authentication" ref="authentication" />
+	</bean>
+
+	<!-- validators -->
+
+	<bean id="userNameValidator" class="de.schildbach.user.presentation.UserNameValidator" />
+
+	<bean id="passwordsValidator" class="de.schildbach.user.presentation.PasswordsValidator" />
+
+	<bean id="emailValidator" class="de.schildbach.user.presentation.EmailValidator" />
+
+	<!-- openid -->
+
+	<bean id="consumerManager" class="org.openid4java.consumer.ConsumerManager" />
+
+	<!-- misc activities -->
+
+	<bean id="authenticationHelper" class="de.schildbach.user.presentation.AuthenticationHelper">
+		<property name="userService" ref="userService" />
+		<property name="presenceService" ref="presenceService" />
+		<property name="authentication" ref="authentication" />
+		<property name="loggedInSessionTimeout" value="15" />
+		<property name="loggedOutSessionTimeout" value="5" />
+	</bean>
+
+	<bean id="userSessions" class="de.schildbach.user.presentation.UserSessions">
+		<property name="userAuthenticationService" ref="userAuthenticationService" />
+		<property name="authenticationHelper" ref="authenticationHelper" />
+		<property name="authentication" ref="authentication" />
+	</bean>
+
+	<bean id="gameViewHelper" class="de.schildbach.game.presentation.GameViewHelper" />
+
+	<bean id="htmlUtils" class="de.schildbach.presentation.HtmlUtils" />
+
+	<bean id="imageOperations" class="de.schildbach.presentation.ImageOperations" />
+
+	<bean id="userTrackingCookieEncryptionAlgorithm" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="resourceRef" value="true" />
+		<property name="jndiName" value="referrer_cookie_encryption_algorithm" />
+	</bean>
+	<bean id="userTrackingCookieEncryptionKey" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="resourceRef" value="true" />
+		<property name="jndiName" value="referrer_cookie_encryption_key" />
+	</bean>
+	<bean id="userTrackingCookieHelper" class="de.schildbach.web.crypto.EncryptedCookieHelper">
+		<property name="cookieName" value="referrer" />
+		<property name="cookieComment" value="site that originally linked you to us" />
+		<property name="encryptionHelper">
+			<bean class="de.schildbach.web.crypto.EncryptionHelper">
+				<property name="algorithmName" ref="userTrackingCookieEncryptionAlgorithm" />
+				<property name="encryptionKey" ref="userTrackingCookieEncryptionKey" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="permanentLoginEncryptionAlgorithm" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="resourceRef" value="true" />
+		<property name="jndiName" value="permanent_login_encryption_algorithm" />
+		<property name="defaultObject" value="Blowfish" />
+	</bean>
+	<bean id="permanentLoginEncryptionKey" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="resourceRef" value="true" />
+		<property name="jndiName" value="permanent_login_key" />
+	</bean>
+	<bean id="permanentLoginCookieHelper" class="de.schildbach.web.crypto.EncryptedCookieHelper">
+		<property name="cookieName" value="login_cred" />
+		<property name="encryptionHelper">
+			<bean class="de.schildbach.web.crypto.EncryptionHelper">
+				<property name="algorithmName" ref="permanentLoginEncryptionAlgorithm" />
+				<property name="encryptionKey" ref="permanentLoginEncryptionKey" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="addressValidationEncryptionAlgorithm" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="resourceRef" value="true" />
+		<property name="jndiName" value="address_validation_encryption_algorithm" />
+	</bean>
+	<bean id="addressValidationEncryptionKey" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="resourceRef" value="true" />
+		<property name="jndiName" value="address_validation_encryption_key" />
+	</bean>
+	<bean id="addressValidationEncryptionHelper" class="de.schildbach.web.crypto.EncryptionHelper">
+		<property name="algorithmName" ref="addressValidationEncryptionAlgorithm" />
+		<property name="encryptionKey" ref="addressValidationEncryptionKey" />
+	</bean>
+
+	<bean id="gameInvitationEncryptionAlgorithm" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="resourceRef" value="true" />
+		<property name="jndiName" value="game_invitation_encryption_algorithm" />
+	</bean>
+	<bean id="gameInvitationEncryptionKey" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="resourceRef" value="true" />
+		<property name="jndiName" value="game_invitation_encryption_key" />
+	</bean>
+	<bean id="gameInvitationEncryptionHelper" class="de.schildbach.web.crypto.EncryptionHelper">
+		<property name="algorithmName" ref="gameInvitationEncryptionAlgorithm" />
+		<property name="encryptionKey" ref="gameInvitationEncryptionKey" />
+	</bean>
+
+	<!-- event handling -->
+
+	<bean class="de.schildbach.presentation.ApplicationContextListener">
+		<property name="gameEventService" ref="gameEventService" />
+	</bean>
+
+	<!-- exception handling -->
+
+	<bean id="exceptionResolver" class="de.schildbach.presentation.RequestOnlyExceptionResolver">
+		<property name="exceptionMappings">
+			<props>
+				<prop key="de.schildbach.portal.service.exception.NotAuthorizedException">/error/not_authorized.jspx</prop>
+				<prop key="org.springframework.web.servlet.support.SessionRequiredException">
+					error_session_timeout
+				</prop>
+				<prop key="javax.servlet.ServletException">/error/runtime_exception.jspx</prop>
+				<prop key="java.lang.RuntimeException">/error/runtime_exception.jspx</prop>
+			</props>
+		</property>
+		<property name="defaultStatusCode" value="500" />
+	</bean>
+
+	<!-- views -->
+
+	<bean class="org.springframework.web.servlet.view.BeanNameViewResolver">
+		<property name="order" value="0" />
+	</bean>
+
+	<bean name="home" class="org.springframework.web.servlet.view.RedirectView">
+		<property name="url" value="/" />
+		<property name="contextRelative" value="true" />
+	</bean>
+	<bean name="user_registration" class="org.springframework.web.servlet.view.RedirectView">
+		<property name="url" value="/user/registration/register_user.html" />
+		<property name="contextRelative" value="true" />
+	</bean>
+	<bean name="user_profile" class="org.springframework.web.servlet.view.RedirectView">
+		<property name="url" value="/user/profile/profile.html" />
+		<property name="contextRelative" value="true" />
+	</bean>
+	<bean name="user_profile_photo_upload" class="org.springframework.web.servlet.view.RedirectView">
+		<property name="url" value="/user/profile/photo_upload.html" />
+		<property name="contextRelative" value="true" />
+	</bean>
+	<bean name="user_settings" class="org.springframework.web.servlet.view.RedirectView">
+		<property name="url" value="/user/settings/settings.html" />
+		<property name="contextRelative" value="true" />
+	</bean>
+	<bean name="user_holidays" class="org.springframework.web.servlet.view.RedirectView">
+		<property name="url" value="/user/edit_user_holidays.html" />
+		<property name="contextRelative" value="true" />
+	</bean>
+	<bean name="user_terms" class="org.springframework.web.servlet.view.RedirectView">
+		<property name="url" value="/user/terms/terms.html" />
+		<property name="contextRelative" value="true" />
+	</bean>
+	<bean name="user_automatic_login" class="org.springframework.web.servlet.view.RedirectView">
+		<property name="url" value="/user/permanent_login.html" />
+		<property name="contextRelative" value="true" />
+	</bean>
+	<bean name="mail_inbox" class="org.springframework.web.servlet.view.RedirectView">
+		<property name="url" value="/mail/inbox.html" />
+		<property name="contextRelative" value="true" />
+	</bean>
+	<bean name="mail_outbox" class="org.springframework.web.servlet.view.RedirectView">
+		<property name="url" value="/mail/outbox.html" />
+		<property name="contextRelative" value="true" />
+	</bean>
+	<bean name="forum_node" class="org.springframework.web.servlet.view.RedirectView">
+		<property name="url" value="/forum/node.html" />
+		<property name="contextRelative" value="true" />
+	</bean>
+	<bean name="game" class="org.springframework.web.servlet.view.RedirectView">
+		<property name="url" value="/game/view_game.html" />
+		<property name="contextRelative" value="true" />
+	</bean>
+	<bean name="error_session_timeout" class="org.springframework.web.servlet.view.JstlView">
+		<property name="url" value="/error/session_timeout.jspx" />
+	</bean>
+
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
+	</bean>
+
+</beans>

@@ -1,0 +1,73 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:form="http://www.springframework.org/tags/form"
+>
+	<c:set var="page_content" scope="request">
+
+		<fmt:bundle basename="game_forming" prefix="create_game.">
+
+			<fmt:message var="label_continue_to_advanced" key="continue_to_advanced"/>
+
+			<h3>
+				<fmt:message key="header_tournament_basic"/>
+			</h3>
+
+			<form:form cssClass="border" action="?" method="post" enctype="multipart/form-data">
+				
+				<p>
+					<label for="remote.rules">
+						<fmt:message key="rules"/>:
+					</label>
+
+					<form:select path="remote.rules">
+						<fmt:bundle basename="game" prefix="game_tag.">
+							<c:forEach var="rules_option" items="${rules_options}">
+								<form:option value="${rules_option}">
+									<fmt:message key="${displayValue}"/>
+								</form:option>
+							</c:forEach>
+						</fmt:bundle>
+					</form:select>
+				</p>
+
+				<p>
+					<label for="remote.aid">
+						<fmt:message key="aid"/>:
+					</label>
+
+					<c:forEach var="type" items="${aids}">
+						<div>
+							<form:radiobutton path="remote.aid" value="${type}"/>
+							<fmt:message key="aid.${type}"/>
+						</div>
+					</c:forEach>
+				</p>
+
+				<p>
+					<label for="remote.invitationType">
+						<fmt:message key="invitation_type"/>:
+					</label>
+
+					<c:forEach var="type" items="${invitation_types}">
+						<div>
+							<form:radiobutton path="remote.invitationType" value="${type}"/>
+							<fmt:message key="invitation_type.${type}"/>
+						</div>
+					</c:forEach>
+				</p>
+
+				<p>
+					<input type="submit" name="_target1" value="&gt;&gt; ${label_continue_to_advanced}"/>
+				</p>
+
+			</form:form>
+
+		</fmt:bundle>
+
+	</c:set>
+
+	<c:import url="/layout/standard.dof"/>
+	
+</jsp:root>

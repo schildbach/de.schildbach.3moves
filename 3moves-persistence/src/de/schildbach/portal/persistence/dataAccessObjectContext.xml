@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+	<bean id="userDao" class="de.schildbach.portal.persistence.user.UserDaoHibernateImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="subjectRelationDao" class="de.schildbach.portal.persistence.user.SubjectRelationDaoHibernateImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="imageDao" class="de.schildbach.portal.persistence.user.ImageDaoHibernateImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="mailDao" class="de.schildbach.portal.persistence.mail.MailDaoHibernateImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="gameDao" class="de.schildbach.portal.persistence.game.GameDaoHibernateImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="subjectRatingDao" class="de.schildbach.portal.persistence.game.SubjectRatingDaoHibernateImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="contentDao" class="de.schildbach.portal.persistence.content.ContentDaoHibernateImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+</beans>

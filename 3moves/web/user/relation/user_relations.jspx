@@ -1,0 +1,185 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:user="urn:jsptagdir:/WEB-INF/tags/user"
+>
+	<c:url var="link_people" value="/people"/>
+	<c:url var="path_mail" value="/mail"/>
+
+	<c:set var="page_content" scope="request">
+
+		<fmt:bundle basename="user" prefix="user_relations.">
+
+			<fmt:message var="label_add_friend" key="action_add_friend"/>
+			<fmt:message var="label_add_banned" key="action_add_banned"/>
+
+			<c:if test="${!empty message_view_friends}">
+				<h2><fmt:message key="${message_view_friends}"/></h2>
+				<c:remove var="message_view_friends"/>
+			</c:if>
+
+			<h3>
+				<fmt:message key="header_friends"/>
+			</h3>
+
+			<c:choose>
+
+				<c:when test="${!empty friends}">
+					<table class="list" cellspacing="0">
+						<tr>
+							<th />
+							<th><fmt:message key="th_user"/></th>
+							<th><fmt:message key="th_friend_confirmed"/></th>
+							<th><fmt:message key="th_actions"/></th>
+						</tr>
+						<c:forEach var="friend" varStatus="status" items="${friends}">
+							<tr class="${status.index % 2 == 0 ? 'dark' : 'light'}">
+								<td>
+									<a href="${link_people}/${friend.targetSubject.name}/">
+										<user:image name="${friend.targetSubject.name}" />
+									</a>
+								</td>
+								<td>
+									<a href="${link_people}/${friend.targetSubject.name}/">${friend.targetSubject.name}</a>
+								</td>
+								<td><fmt:message key="confirmed_${friend.confirmed}"/></td>
+								<td>
+									<a class="action" href="remove_user_relation.html?target=${friend.targetSubject.name}"><fmt:message key="action_remove_friend"/></a>
+								</td>
+								<td>
+									<a class="action" href="add_user_relation.html?target=${friend.targetSubject.name}&amp;type=banned"><fmt:message key="action_add_banned"/></a>
+								</td>
+								<td>
+									<a class="action" href="${path_mail}/send_mail.html?recipient=${friend.targetSubject.name}"><fmt:message key="action_send_mail"/></a>
+								</td>
+							</tr>
+						</c:forEach>
+					</table>
+				</c:when>
+
+				<c:otherwise>
+					<p><fmt:message key="note_empty_friends"/></p>
+				</c:otherwise>
+	
+			</c:choose>
+
+			<p style="font-weight:bold">
+				<fmt:message key="header_add_friend"/>
+			</p>
+
+			<form action="add_user_relation.html" method="post">
+				<input type="text" name="target" size="20" maxlength="16"/>
+				<input type="hidden" name="type" value="friend"/>
+				<input type="submit" value="${label_add_friend}"/>
+			</form>
+	
+			<c:if test="${!empty fans}">
+
+				<h3>
+					<fmt:message key="header_fans"/>
+				</h3>
+
+				<table class="list" cellspacing="0">
+					<tr>
+						<th />
+						<th><fmt:message key="th_user"/></th>
+						<th><fmt:message key="th_fan_confirmed"/></th>
+						<th><fmt:message key="th_actions"/></th>
+					</tr>
+					<c:forEach var="fan" varStatus="status" items="${fans}">
+						<tr class="${status.index % 2 == 0 ? 'dark' : 'light'}">
+							<td>
+								<a href="${link_people}/${fan.sourceSubject.name}/">
+									<user:image name="${fan.sourceSubject.name}" />
+								</a>
+							</td>
+							<td>
+								<a href="${link_people}/${fan.sourceSubject.name}/">${fan.sourceSubject.name}</a>
+							</td>
+							<td><fmt:message key="confirmed_${fan.confirmed}"/></td>
+							<c:if test="${empty fan.confirmed || !fan.confirmed}">
+								<td>
+									<a class="action" href="set_friend_confirm.html?source=${fan.sourceSubject.name}&amp;confirm=true"><fmt:message key="action_confirm_positive"/></a>
+								</td>
+							</c:if>
+							<c:if test="${empty fan.confirmed || fan.confirmed}">
+								<td>
+									<a class="action" href="set_friend_confirm.html?source=${fan.sourceSubject.name}&amp;confirm=false"><fmt:message key="action_confirm_negative"/></a>
+								</td>
+							</c:if>
+							<td>
+								<a class="action" href="add_user_relation.html?target=${fan.sourceSubject.name}&amp;type=friend"><fmt:message key="action_add_friend"/></a>
+							</td>
+							<td>
+								<a class="action" href="add_user_relation.html?target=${fan.sourceSubject.name}&amp;type=banned"><fmt:message key="action_add_banned"/></a>
+							</td>
+							<td>
+								<a class="action" href="${path_mail}/send_mail.html?recipient=${fan.sourceSubject.name}"><fmt:message key="action_send_mail"/></a>
+							</td>
+						</tr>
+					</c:forEach>
+				</table>
+				
+			</c:if>
+
+			<h3>
+				<fmt:message key="header_banned"/>
+			</h3>
+
+			<c:choose>
+				<c:when test="${!empty banned}">
+
+					<table class="list" cellspacing="0">
+						<tr>
+							<th />
+							<th><fmt:message key="th_user"/></th>
+							<th><fmt:message key="th_actions"/></th>
+						</tr>
+						<c:forEach var="ban" varStatus="status" items="${banned}">
+							<tr class="${status.index % 2 == 0 ? 'dark' : 'light'}">
+								<td>
+									<a href="${link_people}/${ban.name}/">
+										<user:image name="${ban.name}" />
+									</a>
+								</td>
+								<td>
+									<a href="${link_people}/${ban.name}/">${ban.name}</a>
+								</td>
+								<td>
+									<a class="action" href="remove_user_relation.html?target=${ban.name}"><fmt:message key="action_remove_friend"/></a>
+								</td>
+								<td>
+									<a class="action" href="add_user_relation.html?target=${ban.name}&amp;type=friend"><fmt:message key="action_add_friend"/></a>
+								</td>
+								<td>
+									<a class="action" href="${path_mail}/send_mail.html?recipient=${ban.name}"><fmt:message key="action_send_mail"/></a>
+								</td>
+							</tr>
+						</c:forEach>
+					</table>
+				</c:when>
+
+				<c:otherwise>
+					<p><fmt:message key="note_empty_banned"/></p>
+				</c:otherwise>
+				
+			</c:choose>
+
+			<p style="font-weight:bold">
+				<fmt:message key="header_add_banned"/>
+			</p>
+
+			<form action="add_user_relation.html" method="post">
+				<input type="text" name="target" size="20" maxlength="16"/>
+				<input type="hidden" name="type" value="banned"/>
+				<input type="submit" value="${label_add_banned}"/>
+			</form>
+	
+		</fmt:bundle>
+	
+	</c:set>
+	
+	<c:import url="/layout/standard.dof"/>
+
+</jsp:root>

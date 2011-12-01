@@ -1,0 +1,43 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+>
+	<jsp:directive.tag import="de.schildbach.portal.persistence.user.UserTitle" />
+	<jsp:directive.tag import="de.schildbach.portal.persistence.user.UserTitleHelper" />
+
+	<jsp:directive.attribute name="title" type="de.schildbach.portal.persistence.user.UserTitle" />
+
+	<c:choose>
+		<c:when test="${empty title}">
+			<fmt:bundle basename="user" prefix="title.">
+				<fmt:message key="none" />
+			</fmt:bundle>
+		</c:when>
+		<c:otherwise>
+			<jsp:scriptlet>	
+				jspContext.setAttribute("helper",
+					new UserTitleHelper((UserTitle) jspContext.getAttribute("title"))
+				); 	
+			</jsp:scriptlet>
+			<c:choose>
+				<c:when test="${helper.userRole}">
+					<fmt:bundle basename="user" prefix="role_tag.">
+						<fmt:message key="${title.role}" />
+					</fmt:bundle>
+				</c:when>
+				<c:when test="${helper.subjectRating}">
+					${title.index+1}.
+					${title.value}
+					<fmt:bundle basename="game_rating" prefix="rating_tag.">
+						<fmt:message key="${title.rating}" />
+					</fmt:bundle>
+				</c:when>
+				<c:otherwise>
+					???
+				</c:otherwise>
+			</c:choose>
+		</c:otherwise>
+	</c:choose>
+
+</jsp:root>

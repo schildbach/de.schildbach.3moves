@@ -1,0 +1,161 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+>
+	<c:set var="return_url" scope="page">${pageContext.request.scheme}://${pageContext.request.serverName}:${pageContext.request.serverPort}${pageContext.request.contextPath}</c:set>
+
+	<c:url var="img_path" value="/user/img"/>
+
+	<c:set var="page_content" scope="request">
+	
+		<c:choose>
+
+			<c:when test="${pageContext.request.locale.language == 'de'}">
+
+				<h3>Spenden</h3>
+				
+				<p>
+					Natürlich kostet der Betrieb von 3moves.net Geld: Der Server muß gemietet,
+					Domänen-Registrierungen verlängert und Internet-Traffic muß bezahlt werden.
+					Ganz zu schweigen von den vielen Stunden Entwicklungsarbeit und Administration.
+					Im Moment zahle ich als Betreiber von 3moves.net diese Kosten aus eigener
+					Tasche, denn für Dich als Benutzer ist der Service kostenlos.
+				</p>
+
+				<p>
+					Ich bekomme immer wieder Anfragen von Benutzern die 3moves.net finanziell
+					unterstützen
+					wollen. Wenn Du Dich auch zu diesem Schritt entschließt, findest Du hier die
+					nötigen Informationen.
+					Als Dankeschön gibts für je 5 Euro Spende einen Monat lang die schicke Krone
+					(<img src="${img_path}/crown.png"/>)
+					hinter den Benutzernamen in der Online-Liste. Wenn Du also z.B. 30 Euro spendest,
+					bekommst Du die Krone ein halbes Jahr lang.
+				</p>
+				
+				
+				<p style="font-weight:bold">
+					Spende via Überweisung aufs Spendenkonto
+				</p>
+				
+				<p>
+					Dazu musst Du den gewünschten Betrag auf folgendes Konto überweisen:
+				</p>
+				
+				<table cellspacing="0" style="font-weight:bold">
+					<tr><td>Konto:</td><td>180 21 31</td></tr>
+					<tr><td>Inhaber:</td><td>Andreas Schildbach</td></tr>
+					<tr><td>Bank:</td><td>Deutsche Kreditbank</td></tr>
+					<tr><td>Bankleitzahl:</td><td>120 300 00</td></tr>
+					<tr><td style="padding-top:8px">IBAN:</td><td style="padding-top:8px">DE90 1203 0000 0001 8021 31</td></tr>
+					<tr><td>SWIFT-BIC:</td><td>BYLADEM1001</td></tr>
+				</table>
+					
+				<p>
+					WICHTIG: Damit ich die Spende Deinem Benutzernamen zuordnen kann, schreibe diesen
+					bitte in den Verwendungszweck der Überweisung (bitte achte auf die genaue Schreibweise).
+					Du kannst auch für andere Benutzer spenden (Sponsoring) - in diesem Fall einfach den
+					Benutzernamen des glücklichen Empfängers eintragen.
+				</p>
+				
+				<p style="font-weight:bold">
+					Spende via PayPal
+				</p>
+
+				<p>
+					Mit diesem Knopf kannst Du schnell und unkompliziert auch via PayPal spenden:
+				
+					<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+						<input type="hidden" name="cmd" value="_xclick"/>
+						<input type="hidden" name="business" value="andreas@schildbach.de"/>
+						<input type="hidden" name="item_name" value="3moves.net"/>
+						<input type="hidden" name="item_number" value="${user_name}"/>
+						<input type="hidden" name="no_note" value="1"/>
+						<input type="hidden" name="no_shipping" value="1"/>
+						<input type="hidden" name="currency_code" value="EUR"/>
+						<input type="hidden" name="lc" value="DE"/>
+						<input type="hidden" name="return" value="${return_url}"/>
+						<input type="hidden" name="cancel_return" value="${return_url}"/>
+						<input type="image" src="img/paypal_donate_de.gif" border="0" name="submit" alt="Spenden Sie an 3moves.net mit PayPal"/>
+					</form>
+				</p>
+
+			</c:when>
+
+			<c:otherwise>
+
+				<h3>Donations</h3>
+				
+				<p>
+					Or course, operating 3moves.net costs money: The server has to be rented,
+					domain-registrations have to be re-newed and internet traffic has to be
+					paid for. Not to speak of the many hours of software development and
+					administration. At the moment I am paying for these expenses, because for you
+					as a user this service is free of charge!
+				</p>
+
+				<p>
+					I keep being approached by users asking if and how
+					they can support 3moves.net financially. If you are thinking about
+					it, too, you will find the necessary information here.
+					As a small thankyou you will receive the fancy crown
+					(<img src="${img_path}/crown.png"/>)
+					behind your username in the online list for one month per 5 Euro of donation.
+					If you donate for example 30 Euro, the crown will be yours for half a year.
+					If you want to do without that decoration feel free to tell me by mail.
+				</p>
+				
+				<p style="font-weight:bold">
+					Donate via Money Transfer to Donations Account
+				</p>
+				
+				<table cellspacing="0" style="font-weight:bold">
+					<tr><td>Account:</td><td>180 21 31</td></tr>
+					<tr><td>Owner:</td><td>Andreas Schildbach</td></tr>
+					<tr><td>Bank:</td><td>Deutsche Kreditbank</td></tr>
+					<tr><td>(German) Bank Identification Code:</td><td>120 300 00</td></tr>
+					<tr><td style="padding-top:8px">IBAN:</td><td style="padding-top:8px">DE90 1203 0000 0001 8021 31</td></tr>
+					<tr><td>SWIFT-BIC:</td><td>BYLADEM1001</td></tr>
+				</table>
+
+				<p>
+					IMPORTANT: In order to be able to assign your donation
+					to your username, please write the latter into the "reason for payment/transfer"
+					field of the bank transfer (please mind the correct spelling). You can also
+					donate for other users (sponsorship) - in this case please just state the
+					username of the happy recipient.
+				</p>
+
+				<p style="font-weight:bold">
+					Donate via PayPal
+				</p>
+
+				<p>
+					With this button you can easily donate via PayPal:
+				
+					<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+						<input type="hidden" name="cmd" value="_xclick"/>
+						<input type="hidden" name="business" value="andreas@schildbach.de"/>
+						<input type="hidden" name="item_name" value="3moves.net"/>
+						<input type="hidden" name="item_number" value="${user_name}"/>
+						<input type="hidden" name="no_note" value="1"/>
+						<input type="hidden" name="no_shipping" value="1"/>
+						<input type="hidden" name="currency_code" value="EUR"/>
+						<input type="hidden" name="lc" value="EN"/>
+						<input type="hidden" name="return" value="${return_url}"/>
+						<input type="hidden" name="cancel_return" value="${return_url}"/>
+						<input type="image" src="img/paypal_donate_en.gif" border="0" name="submit" alt="Donate via PayPal"/>
+					</form>
+				</p>
+
+			</c:otherwise>
+
+		</c:choose>
+
+	</c:set>
+	
+	<c:import url="/layout/standard.dof"/>
+	
+</jsp:root>

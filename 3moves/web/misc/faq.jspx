@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:x="http://java.sun.com/jsp/jstl/xml"
+>
+	<c:set var="page_content" scope="request">
+
+		<h3>FAQ</h3>
+
+		<dl>
+			<dt>
+				Wie gebe ich einen Spielzug ein?
+			</dt>
+			<dd>
+				Zunächst mußt Du Dich auf der Seite des Spiels, für das Du einen Spielzug tätigen
+				willst, befinden. Es gibt unzählige
+				Links in den diversen Listen und Übersichten von 3moves.net, die Dich auf die Spiel-Seite führen
+				(z.B. die Liste "Du bist dran in"
+				in der rechten Navigationsleiste).
+				<p>
+					Ob Du überhaupt dran bist, siehst Du auf einen Blick am Text "Dein Zug:" mit dem daneben
+					blinkenden Cursor im Text-Eingabefeld. Fehlt er, so ist entweder noch Dein Spielpartner dran
+					oder das Spiel ist gar schon beendet. Außerdem zeigen die grün eingefärbten Felder alle
+					Figuren an, die Du ziehen kannst oder Felder, auf die gezogen werden kann.
+					Nebenbei: Die beiden durch eine Umrahmung markierten Felder markieren den letzten
+					Spielzug des Gegners, solange Du noch keine Eingabe gemacht hast.
+				</p>
+				<p>
+					Folgende Verfahren stehen zur Eingabe eines Zugs bereit:
+				</p>
+				<p>
+					Für Mausnutzer:<br/>
+					Klicke auf ein grünes Start- oder Zielfeld. Achte auf den Text,
+					der hinter "Dein Zug:" erscheint. Wenn das System Deinen gewünschten Zug noch nicht
+					eindeutig bestimmten konnte, erscheinen Fragezeichen (wie z.B. in "?-c3").
+					Wähle dann mit einem Klick auf eines der noch eingefärbten Felder den gewünschten Zug aus. In
+					manchen Fällen kann noch ein weiterer Klick notwendig sein, z.B. um die
+					gewünschte Figur beim Bauerntausch festzulegen.
+				</p>
+				<p>
+					Für Tastaturnutzer:<br/>
+					Der Cursor befindet sich bereits im Eingabefeld. Wenn Du die ACN-Notation beherrschst,
+					kannst Du direkt einen (englischen) ACN-Zug eingeben (Zusätze wie "+" für das in Schach setzen
+					oder "x" für einen
+					Schlagzug sollten weggelassen werden). Du kannst aber auch Züge in dem für Einsteiger
+					zugänglicheren Format "d2-d4" eingeben. Vergiß nicht noch
+					die Eingabetaste zu drücken oder mit der Maus auf den Doppelpfeil zu klicken.
+				</p>
+				<p>
+					Ausführen: Für beide Eingabeverfahren gilt, daß der Zug erst nach einem Klick auf "zug ausführen"
+					wirklich ausgeführt wird (dann aber unwiderruflich). Bis dahin können Eingaben mit
+					"zug löschen" rückgängig gemacht werden. Fehlt der Knopf "zug ausführen", dann ist
+					der Spielzug noch nicht fertig eingegeben.
+				</p>
+				<p>
+					Remis: Wer seinem Spielpartner ein Remis-Angebot machen will, klickt <i>vor</i>
+					dem "zug ausführen" noch auf "remis". Das Angebot gilt dann für den Spielzug,
+					mit dem es "mitgeschickt" wird (muss also gegebenenfalls für den nächsten Spielzug
+					wiederholt werden). Wer ein Remis-Angebot annehmen will oder in der Lage ist ein Remis
+					einzufordern (z.B. 50-Züge-Regel), klickt ebenfalls auf Remis - das Spiel wird
+					dann nach einer Sicherheitsabfrage unentschieden beendet.
+				</p>
+				<p>
+					Aufgeben: Wer das Spiel aufgeben möchte, klickt auf "aufgeben", statt einen Zug
+					einzugeben bzw. abzuschicken. Das Spiel wird dann nach einer Sicherheitsabfrage
+					beendet.
+				</p>
+				<p>
+					Rochade: Wer Rochieren will, gibt bitte den Zug des Königs ein oder benutzt die
+					ACN-Notation "O-O" bzw. "O-O-O".
+				</p>
+			</dd>
+			<dt>
+				Welches Regelwerk wird hier zum Schachspielen verwendet?
+			</dt>
+			<dd>
+				Für reguläre Schachspiele auf 3moves.net gelten grundsätzlich die
+				<a href="http://www.fide.com/official/handbook.asp?level=EE101">Laws of Chess</a>
+				der
+				<a href="http://www.fide.com">World Chess Federation (FIDE)</a>.
+				Es gelten insbesondere folgende - Neulingen nicht unbedingt bekannte - Zusätze:
+				<ul>
+					<li>Rochade (Castling)</li>
+					<li>Pawn Promotion (auch Tausch in Turm, Läufer oder Springer möglich)</li>
+					<li>Schlagen im Vorübergehen (En Passant)</li>
+					<li>50-Züge-Regel</li>
+					<li>Dreimal die gleiche Spielposition berechtigt zum Einfordern eines Remis</li>
+				</ul>
+				<p>
+					Es gibt Variationen (wie z.B. Gambit-Spiele), auf deren abweichende
+					Regeln jedoch vor Start des Spiels hingewiesen wird.
+				</p>
+				<p>
+					FIDE-Regeln, die in der Online-Welt keinen Sinn machen, fallen weg.
+					Das gilt zum Beispiel für das Berühren von Spielfiguren: Auf 3moves.net
+					können Spielfiguren beliebig angeklickt werden - einzig nach einem
+					"Zug abschicken" ist kein Weg zurück mehr möglich.
+				</p>
+			</dd>
+			<dt>
+				Welches Zeitlimit gilt?
+			</dt>
+			<dd>
+				Es gibt Spiele mit und ohne Schachuhr. Für die Uhr sind folgende
+				Konfigurationen üblich:
+				<ul>
+					<li>30 Tage pro 10 Züge</li>
+					<li>30 Tage pro 10 Züge (max. 30 Tage)</li>
+					<li>5 Tage zum Start, dann 1 Tag pro Zug</li>
+					<li>5 Tage zum Start, dann 1 Tag pro Zug (max. 16 Tage)</li>
+					<li>2 Stunden insgesamt</li>
+				</ul>
+				<p>
+					Prinzipiell akkumulieren sich alle Zeitgutschriften auf der Uhr, bis
+					zur evtl. vorhandenen Höchstgrenze.
+				</p>
+				<p>
+					Zeitüberschreitung: Geht dem aktiven Spieler die Zeit auf der Uhr aus,
+					gewinnt der andere (inaktive) Spieler das Spiel.
+				</p>
+				<p>
+					Hinweis: Es gilt - unabhängig von der Schachuhr -
+					die Disqualifikationsregel (siehe nächster Eintrag)
+				</p>
+			</dd>
+			<dt>
+				Wann kann ich disqualifiziert werden? / Wann kann ich meinen Spielpartner disqualifizieren?
+			</dt>
+			<dd>
+				Jeder Spieler ist dazu angehalten, in einem Spiel seitdem er aktiv geworden
+				ist nicht mehr
+				als 5 Tage verstreichen zu lassen bis er seinen Spielzug tätigt. Das gilt
+				auch für Spiele, auf deren Schachuhr noch mehr als 5 Tage zur Verfügung stehen.
+				<p>
+					Nach Verstreichen dieser 5-Tages-Frist gilt folgendes: Hat man eine Kontaktadresse
+					hinterlassen (z.B. E-Mail oder Instant Messenger), darf der Spielpartner eine
+					Erinnerung über das System verschicken. Die 5-Tages-Frist beginnt in diesem
+					Fall erneut zu laufen. Ist eine Erinnerung schon verschickt worden oder hat
+					das System keine Kontaktadresse des aktiven Spielers vorliegen, kann der
+					Partner den trödelnden Spieler disqualifizieren und gewinnt damit das Spiel.
+				</p>
+				<p>
+					Eine Disqualifikation erfolgt immer nur auf Bestreben eines Spielpartners.
+					3moves.net disqualifiziert nicht von sich aus. Dadurch kann bei Spielen ohne Uhr - wenn
+					beidseitiges Einverständnis vorliegt - durchaus eine längere Spielpause
+					eingelegt werden.
+				</p>
+				<p>
+					Die Spielpause kann aber maximal 3 Monate betragen. Etwa nach 2 Monaten beginnt
+					das System, Erinnerungen an die Spieler des betreffenden Spiels zu verschicken.
+				</p>
+				<p>
+					Hinweis: Spieler, die im Urlaub sind, sind von der 5-Tages-Regel ausgenommen
+					(siehe nächster Eintrag).
+				</p>
+			</dd>
+			<dt>
+				Wie kann ich Urlaub von den Spielen nehmen?
+			</dt>
+			<dd>
+				Jeder Spieler kann 21 Urlaubstage pro Jahr eintragen. Die dazu
+				benötigte Funktion ist erreichbar über den Navigations-Menüpunkt
+				"Benutzer/Urlaub".
+				<p>
+					Ist ein Spieler im Urlaub, kann er nicht gemäß der 5-Tages-Regel
+					disqualifiziert werden und auch die systemgenerierten Erinnerungsschreiben
+					an ihn sind nicht möglich.
+				</p>
+				<p>
+					Hinweis: Schachuhren laufen im Urlaub gewohnt weiter. Es ist also
+					ratsam, rechtzeitig vor einem Urlaub ein entsprechendes Zeitguthaben anzusparen
+					und keine Spiele mit Schachuhr zu beginnen.
+				</p>
+			</dd>
+			<dt>
+				Wie funktionieren die Bewertungen?
+			</dt>
+			<dd>
+				Auf 3moves.net kommt das weit verbreitete Bewertungs-System "Elo" zum Einsatz.
+				Die
+				<a href="http://en.wikipedia.org/wiki/ELO_rating_system">genauen Details</a>
+				würden den Rahmen dieser FAQ sprengen, daher hier nur das Wesentliche:
+				<p>
+					Das Elo-System basiert auf Erwartungswerten. Erwartet man, daß ein
+					Spieler A aufgrund einer niedrigeren Elo-Zahl gegen Spieler B
+					verliert und er gewinnt aber dennoch, so wird seine Elo-Zahl steigen.
+					Spieler B, der wider Erwartens gegen Spieler A verloren hat, erhält
+					einen Punktabzug. Entspricht das Spielergebnis genau den Erwartungen,
+					bleiben die Punkte so wie sie sind. Dadurch riskiert man z.B. auch
+					keinen Elo-Verlust, wenn man gegen einen haushoch überlegenen Gegner
+					verliert.
+				</p>
+				<p>
+					Um auf 3moves.net eine Elo-Wertung zu erhalten, mußt Du in einem
+					gewerteten Turnier mitspielen. Du bekommst Deine Wertung nach dem ersten
+					beendeten Einzelspiel innerhalb des Turniers.
+				</p>
+				<p>
+					Du kannst
+					pro Spiel maximal 32 Punkte gewinnen oder verlieren.
+				</p>
+				<p>
+					Damit sich die Spielstärken der Spieler in einem Spiel nicht zu stark
+					unterscheiden, kann für ein Spiel eine minimale sowie eine maximale
+					Grenze festgelegt werden in denen sich der Elo eines Spielers bewegen
+					muß damit er mitspielen kann. Solange Du noch keine Wertung hast,
+					wirst Du so behandelt als habest Du 1500 Elo.
+				</p>
+			</dd>
+		</dl>
+
+	</c:set>
+
+	<c:import url="/layout/standard.dof"/>
+
+</jsp:root>

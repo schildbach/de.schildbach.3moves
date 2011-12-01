@@ -1,0 +1,362 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>de.schildbach</groupId>
+	<artifactId>3moves</artifactId>
+	<version>1.44-SNAPSHOT</version>
+	<packaging>war</packaging>
+
+	<name>3moves</name>
+	<url>http://3moves.net</url>
+
+	<developers>
+		<developer>
+			<name>Andreas Schildbach</name>
+			<email>andreas@schildbach.de</email>
+		</developer>
+	</developers>
+
+	<scm>
+		<developerConnection>scm:svn:https://dev.schildbach.de/svn/3moves/trunk/3moves</developerConnection>
+	</scm>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>org.openid4java</groupId>
+			<artifactId>openid4java-consumer</artifactId>
+			<version>0.9.5</version>
+		</dependency>
+
+		<dependency>
+			<groupId>de.schildbach</groupId>
+			<artifactId>wurflapi</artifactId>
+			<version>0.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>de.schildbach</groupId>
+			<artifactId>3moves-service</artifactId>
+			<version>1.9-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>de.schildbach</groupId>
+			<artifactId>web-support</artifactId>
+			<version>0.3</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>1.1.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>2.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.3</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-collections</groupId>
+			<artifactId>commons-collections</artifactId>
+			<version>3.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>1.2</version>
+			<scope>runtime</scope>
+		</dependency>
+
+		<!-- workaround for missing dependency declaration of commons-fileupload/commons-fileupload -->
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>1.3.1</version>
+			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>2.5.6.SEC02</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<version>2.5.6.SEC02</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>2.5.6.SEC02</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>2.5.6.SEC02</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aop</artifactId>
+			<version>2.5.6.SEC02</version>
+		</dependency>
+
+		<dependency>
+			<groupId>aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>1.5.3</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>2.5.6.SEC02</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>2.5.6.SEC02</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>2.5.6.SEC02</version>
+		</dependency>
+
+		<dependency>
+			<groupId>aopalliance</groupId>
+			<artifactId>aopalliance</artifactId>
+			<version>1.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>jivesoftware</groupId>
+			<artifactId>smack</artifactId>
+			<version>2.0.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>jivesoftware</groupId>
+			<artifactId>smackx</artifactId>
+			<version>2.0.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>net.sf.ehcache</groupId>
+			<artifactId>ehcache</artifactId>
+			<version>1.2.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.4</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jsp-api</artifactId>
+			<version>2.0</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.1.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>taglibs</groupId>
+			<artifactId>standard</artifactId>
+			<version>1.1.2</version>
+		</dependency>
+
+		<!-- workaround for missing dependency declaration of taglibs/standard -->
+		<dependency>
+			<groupId>xalan</groupId>
+			<artifactId>xalan</artifactId>
+			<version>2.6.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.jamonapi</groupId>
+			<artifactId>jamon</artifactId>
+			<version>2.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.4</version>
+			<scope>test</scope>
+		</dependency>
+
+	</dependencies>
+	
+	<dependencyManagement>
+
+		<dependencies>
+
+			<dependency>
+				<groupId>javax.mail</groupId>
+				<artifactId>mail</artifactId>
+				<version>1.4</version>
+				<scope>provided</scope>
+			</dependency>
+
+		</dependencies>
+
+	</dependencyManagement>
+
+	<build>
+		<sourceDirectory>src</sourceDirectory>
+		<testSourceDirectory>test</testSourceDirectory>
+		<resources>
+			<resource>
+				<directory>src</directory>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</resource>
+		</resources>
+		<testResources>
+			<testResource>
+				<directory>test</directory>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</testResource>
+		</testResources>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<configuration>
+					<wtpversion>1.0</wtpversion>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>batik-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>shared</id>
+						<phase>generate-resources</phase>
+						<configuration>
+							<srcDir>web/piece</srcDir>
+							<srcIncludes>*.svg</srcIncludes>
+							<destDir>${project.build.directory}/images/piece</destDir>
+							<width>46</width>
+							<height>46</height>
+						</configuration>
+						<goals>
+							<goal>rasterize</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>chess</id>
+						<phase>generate-resources</phase>
+						<configuration>
+							<srcDir>web/piece/chess</srcDir>
+							<destDir>${project.build.directory}/images/piece/chess</destDir>
+							<width>46</width>
+							<height>46</height>
+						</configuration>
+						<goals>
+							<goal>rasterize</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>checkers</id>
+						<phase>generate-resources</phase>
+						<configuration>
+							<srcDir>web/piece/checkers</srcDir>
+							<destDir>${project.build.directory}/images/piece/checkers</destDir>
+							<width>46</width>
+							<height>46</height>
+						</configuration>
+						<goals>
+							<goal>rasterize</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>go</id>
+						<phase>generate-resources</phase>
+						<configuration>
+							<srcDir>web/piece/go</srcDir>
+							<destDir>${project.build.directory}/images/piece/go</destDir>
+							<width>46</width>
+							<height>46</height>
+						</configuration>
+						<goals>
+							<goal>rasterize</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<warSourceDirectory>web</warSourceDirectory>
+					<webResources>
+						<resource>
+							<directory>${project.build.directory}/images</directory>
+						</resource>
+					</webResources>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.cargo</groupId>
+				<artifactId>cargo-maven2-plugin</artifactId>
+				<configuration>
+					<container>
+						<containerId>tomcat5x</containerId>
+						<home>${tomcat5x.home}</home>
+						<output>target/output.txt</output>
+						<log>target/log.txt</log>
+					</container>
+					<configuration>
+						<properties>
+							<!--<cargo.jvmargs>-agentlib:jdwp=transport=dt_socket,server=y,address=localhost:8000,suspend=n</cargo.jvmargs>-->
+						</properties>
+					</configuration>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<configuration>
+					<goals>install</goals>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

@@ -1,0 +1,30 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+>
+	<c:set var="page_content" scope="request">
+
+		<fmt:bundle basename="game_rating" prefix="rating_lists.">
+
+			<h3><fmt:message key="header"/></h3>
+
+			<table cellspacing="0">
+				<c:forEach var="ratings_row" items="${ratings_table}">
+					<tr>
+						<c:forEach var="rating" items="${ratings_row}">
+							<td>
+								<c:import url="rating_list.dof?rating=${rating}"/>
+							</td>
+						</c:forEach>
+					</tr>
+				</c:forEach>
+			</table>
+
+		</fmt:bundle>
+
+	</c:set>
+
+	<c:import url="/layout/standard.dof"/>
+
+</jsp:root>

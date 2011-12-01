@@ -1,0 +1,65 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:spring="http://www.springframework.org/tags"
+>
+	<fmt:bundle basename="user_chat" prefix="private_chat.">
+	
+		<fmt:message var="label_submit" key="submit"/>
+
+		<c:set var="page_content" scope="request">
+
+			<h3>
+				<fmt:message key="header">
+					<fmt:param value="${recipient}"/>
+				</fmt:message>
+			</h3>
+
+			<c:import url="/user/profile/profile_navigation.jspx?subject=${recipient}"/>
+
+			<c:choose>
+				<c:when test="${!empty messages}">
+					<table>
+						<c:forEach var="message" items="${messages}">
+							<tr class="${message.highlighted ? 'highlighted' : ''}">
+								<td>${message.sender}:</td>
+								<td><c:out value="${message.text}"/></td>
+							</tr>
+						</c:forEach>
+					</table>
+				</c:when>
+				<c:otherwise>
+					<fmt:message key="empty"/>
+				</c:otherwise>
+			</c:choose>
+
+			<p>
+				<form method="post" action="?" enctype="multipart/form-data" accept-charset="UTF-8">
+
+					<spring:bind path="command.text">
+						<input id="chat_field" type="text" name="${status.expression}" value="${status.value}" size="64" maxlength="256"/>
+						<script type="text/javascript">
+							document.getElementById('chat_field').focus();
+							document.getElementById('chat_field').scrollIntoView(false);
+						</script>
+					</spring:bind>
+
+					<input type="submit" value="${label_submit}"/>
+
+					<spring:bind path="command">
+						<c:if test="${status.error}">
+							&#160;<span class="error"><fmt:message key="error_${status.errorCode}"/></span>
+						</c:if>
+					</spring:bind>					
+
+				</form>
+			</p>
+
+		</c:set>
+
+	</fmt:bundle>
+
+	<c:import url="/layout/standard.dof"/>
+
+</jsp:root>

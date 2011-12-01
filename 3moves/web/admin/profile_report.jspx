@@ -1,0 +1,50 @@
+<jsp:root version="2.0" xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+>
+	<c:set var="page_content" scope="request">
+
+		<table class="list tiny" cellspacing="0">
+			<tr>
+				<th><a href="?order=label">label</a></th>
+				<th class="num"><a href="?order=hits">hits</a></th>
+				<th class="num"><a href="?order=avg">avg</a></th>
+				<th class="num"><a href="?order=total">total</a></th>
+				<th class="num"><a href="?order=stdDev">stdDev</a></th>
+				<th class="num"><a href="?order=lastVal">lastVal</a></th>
+				<th class="num"><a href="?order=min">min</a></th>
+				<th class="num"><a href="?order=max">max</a></th>
+				<th class="num"><a href="?order=actv">actv</a></th>
+				<th class="num"><a href="?order=avgActv">avgActv</a></th>
+				<th class="num"><a href="?order=maxActv">maxActv</a></th>
+				<th>firstAccess</th>
+				<th>lastAccess</th>
+				<th>ena?</th>
+				<th>prim?</th>
+			</tr>
+			<c:forEach var="mon" varStatus="status" items="${monitors}">
+				<tr class="${row_classes[status.index % fn:length(row_classes)]}">
+					<td>${mon.label}</td>
+					<td class="num"><fmt:formatNumber value="${mon.hits}" pattern="0"/></td>
+					<td class="num"><fmt:formatNumber value="${mon.avg}" pattern="0.0"/></td>
+					<td class="num"><fmt:formatNumber value="${mon.total}" pattern="0"/></td>
+					<td class="num"><fmt:formatNumber value="${mon.stdDev}" pattern="0.0"/></td>
+					<td class="num"><fmt:formatNumber value="${mon.lastValue}" pattern="0"/></td>
+					<td class="num"><fmt:formatNumber value="${mon.min}" pattern="0"/></td>
+					<td class="num"><fmt:formatNumber value="${mon.max}" pattern="0"/></td>
+					<td class="num"><fmt:formatNumber value="${mon.active}" pattern="0"/></td>
+					<td class="num"><fmt:formatNumber value="${mon.avgActive}" pattern="0.0"/></td>
+					<td class="num"><fmt:formatNumber value="${mon.maxActive}" pattern="0"/></td>
+					<td><fmt:formatDate value="${mon.firstAccess}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+					<td><fmt:formatDate value="${mon.lastAccess}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+					<td>${mon.enabled}</td>
+					<td>${mon.primary}</td>
+				</tr>
+			</c:forEach>
+		</table>
+	</c:set>
+
+	<c:import url="/layout/standard.dof?minimal=true" />
+
+</jsp:root>

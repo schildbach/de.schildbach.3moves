@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:x="http://java.sun.com/jsp/jstl/xml"
+>	
+	<c:url var="img_path" value="/layout"/>
+
+	<c:set var="page_content" scope="request">
+	
+		<p style="text-align:center">
+
+			<c:if test="${pageContext.request.locale.language != 'de'}">
+				<p>
+					(<img src="${img_path}/flag_en.gif" title="english"/> I'm afraid this page is only available in German)
+				</p>
+			</c:if>
+		
+			<table cellspacing="0" width="100%"><tr><td align="center">
+				<table width="85%" cellspacing="8">
+		
+					<tr>
+						<td><h3>IMPRESSUM</h3></td>
+					</tr>
+		
+					<tr>
+						<td>
+							<p>
+								Andreas Schildbach<br/>
+								Christburger Straße 39<br/>
+								10405 Berlin<br/>
+							</p>
+							<p>0172/1701982</p>
+							<p>support@3moves.net</p>
+							<br/>
+							<p style="font-size:smaller; color:gray">
+								Da ich keinerlei Einfluß auf die Gestaltung und die Inhalte 
+								von gelinkten Seiten habe, distanziere ich mich ausdrücklich von allen Inhalten aller
+								gelinkten Seiten auf diesem Server und mache mir die Inhalte der gelinkten
+								Seiten nicht zu eigen. Diese Erklärung gilt für alle verfügbaren Links auf diesem
+								Server sowie vorhandene Linklisten, Foren und Gästebücher. 
+							</p>
+						</td>
+					</tr>
+		
+				</table>
+		
+			</td></tr></table>
+			
+		</p>
+	
+	</c:set>
+	
+	<c:import url="/layout/standard.dof"/>
+
+</jsp:root>

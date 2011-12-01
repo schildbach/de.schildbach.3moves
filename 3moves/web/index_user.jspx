@@ -1,0 +1,195 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+>
+	<c:url var="path_registration" value="/user/registration"/>
+	<c:url var="path_profile" value="/user/profile"/>
+	<c:url var="resource_submit" value="/img/action.gif"/>
+
+	<c:set var="page_content" scope="request">
+
+		<fmt:bundle basename="home" prefix="index_user.">
+
+			<h3>
+				<fmt:message key="header">
+					<fmt:param value="${user_name}"/>
+				</fmt:message>
+			</h3>
+			
+			<c:if test="${show_reminder || show_contact || show_referrer || show_personal_details}">
+			
+				<table cellspacing="0" class="box yellow">
+		
+					<tr>
+						<th colspan="2"><fmt:message key="recommended_header"/></th>
+					</tr>
+		
+					<tr><td class="spacer" colspan="2"/></tr>
+				
+					<c:if test="${show_reminder}">
+						<tr>
+							<td><em><fmt:message key="recommended_reminder"/></em></td>
+							<td style="text-align:right;">
+								<a class="action" href="${path_registration}/skip_send_password_reminder.html">
+									<fmt:message key="skip"/>
+								</a>
+							</td>
+						</tr>
+						<tr>
+							<td class="highlight"><fmt:message key="recommended_reminder_text"/></td>
+							<td width="40%" valign="bottom">
+								<form action="${path_registration}/send_password_reminder.html" method="post" enctype="multipart/form-data" accept-charset="UTF-8">
+									<fmt:message key="email"/><br/>
+									<input type="text" value="${email}" name="email" size="32" maxlength="64"/>
+									<input type="image" src="${resource_submit}"/>
+								</form>
+							</td>
+						</tr>
+						<tr><td class="spacer" colspan="2"/></tr>
+					</c:if>
+					
+					<c:if test="${show_contact}">
+						<tr>
+							<td colspan="2"><em><fmt:message key="recommended_contact"/></em></td>
+						</tr>
+						<c:choose>
+							<c:when test="${validate}">
+								<tr>
+									<td class="highlight"><fmt:message key="recommended_contact_text_validate"/></td>
+									<td width="40%"/>
+								</tr>
+							</c:when>
+							<c:otherwise>
+								<tr>
+									<td class="highlight"><fmt:message key="recommended_contact_text"/></td>
+									<td width="40%" valign="bottom">
+										<form action="${path_registration}/add_email_address.html" method="post" enctype="multipart/form-data" accept-charset="UTF-8">
+											<fmt:message key="email"/><br/>
+											<input type="text" value="${email}" name="email" size="32" maxlength="64"/>
+											<input type="image" src="${resource_submit}"/>
+										</form>
+									</td>
+								</tr>
+							</c:otherwise>
+						</c:choose>
+						<tr><td class="spacer" colspan="2"/></tr>
+					</c:if>
+	
+					<c:if test="${show_referrer}">
+						<tr>
+							<td><em><fmt:message key="recommended_referrer"/></em></td>
+							<td style="text-align:right;">
+								<a class="action" href="${path_registration}/skip_set_referrer.html"><fmt:message key="skip"/></a>
+							</td>
+						</tr>
+						<tr>
+							<td class="highlight"><fmt:message key="recommended_referrer_text"/></td>
+							<td width="40%">
+								<form action="${path_registration}/set_referrer.html" method="post" enctype="multipart/form-data" accept-charset="UTF-8">
+									<input type="text" name="referrer" size="32" maxlength="128"/>
+									<input type="image" src="${resource_submit}"/>
+								</form>
+							</td>
+						</tr>
+						<tr><td class="spacer" colspan="2"/></tr>
+					</c:if>
+	
+					<c:if test="${show_personal_details}">
+						<tr>
+							<td colspan="2"><em><fmt:message key="recommended_personal_details"/></em></td>
+						</tr>
+						<tr>
+							<td class="highlight"><fmt:message key="recommended_personal_details_text"/></td>
+							<td width="40%" style="text-align:right;">
+								<a class="action" href="${path_profile}/set_profile.html"><fmt:message key="recommended_personal_details_link"/></a>
+							</td>
+						</tr>
+						<tr><td class="spacer" colspan="2"/></tr>
+					</c:if>
+		
+				</table>
+				
+			</c:if>
+
+			<c:if test="${show_menu}">
+
+				<table cellspacing="0" class="box yellow">
+		
+					<tr>
+						<th colspan="7"><fmt:message key="game_header"/></th>
+					</tr>
+					<tr>
+						<td class="vsep" style="font-weight:bold">
+							<a class="action" href="game/list/open_game_invitations.html?rules=CHESS">
+								<fmt:message key="game_view_invitations"/>
+							</a>
+						</td>
+						<td class="spacer"/>
+						<td class="vsep" style="font-weight:bold">
+							<a class="action" href="game/forming/create_game.html?rules=CHESS">
+								<fmt:message key="game_create"/>
+							</a>
+						</td>
+						<td class="spacer"/>
+						<td style="font-weight:bold">
+							<a class="action" href="game/list/joined_games.html?rules=CHESS">
+								<fmt:message key="game_my_games"/>
+							</a>
+						</td>
+					</tr>
+					<tr>
+						<td class="vsep"><fmt:message key="game_view_invitations_text"/></td>
+						<td class="spacer"/>
+						<td class="vsep"><fmt:message key="game_create_text"/></td>
+						<td class="spacer"/>
+						<td><fmt:message key="game_my_games_text"/></td>
+					</tr>
+		
+				</table>
+		
+				<table cellspacing="0" class="box yellow">
+		
+					<tr>
+						<th colspan="7"><fmt:message key="communication_header"/></th>
+					</tr>
+					<tr>
+						<td class="vsep" style="font-weight:bold">
+							<a class="action" href="mail/inbox.html">
+								<fmt:message key="mail"/>
+							</a>
+						</td>
+						<td class="spacer"/>
+						<td class="vsep" style="font-weight:bold">
+							<a class="action" href="user/relation/user_relations.html">
+								<fmt:message key="friends"/>
+							</a>
+						</td>
+						<td class="spacer"/>
+						<td style="font-weight:bold">
+							<a class="action" href="forum/node.html?tag=general">
+								<fmt:message key="forum"/>
+							</a>
+						</td>
+					</tr>
+					<tr>
+						<td class="vsep"><fmt:message key="mail_text"/></td>
+						<td class="spacer"/>
+						<td class="vsep"><fmt:message key="friends_text"/></td>
+						<td class="spacer"/>
+						<td><fmt:message key="forum_text"/></td>
+					</tr>
+
+				</table>
+
+			</c:if>
+
+			<c:import url="/game/list/games_teaser.dof"/>
+
+		</fmt:bundle>
+	
+	</c:set>
+	
+	<c:import url="/layout/standard.dof"/>
+
+</jsp:root>

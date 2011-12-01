@@ -1,0 +1,325 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:user="urn:jsptagdir:/WEB-INF/tags/user"
+>
+	<c:url var="path_forming" value="/game/forming"/>
+
+	<fmt:bundle basename="game_forming" prefix="form_game.">
+
+		<c:import url="/game/game_header.dof"/>
+
+		<c:if test="${show_registration_form}">
+			<div style="clear:right; float:right; width:60%; text-align:center">
+				<c:import url="/user/registration/quick_registration.dof"/>
+			</div>
+		</c:if>
+
+		<c:if test="${!empty opening_notation}">
+
+			<div class="game_board" style="clear:right; float:right;">				
+				<c:import url="/game/board/base_board.dof"/>
+			</div>
+
+			<h4 style="min-width:200px;">
+				<fmt:message key="themed_game"/>
+			</h4>
+
+			<p>
+				<fmt:message key="opening"/>
+			</p>
+
+			<p>
+				${opening_notation}
+			</p>
+
+		</c:if>
+
+		<c:if test="${show_instruction_can_join}">
+			<div class="instruction" style="clear:right; float:right; width:50%">
+				<fmt:message key="instruction_can_join">
+					<fmt:param>
+						<fmt:message key="join_game"/>
+					</fmt:param>	
+				</fmt:message>
+			</div>
+		</c:if>
+		
+		<c:if test="${show_join_game_confirm}">
+
+			<fmt:bundle basename="game_forming" prefix="form_game.join_game_confirm.">
+		
+				<div class="instruction" style="clear:right; float:right; width:50%">
+
+					<fmt:message key="header"/>
+					
+					<p><fmt:message key="general1"/></p>
+					<p><fmt:message key="general2"/></p>
+
+					<c:if test="${show_gamegroup_warning}">
+						<p>
+							<fmt:message key="gamegroup_warning">
+								<fmt:param value="${max_players}"/>
+								<fmt:param value="${num_single_games}"/>
+							</fmt:message>
+						</p>						
+					</c:if>
+
+					<c:if test="${show_beta_warning}">
+						<p><fmt:message key="beta_warning"/></p>						
+					</c:if>
+
+					<p><fmt:message key="question"/></p>
+					
+					<p>
+						<div>
+							<a class="action" href="?join_game=confirm"><fmt:message key="yes"/></a>
+						</div>
+						<div>
+							<a class="action" href="?"><fmt:message key="no"/></a>
+						</div>
+					</p>
+
+				</div>
+		
+			</fmt:bundle>
+
+		</c:if>
+		
+		<c:if test="${show_unaccomplish_game_confirm}">
+
+			<fmt:bundle basename="game_forming" prefix="form_game.unaccomplish_game_confirm.">
+		
+				<div class="instruction" style="clear:right; float:right; width:50%">
+
+					<fmt:message key="header"/>
+					
+					<p><fmt:message key="message"/></p>
+		
+					<p><fmt:message key="question"/></p>
+					
+					<p>
+						<div>
+							<a class="action" href="?unaccomplish_game=confirm"><fmt:message key="yes"/></a>
+						</div>
+						<div>
+							<a class="action" href="?"><fmt:message key="no"/></a>
+						</div>
+					</p>
+					
+				</div>
+	
+			</fmt:bundle>
+
+		</c:if>
+		
+		<c:if test="${show_open_game_confirm}">
+
+			<fmt:bundle basename="game_forming" prefix="form_game.open_game_confirm.">
+	
+				<div class="instruction" style="clear:right; float:right; width:50%">
+
+					<fmt:message key="header"/>
+					
+					<p><fmt:message key="message"/></p>
+		
+					<p><fmt:message key="question"/></p>
+					
+					<p>
+						<div>
+							<a class="action" href="?open_game=confirm"><fmt:message key="yes"/></a>
+						</div>
+						<div>
+							<a class="action" href="?"><fmt:message key="no"/></a>
+						</div>
+					</p>
+
+				</div>
+	
+			</fmt:bundle>
+
+		</c:if>
+			
+		<c:if test="${show_ready_game_confirm}">
+
+			<fmt:bundle basename="game_forming" prefix="form_game.ready_game_confirm.">
+	
+				<div class="instruction" style="clear:right; float:right; width:50%">
+
+					<fmt:message key="header"/>
+					
+					<p><fmt:message key="message"/></p>
+		
+					<p><fmt:message key="question"/></p>
+					
+					<p>
+						<div>
+							<a class="action" href="?ready_game=confirm"><fmt:message key="yes"/></a>
+						</div>
+						<div>
+							<a class="action" href="?"><fmt:message key="no"/></a>
+						</div>
+					</p>
+					
+				</div>
+	
+			</fmt:bundle>
+			
+		</c:if>
+
+		<h4><fmt:message key="players"/></h4>
+		<p>
+			<table cellspacing="0">
+				<colgroup>
+					<col width="30px" />
+					<col width="15px" />
+					<col width="200px" />
+				</colgroup>
+
+				<c:set var="i" value="1"/>
+
+				<c:if test="${can_join and game.orderType == 'REVERSE'}">
+					<tr>
+						<td />
+						<td align="right">${i}.</td>
+						<td>
+							<a class="action" href="?join_game"><fmt:message key="join_game"/></a>
+							<br />
+							&#160;
+						</td>
+					</tr>
+					<c:set var="i" value="${i+1}"/>
+				</c:if>
+
+				<c:forEach var="player" varStatus="status" items="${game.players}">
+					<tr>
+						<td>
+							<a href="${link_people}/${player.subject.name}/">
+								<user:image name="${player.subject.name}" />
+							</a>
+						</td>
+						<td align="right">${i}.</td>
+						<td>
+							<user:username name="${player.subject.name}" />
+							<br />
+							<c:out value="${location[player]}" escapeXml="true" />
+						</td>
+						<td>
+							<c:choose>
+								<c:when test="${can_unjoin_map[player]}">
+									<a class="action" href="?unjoin_game"><fmt:message key="unjoin_game"/></a>
+								</c:when>
+								<c:when test="${can_remove_player}">
+									<a class="action" href="?remove_player=${player.subject.name}"><fmt:message key="remove"/></a>
+								</c:when>
+							</c:choose>
+						</td>
+					</tr>
+					<c:set var="i" value="${i+1}"/>
+				</c:forEach>
+
+				<c:if test="${can_join and game.orderType != 'REVERSE'}">
+					<tr>
+						<td />
+						<td align="right">${i}.</td>
+						<td>
+							<a class="action" href="?join_game"><fmt:message key="join_game"/></a>
+							<br />
+							&#160;
+						</td>
+					</tr>
+				</c:if>
+
+				<c:if test="${empty game.players and !can_join}">
+					<tr>
+						<td colspan="3"><fmt:message key="players_none"/></td>
+					</tr>
+				</c:if>
+
+			</table>
+		</p>
+
+		<c:if test="${show_instruction_is_invited}">
+			<div class="instruction" style="clear:right; float:right; width:50%">
+				<fmt:message key="instruction_is_invited"/>
+			</div>
+		</c:if>
+		
+		<c:if test="${show_instruction_should_invite}">
+			<div class="instruction" style="clear:right; float:right; width:50%">
+				<fmt:message key="instruction_should_invite">
+					<fmt:param>
+						<fmt:message key="invite_user"/>
+					</fmt:param>
+				</fmt:message>
+			</div>
+		</c:if>
+
+		<c:if test="${!empty game.invitations}">
+			<h4><fmt:message key="invitations"/></h4>
+			<p>
+				<table cellspacing="0">
+					<colgroup><col width="110px"/></colgroup>
+					<c:forEach var="invitation" items="${game.invitations}">
+						<tr>
+							<td>
+								<user:username name="${invitation.subject.name}" />
+							</td>
+							<td>
+								<c:if test="${can_remove_invitation[invitation]}">
+									<a class="action" href="?remove_invitation=${invitation.subject.name}"><fmt:message key="remove"/></a>
+								</c:if>
+							</td>
+						</tr>
+					</c:forEach>
+				</table>
+			</p>
+		</c:if>
+
+		<c:import url="/game/game_requirements.jspx"/>
+
+		<h4><fmt:message key="parameters"/></h4>
+		<c:import url="/game/game_parameters.dof?class=transparent"/>
+		
+		<p>
+			<c:if test="${can_invite}">
+				<div>
+					<a class="action" href="${path_forming}/invite_user.html?game_id=${game.id}"><fmt:message key="invite_user"/></a>
+				</div>
+			</c:if>
+
+			<c:if test="${can_open}">
+				<div>
+					<a class="action" href="?open_game"><fmt:message key="open_game"/></a>
+				</div>
+			</c:if>
+		
+			<c:if test="${can_join}">
+				<div>
+					<a class="action" href="?join_game"><fmt:message key="join_game"/></a>
+				</div>
+			</c:if>
+		
+			<c:if test="${can_unjoin}">
+				<div>
+					<a class="action" href="?unjoin_game"><fmt:message key="unjoin_game"/></a>
+				</div>
+			</c:if>
+		
+			<c:if test="${can_ready}">
+				<div>
+					<a class="action" href="?ready_game"><fmt:message key="start_game"/></a>
+				</div>
+			</c:if>
+			
+			<c:if test="${can_unaccomplish}">
+				<div>
+					<a class="action" href="?unaccomplish_game"><fmt:message key="unaccomplish_game"/></a>
+				</div>
+			</c:if>
+		</p>
+	
+	</fmt:bundle>
+
+</jsp:root>

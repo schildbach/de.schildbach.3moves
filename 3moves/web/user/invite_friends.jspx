@@ -1,0 +1,106 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:form="http://www.springframework.org/tags/form"
+	xmlns:spring="http://www.springframework.org/tags"
+>
+	<c:set var="page_content" scope="request">
+	
+		<fmt:bundle basename="user" prefix="invite_friends.">
+		
+			<fmt:message var="label_submit" key="submit"/>
+
+			<h3><fmt:message key="header"/></h3>
+			
+			<p><fmt:message key="message"/></p>
+
+			<form:form action="?" enctype="multipart/form-data">
+				<p>
+					<table cellspacing="0">
+						<tr>
+							<td><label for="fromName"><fmt:message key="from_name" /></label></td>
+							<td><form:input path="fromName" size="60" maxlength="64" /></td>
+							<spring:bind path="command.fromName">
+								<c:forEach var="code" items="${status.errorCodes}">
+									<td class="error"><fmt:message key="error.${code}"/></td>
+								</c:forEach>
+							</spring:bind>
+						</tr>
+						<tr>
+							<td><label for="fromAddr"><fmt:message key="from_addr" /></label></td>
+							<td><form:input path="fromAddr" size="60" maxlength="64" /></td>
+							<spring:bind path="command.fromAddr">
+								<c:forEach var="code" items="${status.errorCodes}">
+									<td class="error"><fmt:message key="error.${code}"/></td>
+								</c:forEach>
+							</spring:bind>
+						</tr>
+						<tr>
+							<td><label for="toAddr.0"><fmt:message key="to_addr.0" /></label></td>
+							<td><form:input id="toAddr.0" path="toAddr[0]" size="60" maxlength="64" /></td>
+							<spring:bind path="command.toAddr[0]">
+								<c:forEach var="code" items="${status.errorCodes}">
+									<td class="error"><fmt:message key="error.${code}"/></td>
+								</c:forEach>
+							</spring:bind>
+						</tr>
+						<tr>
+							<td><label for="toAddr.1"><fmt:message key="to_addr.1" /></label></td>
+							<td><form:input id="toAddr.1" path="toAddr[1]" size="60" maxlength="64" /></td>
+							<spring:bind path="command.toAddr[1]">
+								<c:forEach var="code" items="${status.errorCodes}">
+									<td class="error"><fmt:message key="error.${code}"/></td>
+								</c:forEach>
+							</spring:bind>
+						</tr>
+						<tr>
+							<td><label for="toAddr.2"><fmt:message key="to_addr.2" /></label></td>
+							<td><form:input id="toAddr.2" path="toAddr[2]" size="60" maxlength="64" /></td>
+							<spring:bind path="command.toAddr[2]">
+								<c:forEach var="code" items="${status.errorCodes}">
+									<td class="error"><fmt:message key="error.${code}"/></td>
+								</c:forEach>
+							</spring:bind>
+						</tr>
+						<tr>
+							<td><label for="subject"><fmt:message key="subject" /></label></td>
+							<td><form:input path="subject" size="60" maxlength="64" /></td>
+							<spring:bind path="command.subject">
+								<c:forEach var="code" items="${status.errorCodes}">
+									<td class="error"><fmt:message key="error.${code}"/></td>
+								</c:forEach>
+							</spring:bind>
+						</tr>
+					</table>
+				</p>
+				<p>
+					<div>
+						<label for="text"><fmt:message key="personal_message" /></label>
+					</div>
+					<div style="background-color:#ddd;">
+						<form:textarea path="text" rows="6" cols="70" />
+						<pre>${static_text}</pre>
+					</div>
+				</p>
+				<p>
+					<input type="submit" value="&gt;&gt; ${label_submit}" />
+					<spring:bind path="command">
+						<c:forEach var="code" items="${status.errorCodes}">
+							<div class="error"><fmt:message key="error.${code}"/></div>
+						</c:forEach>
+					</spring:bind>
+				</p>
+			</form:form>
+
+			<p>
+				<em><fmt:message key="disclaimer"/></em>
+			</p>
+
+		</fmt:bundle>
+
+	</c:set>
+
+	<c:import url="/layout/standard.dof"/>
+
+</jsp:root>

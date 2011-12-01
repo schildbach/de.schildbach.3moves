@@ -1,0 +1,121 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:form="http://www.springframework.org/tags/form"
+	xmlns:spring="http://www.springframework.org/tags"
+>
+	<c:set var="page_content" scope="request">
+
+		<fmt:bundle basename="game_forming" prefix="create_game.">
+
+			<fmt:message var="label_previous" key="previous_page" />
+			<fmt:message var="label_submit" key="submit_game" />
+			<fmt:message var="label_continue_to_theme" key="continue_to_theme" />
+
+			<jsp:useBean id="now" class="java.util.Date" />
+
+			<h3>
+				<fmt:message key="header_mini_tournament_advanced"/>
+			</h3>
+
+			<form:form cssClass="border" action="?" method="post" enctype="multipart/form-data">
+				
+				<p>
+					<label for="remote.numberOfPlayers">
+						<fmt:message key="number_of_players" />:
+					</label>
+
+					<form:select path="remote.numberOfPlayers">
+						<c:forEach var="number" items="${number_of_players}">
+							<form:option value="${number}" />
+						</c:forEach>
+					</form:select>
+				</p>
+
+				<p>
+					<div>
+						<label for="remote.requiredRating.min">
+							<fmt:message key="required_rating"/>, <fmt:message key="required_rating_min"/>:
+						</label>
+						<form:input path="remote.requiredRating.min" size="5" maxlength="4"/>&#160;
+
+						<label for="remote.requiredRating.max">
+							<fmt:message key="required_rating_max"/>:
+						</label>
+						<form:input path="remote.requiredRating.max" size="5" maxlength="4"/>
+					</div>
+
+					<div><fmt:message key="required_rating_explanation"/></div>
+ 					<spring:bind path="command.remote.requiredRating">
+						<c:if test="${status.error}">
+							<div class="error"><fmt:message key="error_required_rating.${status.errorCode}"/></div>
+						</c:if>
+					</spring:bind>
+				</p>
+
+				<p>
+					<label for="remote.startAt.option">
+						<fmt:message key="start_at"/>:
+					</label>
+
+					<c:forEach var="option" items="${deadline_options}">
+						<div>
+							<form:radiobutton id="startAt.${option}" path="remote.startAt.option" value="${option}"/>
+							<fmt:message key="deadline_option.${option}"/>
+							<c:if test="${option == 'TIME'}">:
+								<form:input path="remote.startAt.date" size="10" maxlength="10"
+									onchange="document.getElementById('startAt.${option}').checked = true"/>&#160;
+								<fmt:message key="deadline_hour"/>:
+								<form:select path="remote.startAt.hour"
+									onchange="document.getElementById('startAt.${option}').checked = true">
+									<c:forEach var="hour" items="${start_at_hours}">
+										<fmt:formatDate var="label" type="time" timeStyle="short" value="${hour.value}"/>
+										<form:option value="${hour.key}" label="${label}"/>
+									</c:forEach>
+								</form:select>&#160;
+								<fmt:formatDate value="${now}" pattern="z" />
+							</c:if>
+						</div>
+					</c:forEach>
+
+					<spring:bind path="command.remote.startAt.date">
+						<c:if test="${status.error}">
+							<div class="error"><fmt:message key="error_start_at_date.${status.errorCode}"/></div>
+						</c:if>
+					</spring:bind>
+				</p>
+
+				<p>
+					<label for="remote.clockConstraint">
+						<fmt:message key="clock_constraint"/>:
+					</label>
+
+					<form:select path="remote.clockConstraint">
+						<c:forEach var="clock_constraint" items="${clock_constraints}">
+							<form:option value="${clock_constraint}">
+								<fmt:message key="clock_constraint.${displayValue}"/>
+							</form:option>
+						</c:forEach>
+					</form:select>					
+				</p>
+
+				<p>
+					<input type="submit" name="_target0" value="&lt;&lt; ${label_previous}" />
+					&#160;
+					<input type="submit" name="_finish" value="&gt;&gt; ${label_submit}" />
+					<c:if test="${can_theme}">
+						&#160;
+						<input type="submit" name="_target2" value="&gt;&gt; ${label_continue_to_theme}" />
+					</c:if>
+				</p>
+
+			</form:form>
+
+		</fmt:bundle>
+
+	</c:set>
+
+	<c:import url="/layout/standard.dof"/>
+	
+</jsp:root>

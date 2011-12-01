@@ -1,0 +1,60 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+>
+	<table cellspacing="0" class="chessboard ${size}">
+
+		<!-- top labels -->
+		<c:if test="${show_labels}">
+			<tr class="label">
+				<td class="label"/>
+				<c:forEach var="label" items="${top_labels}">
+					<td>${label}</td>
+				</c:forEach>
+				<td class="label"/>
+			</tr>
+		</c:if>
+		
+		<!-- board -->
+		<c:forEach var="y" begin="0" end="${fn:length(matrix)-1}">
+			<tr>
+				<c:if test="${show_labels}">
+					<td class="label">${left_labels[y]}</td>
+				</c:if>
+				<c:forEach var="x" begin="0" end="${fn:length(matrix[y])-1}">
+					<td class="${matrix[y][x][0]}">
+						<c:choose>
+							<c:when test="${empty matrix[y][x][4]}">
+								<!-- not clickable -->
+								<img src="${matrix[y][x][1]}" alt="${matrix[y][x][2]}" title="${matrix[y][x][3]}"/>
+							</c:when>
+							<c:otherwise>
+								<!-- clickable -->
+								<a href="${matrix[y][x][4]}">
+									<img src="${matrix[y][x][1]}" alt="${matrix[y][x][2]}" title="${matrix[y][x][3]}"/>
+								</a>
+							</c:otherwise>
+						</c:choose>
+					</td>
+				</c:forEach>
+				<c:if test="${show_labels}">
+					<td class="label">${right_labels[y]}</td>
+				</c:if>
+			</tr>
+		</c:forEach>
+
+		<!-- bottom labels -->
+		<c:if test="${show_labels}">
+			<tr class="label">
+				<td class="label"/>
+				<c:forEach var="label" items="${bottom_labels}">
+					<td>${label}</td>
+				</c:forEach>
+				<td class="label"/>
+			</tr>
+		</c:if>
+		
+	</table>
+	
+</jsp:root>

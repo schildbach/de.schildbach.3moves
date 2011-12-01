@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+	">
+
+	<context:annotation-config />
+
+	<bean id="transactionManager" class="de.schildbach.portal.service.mock.PlatformTransactionManagerMock" />
+
+	<bean id="mailSender" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="proxyInterfaces" value="org.springframework.mail.javamail.JavaMailSender" />
+		<property name="interceptorNames" value="interceptor" />
+	</bean>
+
+	<bean id="mailMessage" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="targetClass" value="org.springframework.mail.SimpleMailMessage" />
+		<property name="interceptorNames" value="interceptor" />
+	</bean>
+
+	<bean id="xmppConnectionFactory" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="targetClass" value="de.schildbach.portal.service.user.XMPPConnectionFactory" />
+		<property name="interceptorNames" value="interceptor" />
+	</bean>
+
+	<bean id="userDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="proxyInterfaces" value="de.schildbach.portal.persistence.user.UserDao" />
+		<property name="interceptorNames" value="interceptor" />
+	</bean>
+
+	<bean id="subjectRelationDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="proxyInterfaces" value="de.schildbach.portal.persistence.user.SubjectRelationDao" />
+		<property name="interceptorNames" value="interceptor" />
+	</bean>
+
+	<bean id="imageDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="proxyInterfaces" value="de.schildbach.portal.persistence.user.ImageDao" />
+		<property name="interceptorNames" value="interceptor" />
+	</bean>
+
+	<bean id="gameDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="proxyInterfaces" value="de.schildbach.portal.persistence.game.GameDao" />
+		<property name="interceptorNames" value="interceptor" />
+	</bean>
+
+	<bean id="subjectRatingDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="proxyInterfaces" value="de.schildbach.portal.persistence.game.SubjectRatingDao" />
+		<property name="interceptorNames" value="interceptor" />
+	</bean>
+
+	<bean id="mailDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="proxyInterfaces" value="de.schildbach.portal.persistence.mail.MailDao" />
+		<property name="interceptorNames" value="interceptor" />
+	</bean>
+
+	<bean id="contentDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="proxyInterfaces" value="de.schildbach.portal.persistence.content.ContentDao" />
+		<property name="interceptorNames" value="interceptor" />
+	</bean>
+
+	<bean id="interceptor" class="org.springframework.aop.interceptor.SimpleTraceInterceptor" />
+
+</beans>

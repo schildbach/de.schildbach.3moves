@@ -1,0 +1,140 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:user="urn:jsptagdir:/WEB-INF/tags/user"
+>
+	<c:url var="img_path" value="/game/img" />
+
+	<fmt:bundle basename="game" prefix="game_parameters.">
+	
+		<div class="${css_class}">
+			<table cellspacing="0">
+
+				<tr>
+					<th><fmt:message key="aid"/>:</th>
+					<td>
+						<img src="${img_path}/aid.${aid}.png" />&#160;<fmt:message key="aid.${aid}" />
+					</td>
+				</tr>
+
+				<c:if test="${!empty number_of_players}">
+					<tr>
+						<th><fmt:message key="number_of_players"/>:</th>
+						<td>${number_of_players}</td>
+					</tr>
+				</c:if>
+
+				<c:if test="${!empty order_type}">
+					<tr>
+						<th><fmt:message key="ordertype"/>:</th>
+						<td><fmt:message key="ordertype_${order_type}"/></td>
+					</tr>
+				</c:if>
+
+				<tr>
+					<th><fmt:message key="${clock_constraint_label}"/>:</th>
+					<td><fmt:message key="clock_constraint_${clock_constraint}"/></td>
+				</tr>
+
+				<tr>
+					<th><fmt:message key="${rating_label}"/>:</th>
+					<td><fmt:message key="${rating_label}_${rating}"/></td>
+				</tr>
+
+				<c:if test="${!empty created_at}">
+					<tr>
+						<th><fmt:message key="created_at"/>:</th>
+						<td><fmt:formatDate value="${created_at}" type="both" timeStyle="short"/></td>
+					</tr>
+				</c:if>
+	
+				<c:if test="${!empty ready_at}">
+					<tr>
+						<th><fmt:message key="ready_at"/>:</th>
+						<td>
+							<c:choose>
+								<c:when test="${!ready_asap}">
+									<fmt:formatDate value="${ready_at}" type="both" timeStyle="short"/>
+								</c:when>
+								<c:otherwise>
+									<fmt:message key="ready_asap"/>
+								</c:otherwise>
+							</c:choose>
+							<c:if test="${!empty diff_ready_in}">
+								(in ${diff_ready_in})
+							</c:if>
+						</td>
+					</tr>
+				</c:if>
+	
+				<c:if test="${show_start_at}">
+					<tr>
+						<th><fmt:message key="start_at"/>:</th>
+						<td>
+							<c:choose>
+								<c:when test="${!empty start_at}">
+									<fmt:formatDate value="${start_at}" type="both" timeStyle="short"/>
+									<c:if test="${!empty diff_starting_in}">
+										(in ${diff_starting_in})
+									</c:if>
+								</c:when>
+								<c:otherwise>
+									<fmt:message key="start_asap"/>
+								</c:otherwise>
+							</c:choose>
+						</td>
+					</tr>
+				</c:if>
+	
+				<c:if test="${!empty last_active_at}">
+					<tr>
+						<th><fmt:message key="last_active_at"/>:</th>
+						<td><fmt:formatDate value="${last_active_at}" type="both" timeStyle="short"/></td>
+					</tr>
+				</c:if>
+
+				<c:if test="${!empty last_reminder_at}">
+					<tr>
+						<th><fmt:message key="last_reminder_at"/>:</th>
+						<td><fmt:formatDate value="${last_reminder_at}" type="both" timeStyle="short"/></td>
+					</tr>
+				</c:if>
+
+				<c:if test="${!empty finish_at}">
+					<tr>
+						<th><fmt:message key="finished_at"/>:</th>
+						<td><fmt:formatDate value="${finish_at}" type="both" timeStyle="short"/></td>
+					</tr>
+				</c:if>
+	
+				<c:if test="${!empty unaccomplish_at}">
+					<tr>
+						<th><fmt:message key="unaccomplished_at"/>:</th>
+						<td><fmt:formatDate value="${unaccomplish_at}" type="both" timeStyle="short"/></td>
+					</tr>
+				</c:if>
+	
+				<c:if test="${!empty duration}">
+					<tr>
+						<th><fmt:message key="duration"/>:</th>
+						<td>${duration}</td>
+					</tr>
+				</c:if>
+	
+				<c:if test="${!empty owner}">
+					<tr>
+						<th><fmt:message key="owner"/>:</th>
+						<td>
+							<user:username name="${owner.name}" />
+						</td>
+					</tr>
+				</c:if>
+		
+			</table>
+			
+		</div>
+
+	</fmt:bundle>
+
+</jsp:root>

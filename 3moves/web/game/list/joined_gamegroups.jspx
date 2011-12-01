@@ -1,0 +1,71 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+>
+	<c:set var="page_content" scope="request">
+
+		<fmt:bundle basename="game_list" prefix="joined_gamegroups.">
+	
+			<h3>
+				<c:choose>
+					<c:when test="${self}">
+						<fmt:message key="header_you"/>
+					</c:when>
+					<c:otherwise>
+						<fmt:message key="header">
+							<fmt:param>${target}</fmt:param>
+						</fmt:message>
+					</c:otherwise>
+				</c:choose>
+			</h3>
+
+			<c:import url="/user/profile/profile_navigation.jspx?subject=${target}"/>
+			<c:import url="joined_games_navigation.jspx?subject=${target}"/>
+
+			<c:choose>
+				<c:when test="${!empty games_waiting || !empty games_running || !empty games_finished}">
+					<c:if test="${!empty games_waiting}">
+						<p style="font-weight:bold; clear:both"><fmt:message key="waiting"/>:</p>
+						<c:set var="games" scope="request" value="${games_waiting}"/>
+						<table cellspacing="0" class="list small">
+							<c:import url="games_list.dof?columns=id-rules,owner,players,rating,clock,required_rating,state,ready_at-start_at&amp;row_class=light_dark"/>
+						</table>
+					</c:if>
+					<c:if test="${!empty games_running}">
+						<p style="font-weight:bold; clear:both"><fmt:message key="running"/>:</p>
+						<c:set var="games" scope="request" value="${games_running}"/>
+						<table cellspacing="0" class="list small">
+							<c:import url="games_list.dof?columns=id-rules,players,rating,clock,start_at&amp;row_class=light_dark,active"/>
+						</table>
+					</c:if>
+					<c:if test="${!empty games_finished}">
+						<p style="font-weight:bold; clear:both"><fmt:message key="finished"/>:</p>
+						<c:set var="games" scope="request" value="${games_finished}"/>
+						<table cellspacing="0" class="list small">
+							<c:import url="games_list.dof?columns=id-rules,players,rating,clock,resolution,start_at-finish_at&amp;row_class=light_dark"/>
+						</table>
+					</c:if>
+				</c:when>
+				<c:otherwise>
+					<c:choose>
+						<c:when test="${self}">
+							<p><em><fmt:message key="empty_you"/></em></p>
+							<p class="instruction" style="clear:both">
+								<fmt:message key="empty_note"/>
+							</p>
+						</c:when>
+						<c:otherwise>
+							<p><em><fmt:message key="empty"/></em></p>
+						</c:otherwise>
+					</c:choose>
+				</c:otherwise>
+			</c:choose>
+
+		</fmt:bundle>
+			
+	</c:set>
+
+	<c:import url="/layout/standard.dof"/>
+	
+</jsp:root>

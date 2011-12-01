@@ -1,0 +1,29 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+>
+
+3moves.net Allgemeine Geschäftsbedingungen Version 1 vom 7.9.2004:
+==================================================================
+
+1. Wir - das heißt 3moves.net - stellen eine Kommunikationsplatform für Dich als Spieler von Strategiespielen zur Verfügung. Die Kommunikation mit den anderen Teilnehmern erfolgt in Form von gemeinsamen Spielen, Turnieren, sowie öffentlichen und privaten Nachrichten.
+
+2. Die Anmeldung und die bestimmungsgemäße Nutzung von 3moves.net ist für Dich, solange keine abweichende Angabe gemacht wird, kostenfrei. Für die Kosten Deiner Internet-Verbindung kommst Du allerdings selbst auf, denn diese ist nicht Bestandteil der Leistungen von 3moves.net.
+
+3. Du darfst nur einen Account bei uns anmelden und nutzen. Wir behalten uns vor, bei Mehrfach-Anmeldungen alle oder einzelne Deiner Accounts zu sperren.
+
+4. Wir möchten gerne, daß hier nur Menschen gegen Menschen spielen, nicht Menschen gegen Maschinen. Daher ist es nicht erlaubt, die Dienstleistungen von 3moves.net mit Hilfe eines automatisierten Vorgangs (z.B. Skripts) zu nutzen. Insbesondere die Spielzüge darfst Du nur manuell mittels eines handelsüblichen Web-Browsers eingeben.
+
+5. Wir haben natürlich ein Interesse daran, Dir den Dienst so lange wie möglich anzubieten. Trotzdem können wir Dir den Betrieb zu keinem Zeitpunkt garantieren. Es kann Ausfälle geben, für deren Folgen wir nicht haften. Es entsteht kein Anspruch auf Fortsetzung dieses Dienstes. Wir behalten uns vor, den Betrieb jederzeit komplett oder teilweise einzustellen. Weiterhin behalten wir uns vor, dies auch selektiv für einzelne Nutzer oder Nutzergruppen zu tun.
+
+6. Trotz umfangreicher Qualitätskontrollen kann es einmal passieren, daß sich ein Programmierfehler in einem Spiel bemerkbar macht. Es ist verboten, solche Fehler vorsätzlich auszunützen. Stattdessen sind wir Dir sehr dankbar, wenn Du uns benachrichtigst, damit wir den Fehler beseitigen und das betreffende Spiel bereinigen können.
+
+7. 3moves.net entwickelt sich ständig weiter. Dies wird früher oder später auch die Aktualisierung dieser Nutzungsbedingungen nötig machen. Wir behalten uns deshalb vor, jederzeit die Nutzungsbedinungen zu ändern. Im Falle einer Änderung werden wir Dich auf die geänderten Bedingungen hinweisen. Du wirst dann die Möglichkeit haben, die geänderten Bedingungen zu akzeptieren oder abzulehnen. Wenn Du ablehnst, gelten weiterhin die bereits akzeptierten Bedingungen. Akzeptierst Du, treten für Dich die neuen, geänderten Bedingungen in Kraft.
+
+8. Die gesetzeswidrige Nutzung von 3moves.net führt zum sofortigen Ausschluß. Wir behalten uns vor, gesetzeswidrige Äußerungen in den öffentlichen Bereichen des Dienstes zu löschen und Vergehen gegen geltendes Recht zur Anzeige zu bringen.
+
+9. Das Beleidigen anderer Benutzer ist unerwünscht.
+
+</jsp:root>

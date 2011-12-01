@@ -1,0 +1,38 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+>
+	<c:url var="href_home" value="/"/>
+	<c:url var="href_login" value="/user/login/login.html"/>
+	<c:url var="href_logout" value="/user/login/logout.html"/>
+	<c:url var="href_registration" value="/user/registration/register_user.html"/>
+	<c:url var="href_pc" value="/layout/set_screen_resolution.html?resolution=640"/>
+	<c:url var="href_active_games" value="/game/list/active_games.html"/>
+
+	<fmt:bundle basename="navigationSidebar" prefix="navigation.">
+
+		<div class="left">
+			<a href="${href_home}"><fmt:message key="home"/></a> |
+			<c:choose>
+				<c:when test="${!is_logged_in}">
+					<a href="${href_login}"><fmt:message key="login"/></a>
+				</c:when>
+				<c:otherwise>
+					<a href="${href_logout}"><fmt:message key="logout"/></a> |
+					<c:if test="${auth['user']}">
+						<a href="${href_active_games}"><fmt:message key="active_games"/></a>
+					</c:if>
+				</c:otherwise>
+			</c:choose>
+		</div>
+
+		<c:if test="${!is_logged_in}">
+			<div class="right">
+				<a href="${href_pc}">pc</a>
+			</div>
+		</c:if>
+
+	</fmt:bundle>
+
+</jsp:root>

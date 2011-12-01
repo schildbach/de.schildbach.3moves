@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+>
+	<jsp:output
+		doctype-root-element="html"
+		doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN"
+		doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"
+	/>
+
+	<fmt:bundle basename="home" prefix="standard_layout.">
+
+		<c:url var="href_home" value="/" />
+		<c:url var="href_layout" value="/layout"/>
+		<c:url var="href_script" value="/script"/>
+		<c:url var="href_icon" value="/favicon.ico" />
+		<c:url var="href_feed" value="/news.atom" />
+		<c:url var="href_people" value="/people" />
+		<c:url var="href_game" value="/game" />
+		<c:set var="application_name" value="3moves.net"/>
+		<c:if test="${empty page_title}">
+			<fmt:message var="page_title" key="application_title" />
+		</c:if>
+		<fmt:message var="application_description" key="application_description"/>
+
+		<html xmlns="http://www.w3.org/1999/xhtml">
+
+			<head>
+
+				<title>${application_name} - ${page_title}</title>
+
+				<meta name="description" content="${application_description}" />				
+				<meta name="keywords" content="free online chess Schach Fernschach checkers Dame draughts communication" />
+				<meta name="author" content="Dipl.-Inf. Univ. Andreas Schildbach" />
+				<meta name="verify-v1" content="HWE8ZjwmwqoIMND/fuVCw851/CoIRaBSzq09N3fNdlg=" />
+
+				<link rel="author" title="contact" href="mailto:support%403moves.net"/>
+				<link rel="home" title="3moves.net" href="${href_home}" />
+				<link rel="icon" href="${href_icon}" type="image/x-icon" />
+				<link rel="shortcut icon" href="${href_icon}" type="image/x-icon" />
+				<link rel="alternate" type="application/atom+xml" title="3moves.de News" href="${href_feed}" />
+
+				<link rel="stylesheet" type="text/css" href="${href_layout}/yui/reset-min.css"/>
+				<link rel="stylesheet" type="text/css" href="${href_layout}/ext2/ext-all.css"/>
+				<link rel="stylesheet" type="text/css" href="${href_layout}/standard.css"/>
+				<link rel="stylesheet" type="text/css" href="${href_layout}/game_board.css"/>
+				<link rel="stylesheet" type="text/css" href="${href_layout}/sidebar.css"/>
+				<link rel="stylesheet" type="text/css" href="${href_layout}/layout_standard.css"/>
+				<c:choose>
+					<c:when test="${big_north}">
+						<link rel="stylesheet" type="text/css" href="${href_layout}/layout_north_big.css"/>
+					</c:when>
+					<c:otherwise>
+						<link rel="stylesheet" type="text/css" href="${href_layout}/layout_north_small.css"/>
+					</c:otherwise>
+				</c:choose>
+				<c:if test="${show_left_sidebar}">
+					<link rel="stylesheet" type="text/css" href="${href_layout}/layout_west.css"/>
+				</c:if>
+				<c:if test="${show_right_sidebar}">
+					<link rel="stylesheet" type="text/css" href="${href_layout}/layout_east.css"/>
+				</c:if>
+
+				<script type="text/javascript" src="${href_script}/yui/yahoo-min.js">;</script>
+				<script type="text/javascript" src="${href_script}/yui/event-min.js">;</script>
+				<script type="text/javascript" src="${href_script}/yui/connection-min.js">;</script>
+				<script type="text/javascript" src="${href_script}/ext2/ext-base.js">;</script>
+				<script type="text/javascript" src="${href_script}/ext2/ext-all.js">;</script>
+				<script type="text/javascript" src="${href_script}/common.js">;</script>
+
+				<script>
+					Ext.onReady(function()
+					{
+						initTooltips('${href_people}/%s/tooltip.html', '${href_game}/%s/tooltip.html', '${href_layout}/loading.gif');
+					});
+				</script>
+
+			</head>
+
+			<body>
+
+				<div id="north">
+					<c:choose>
+						<c:when test="${north_navigation}">
+							<jsp:include page="horizontal_navigation.dof"/>
+						</c:when>
+						<c:otherwise>
+							<div class="left">
+								<a href="${link_home}">${application_name}</a>
+							</div>
+							<div class="right">
+								<fmt:message key="application_title" />
+							</div>
+						</c:otherwise>
+					</c:choose>
+				</div>
+
+				<div id="center" class="content">
+					${page_content}
+					<br style="clear:both">&#160;</br>
+				</div>
+
+				<c:if test="${show_left_sidebar}">
+					<div id="west">
+						<jsp:include page="sidebar_left.dof"/>
+					</div>
+				</c:if>
+
+				<c:if test="${show_right_sidebar}">
+					<div id="east">
+						<jsp:include page="sidebar_right.dof"/>
+					</div>
+				</c:if>
+
+			</body>
+
+		</html>
+
+	</fmt:bundle>
+
+</jsp:root>

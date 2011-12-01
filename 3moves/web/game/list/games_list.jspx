@@ -1,0 +1,361 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:user="urn:jsptagdir:/WEB-INF/tags/user"
+>
+	<c:url var="link_game" value="/game/view_game.html"/>
+	<c:url var="img_path" value="/game/img"/>
+
+	<fmt:setBundle var="game_bundle" basename="game"/>
+
+	<fmt:bundle basename="game_list" prefix="games_list.">
+
+		<!-- list header -->
+		<c:if test="${show_header}">
+			<tr>
+				<c:forTokens var="column" items="${columns}" delims=",">
+					<c:choose>
+						<c:when test="${column == 'id-rules'}">
+							<th/>
+						</c:when>
+						<c:when test="${column == 'turn' || column == 'last_active_at' || column == 'remaining_clock'}">
+							<th class="num">
+								<fmt:message key="${column}"/>
+							</th>
+						</c:when>
+						<c:when test="${column == 'start_at-grouped'}">
+							<th>
+								<fmt:message key="start_at"/>
+							</th>
+						</c:when>
+						<c:when test="${column == 'ready_at-start_at'}">
+							<th>
+								<fmt:message key="ready_at"/>/<br/>
+								<fmt:message key="start_at"/>
+							</th>
+						</c:when>
+						<c:when test="${column == 'start_at-finish_at'}">
+							<th>
+								<fmt:message key="start_at"/>/<br/>
+								<fmt:message key="finish_at"/>
+							</th>
+						</c:when>
+						<c:otherwise>
+							<th>
+								<fmt:message key="${column}"/>
+							</th>
+						</c:otherwise>
+					</c:choose>
+				</c:forTokens>
+			</tr>
+		</c:if>
+
+		<!-- list body -->
+		<c:forEach var="game" varStatus="status" items="${games}">
+			
+			<tr class="${row_classes[status.index]}">
+				<c:forTokens var="column" items="${columns}" delims=",">
+					<c:choose>
+						<c:when test="${column == 'id'}">
+							<td class="num">
+								<a class="gametooltip action" href="${link_game}?id=${game.id}" name="${game.id}">${game.id}</a>
+							</td>
+						</c:when>
+
+						<c:when test="${column == 'id-rules'}">
+							<td class="num">
+								<a class="gametooltip action" href="${link_game}?id=${game.id}" name="${game.id}">${game.id}</a>
+								<fmt:message var="title" key="aid.${aids[game]}" />
+								<br />
+								<fmt:message bundle="${game_bundle}" key="game_tag.${rules[game]}" />&#160;<img src="${img_path}/aid.${aids[game]}.png" alt="${title}" title="${title}" />
+							</td>
+						</c:when>
+
+						<c:when test="${column == 'class'}">
+							<td><fmt:message key="class_${class[game]}"/></td>
+						</c:when>
+
+						<c:when test="${column == 'rules'}">
+							<td>
+								<fmt:message bundle="${game_bundle}" key="game_tag.${rules[game]}" />
+							</td>
+						</c:when>
+
+						<c:when test="${column == 'rules-clock-rating'}">
+							<fmt:message var="title" key="aid.${aids[game]}" />
+							<td>
+								<fmt:message bundle="${game_bundle}" key="game_tag.${rules[game]}" />&#160;<img src="${img_path}/aid.${aids[game]}.png" alt="${title}" title="${title}" /><c:if test="${!empty clock[game]}">
+									<c:set var="title" value="${clock[game]}" />&#160;<img src="${img_path}/clock.png" alt="${title}" title="${title}" />
+								</c:if><c:if test="${!empty rating[game]}">
+									<fmt:message var="title" key="rating_${rating[game]}" />&#160;<img src="${img_path}/rated.png" alt="${title}" title="${title}" />
+								</c:if>
+							</td>
+						</c:when>
+
+						<c:when test="${column == 'rules-clock-rating-action'}">
+							<fmt:message var="title" key="aid.${aids[game]}" />
+							<td>
+								<a class="gametooltip action" href="${link_game}?id=${game.id}" name="${game.id}">
+									<fmt:message bundle="${game_bundle}" key="game_tag.${rules[game]}" />&#160;<img src="${img_path}/aid.${aids[game]}.png" alt="${title}" title="${title}" /><c:if test="${!empty clock[game]}">
+										<c:set var="title" value="${clock[game]}" />&#160;<img src="${img_path}/clock.png" alt="${title}" title="${title}" />
+									</c:if><c:if test="${!empty rating[game]}">
+										<fmt:message var="title" key="rating_${rating[game]}" />&#160;<img src="${img_path}/rated.png" alt="${title}" title="${title}" />
+									</c:if>
+								</a>
+							</td>
+						</c:when>
+
+						<c:when test="${column == 'variant'}">
+							<td><fmt:message key="variant_${rules[game].minorId}"/></td>
+						</c:when>
+
+						<c:when test="${column == 'aid'}">
+							<fmt:message var="title" key="aid.${game.aid}" />
+							<td><img src="${img_path}/aid.${game.aid}.png" alt="${title}" title="${title}" /></td>
+						</c:when>
+
+						<c:when test="${column == 'turn'}">
+							<td class="num">${game.turn}</td>
+						</c:when>
+						
+						<c:when test="${column == 'owner'}">
+							<td>
+								<user:username name="${game.owner.name}" />
+							</td>
+						</c:when>
+						
+						<c:when test="${column == 'players'}">
+							<td>
+								<c:choose>
+									<c:when test="${display_with_vs[game]}">
+										<user:username name="${game.players[0].subject.name}" />
+										<span class="smaller"> vs </span>
+										<user:username name="${game.players[1].subject.name}" />
+									</c:when>
+									<c:otherwise>
+										<c:forEach var="player" varStatus="status" items="${game.players}">
+											<user:username name="${player.subject.name}" />
+											<c:if test="${!status.last || can_take_more_players[game]}">, </c:if>
+										</c:forEach>
+										<c:if test="${can_take_more_players[game]}">...</c:if>
+									</c:otherwise>
+								</c:choose>
+							</td>
+						</c:when>
+
+						<c:when test="${column == 'players-turn'}">
+							<td>
+								<c:choose>
+									<c:when test="${display_with_vs[game]}">
+										<user:username name="${game.players[0].subject.name}" />
+										<span class="smaller"> vs </span>
+										<user:username name="${game.players[1].subject.name}" />
+									</c:when>
+									<c:otherwise>
+										<c:forEach var="player" varStatus="status" items="${game.players}">
+											<user:username name="${player.subject.name}" />
+											<c:if test="${!status.last || can_take_more_players[game]}">, </c:if>
+										</c:forEach>
+										<c:if test="${can_take_more_players[game]}">...</c:if>
+									</c:otherwise>
+								</c:choose>
+								<span class="smaller"> (<fmt:message key="turn"/>&#160;${game.turn})</span>
+							</td>
+						</c:when>
+
+						<c:when test="${column == 'rating'}">
+							<td>
+								<fmt:message key="rating_${rating[game]}"/>
+							</td>
+						</c:when>
+
+						<c:when test="${column == 'required_rating'}">
+							<td>
+								<fmt:message key="rating_${required_rating[game]}"/><c:if test="${required_rating[game] == 'elo'}">&#160;<c:choose>
+									<c:when test="${empty game.requiredRatingMax}">&#8805;&#160;${game.requiredRatingMin}</c:when><c:when test="${empty game.requiredRatingMin}">&#8804;&#160;${game.requiredRatingMax}</c:when>
+									<c:otherwise>${game.requiredRatingMin}-${game.requiredRatingMax}</c:otherwise>
+								</c:choose></c:if>
+							</td>
+						</c:when>
+
+						<c:when test="${column == 'clock'}">
+							<td>
+								${clock[game]}
+							</td>
+						</c:when>
+
+						<c:when test="${column == 'active_player'}">
+							<td>
+								<c:choose>
+									<c:when test="${active_player_you[game]}">
+										<fmt:message key="you"/>
+									</c:when>
+									<c:otherwise>
+										<user:username name="${game.activePlayer.subject.name}" />
+									</c:otherwise>
+								</c:choose>
+							</td>
+						</c:when>
+
+						<c:when test="${column == 'full_state'}">
+							<td>
+								<fmt:message var="title" key="state_${game.state}"/>
+								<img src="${img_path}/${game.state}.png" alt="${title}" title="${title}"/>&#160;<c:if test="${game.state == 'RUNNING'}">
+									<c:choose>
+										<c:when test="${class[game] == 'single_game'}">
+											<fmt:message key="full_state.turn">
+												<fmt:param>${game.turn}</fmt:param>
+											</fmt:message>:
+											<c:choose>
+												<c:when test="${active_player_you[game]}">
+													<fmt:message key="full_state.active_player.you"/>
+												</c:when>
+												<c:otherwise>
+													<fmt:message key="full_state.active_player">
+														<fmt:param>
+															<user:username name="${game.activePlayer.subject.name}" />
+														</fmt:param>
+													</fmt:message>
+												</c:otherwise>
+											</c:choose>
+										</c:when>
+										<c:otherwise>${title}</c:otherwise>
+									</c:choose>
+								</c:if><c:if test="${game.state == 'FORMING' || game.state == 'UNACCOMPLISHED'}">${title}
+								</c:if><c:if test="${!empty game.resolution and game.resolution != 'WIN'}">
+									<fmt:message key="resolution_${game.resolution}"/>
+									<c:if test="${!empty game.winner}">;
+									</c:if>
+								</c:if><c:if test="${!empty game.winner}">
+									<fmt:message key="resolution_winner"/>:
+									<c:choose>
+										<c:when test="${winner_you[game]}">
+											<fmt:message key="you"/>
+										</c:when>
+										<c:otherwise>
+											<user:username name="${game.winner.subject.name}" />
+										</c:otherwise>
+									</c:choose>
+								</c:if>
+							</td>
+						</c:when>
+
+						<c:when test="${column == 'state'}">
+							<td>
+								<fmt:message var="title" key="state_${game.state}"/>
+								<img src="${img_path}/${game.state}.png" alt="${title}" title="${title}"/>
+							</td>
+						</c:when>
+
+						<c:when test="${column == 'resolution'}">
+							<td>
+								<c:if test="${!empty game.resolution and game.resolution != 'WIN'}">
+									<fmt:message key="resolution_${game.resolution}"/>
+									<c:if test="${!empty game.winner}">;
+									</c:if>
+								</c:if>
+								<c:if test="${!empty game.winner}">
+									<fmt:message key="resolution_winner"/>:
+									<c:choose>
+										<c:when test="${winner_you[game]}">
+											<fmt:message key="you"/>
+										</c:when>
+										<c:otherwise>
+											<user:username name="${game.winner.subject.name}" />
+										</c:otherwise>
+									</c:choose>
+								</c:if>
+							</td>
+						</c:when>
+						
+						<c:when test="${column == 'last_active_at'}">
+							<td class="num">${last_active_at[status.index]}</td>
+						</c:when>
+						
+						<c:when test="${column == 'last_move'}">
+							<td class="center">
+								<c:if test="${class[game] == 'single_game'}">${game.lastMoveNotation}</c:if>
+							</td>
+						</c:when>
+						
+						<c:when test="${column == 'remaining_clock'}">
+							<td class="num">${remaining_clock[game]}</td>
+						</c:when>
+						
+						<c:when test="${column == 'created_at'}">
+							<td>
+								<fmt:formatDate value="${game.createdAt}" type="date" dateStyle="medium"/>
+							</td>
+						</c:when>
+
+						<c:when test="${column == 'ready_at'}">
+							<td>
+								<fmt:formatDate value="${game.readyAt}" type="date" dateStyle="medium"/>
+							</td>
+						</c:when>
+						
+						<c:when test="${column == 'start_at'}">
+							<td>
+								<c:choose>
+									<c:when test="${!empty game.startedAt}">
+										<fmt:formatDate value="${game.startedAt}" type="date" dateStyle="medium"/>
+									</c:when>
+									<c:otherwise>
+										asap
+									</c:otherwise>
+								</c:choose>
+							</td>
+						</c:when>
+
+						<c:when test="${column == 'start_at-grouped'}">
+							<td>
+								<c:choose>
+									<c:when test="${!empty game.startedAt}">
+										<c:choose>
+											<c:when test="${game.startedAt != last_startAt}">
+												<c:set var="last_startAt" value="${game.startedAt}"/>
+												<fmt:formatDate value="${game.startedAt}" type="date" dateStyle="medium"/>
+											</c:when>
+											<c:otherwise>
+												-"-
+											</c:otherwise>
+										</c:choose>
+									</c:when>
+									<c:otherwise>
+										<c:remove var="last_startAt"/>
+										asap
+									</c:otherwise>
+								</c:choose>
+							</td>
+						</c:when>
+
+						<c:when test="${column == 'ready_at-start_at'}">
+							<td>
+								<fmt:formatDate value="${game.readyAt}" type="date" dateStyle="medium"/><br/>
+								<fmt:formatDate value="${game.startedAt}" type="date" dateStyle="medium"/>
+							</td>
+						</c:when>
+						
+						<c:when test="${column == 'finish_at'}">
+							<td>
+								<fmt:formatDate value="${game.finishedAt}" type="date" dateStyle="medium"/>
+							</td>
+						</c:when>
+
+						<c:when test="${column == 'start_at-finish_at'}">
+							<td>
+								<fmt:formatDate value="${game.startedAt}" type="date" dateStyle="medium"/><br/>
+								<fmt:formatDate value="${game.finishedAt}" type="date" dateStyle="medium"/>
+							</td>
+						</c:when>
+
+					</c:choose>
+				</c:forTokens>
+			</tr>
+		</c:forEach>
+		
+	</fmt:bundle>
+	
+</jsp:root>

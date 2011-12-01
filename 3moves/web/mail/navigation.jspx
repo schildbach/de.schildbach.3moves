@@ -1,0 +1,18 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+>
+	<fmt:bundle basename="mail" prefix="navigation.">
+
+		<div class="sidebox">
+			<a class="action" href="inbox.html"><fmt:message key="inbox"/></a>
+			<br/>
+			<a class="action" href="outbox.html"><fmt:message key="outbox"/></a>
+			<br/>
+			<a class="action" href="send_mail.html"><fmt:message key="send_mail"/></a>
+		</div>
+
+	</fmt:bundle>
+	
+</jsp:root>

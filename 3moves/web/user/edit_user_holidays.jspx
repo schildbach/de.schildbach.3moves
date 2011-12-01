@@ -1,0 +1,121 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+>
+	<c:set var="page_content" scope="request">
+	
+		<fmt:bundle basename="user" prefix="edit_user_holidays.">
+		
+			<fmt:message var="label_submit" key="action_add_user_holidays"/>
+	
+			<h3><fmt:message key="header"/></h3>
+			
+			<c:choose>
+				<c:when test="${pageContext.request.locale.language == 'de'}">
+					<p style="font-weight:bold;">
+						Warnung:
+					</p>
+					<p>
+						Anders als auf den meisten anderen Servern ist diese Urlaubsliste nur für zwei Dinge da:
+					</p>
+					<ul>
+						<li>damit Deine Gegner wissen, daß Du im Urlaub bist</li>
+						<li>damit Deine Gegner davon abgehalten werden, Dir eine Erinnerung zu schicken oder Dich
+							nach der 5-Tages-Regel zu disqualifizieren</li>
+					</ul>
+					<p>
+						Der eingetragene Urlaub hält nicht die Schach-Uhren an oder verändert ihren Ablauf in irgendeiner Weise.
+						Du solltest in Spielen mit Schachuhr nur dann mitspielen die wahrscheinlich vor Deiner Abwesenheit fertig sind.
+						Alternativ kannst Du auch genug Zeit auf der Schachuhr sammeln um Deine Abwesenheit zu überbrücken.
+					</p>
+					<p style="font-weight:bold;">
+						Regeln für den Urlaub:
+					</p>
+					<ul>
+						<li>Du mußt pro Eintragung mindestens zwei aufeinanderfolgende Tage planen</li>
+						<li>in einer beliebigen 1-Jahres-Spanne dürfen nur 21 Tage Urlaub liegen</li>
+					</ul>
+				</c:when>
+				<c:otherwise>
+					<p style="font-weight:bold;">
+						A word of warning:
+					</p>
+					<p>
+						Unlike on most other servers, this holiday list only serves two purposes:
+					</p>
+					<ul>
+						<li>to let your opponents know about your holidays</li>
+						<li>to keep your opponents from reminding you or disqualifying you (according to the 5-days-rule)</li>
+					</ul>
+					<p>
+						It does not stop or in any way alter the chess clock of any running game.
+						You should only join chess-clocked games that are most likely to finish before your holidays begin,
+						or alternatively save enough time on the clock to bridge your holidays.
+					</p>
+					<p style="font-weight:bold;">
+						Rules for scheduling:
+					</p>
+					<ul>
+						<li>you have to schedule at least two consecutive days of vacation per entry</li>
+						<li>on any 1-year-period you must not have more than 21 days of vacation</li>
+					</ul>
+				</c:otherwise>
+			</c:choose>
+			
+			<c:choose>
+				<c:when test="${!empty holidays_list}">
+					<p style="font-weight:bold;"><fmt:message key="list"/></p>
+					<table cellspacing="0">
+						<c:forEach var="holidays" items="${holidays_list}">
+							<tr>
+								<td><fmt:formatDate value="${holidays.beginAt}" type="date" dateStyle="medium"/></td>
+								<td>-</td>
+								<td><fmt:formatDate value="${holidays.endAt}" type="date" dateStyle="medium"/></td>
+								<td>
+									(<fmt:message key="days">
+										<fmt:param value="${holidays.length/(24*60*60*1000)}"/>
+									</fmt:message>)
+								</td>
+								<td>
+									<c:if test="${can_remove[holidays]}">
+										<a class="action" href="remove_user_holidays.html?begin=${holidays.beginAt.time}"><fmt:message key="action_remove"/></a>
+									</c:if>
+								</td>
+							</tr>
+						</c:forEach>
+					</table>
+				</c:when>
+				<c:otherwise>
+					<p><fmt:message key="empty"/></p>
+				</c:otherwise>
+			</c:choose>
+	
+			<p style="font-weight:bold;"><fmt:message key="add_user_holidays"/></p>
+		
+			<form action="add_user_holidays.html" method="post">
+				<table cellspacing="0">
+					<tr>
+						<td><fmt:message key="begin_at"/>:</td>
+						<td><input type="text" name="begin_at" value="${param.begin_at}" size="16" maxlength="12"/></td>
+					</tr>
+					<tr>
+						<td><fmt:message key="end_at"/>:</td>
+						<td><input type="text" name="end_at" value="${param.end_at}" size="16" maxlength="12"/></td>
+					</tr>
+				</table>
+				<input type="submit" value="${label_submit}"/>
+				<c:if test="${!empty param.error}">
+					<p class="error"><fmt:message key="error_${param.error}"/></p>
+				</c:if>
+			</form>
+		
+		</fmt:bundle>
+	
+	</c:set>
+	
+	<c:import url="/layout/standard.dof"/>
+	
+</jsp:root>
+	

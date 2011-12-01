@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+	<bean id="gameService" class="de.schildbach.portal.service.game.GameServiceImpl">
+		<property name="userDao" ref="userDao" />
+		<property name="userService" ref="userService" />
+		<property name="gameDao" ref="gameDao" />
+		<property name="subjectRatingDao" ref="subjectRatingDao" />
+		<property name="messageDao" ref="messageDao" />
+		<property name="ratingActivity">
+			<bean class="de.schildbach.portal.service.game.RatingActivityImpl" />
+		</property>
+	</bean>
+
+	<bean id="gameEventService" class="de.schildbach.portal.service.game.GameEventServiceImpl">
+		<property name="userDao" ref="userDao" />
+		<property name="gameDao" ref="gameDao" />
+	</bean>
+
+	<bean id="userService" class="de.schildbach.portal.service.user.UserServiceImpl">
+		<property name="userDao" ref="userDao" />
+		<property name="subjectRelationDao">
+			<bean class="de.schildbach.portal.service.mock.persistence.SubjectRelationDaoMock" />
+		</property>
+		<property name="imageDao">
+			<bean class="de.schildbach.portal.service.mock.persistence.ImageDaoMock" />
+		</property>
+		<property name="messageDao" ref="messageDao" />
+	</bean>
+
+	<bean id="userEventService" class="de.schildbach.portal.service.user.UserEventServiceMock" />
+
+	<bean id="gameDao" class="de.schildbach.portal.service.mock.persistence.GameDaoMock" />
+
+	<bean id="subjectRatingDao" class="de.schildbach.portal.service.mock.persistence.SubjectRatingDaoMock" />
+
+	<bean id="userDao" class="de.schildbach.portal.service.mock.persistence.UserDaoMock" />
+
+	<bean id="messageDao" class="de.schildbach.portal.service.mock.message.MessageDaoMock" />
+
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<value>de/schildbach/portal/service/game_message</value>
+			</list>
+		</property>
+	</bean>
+
+</beans>

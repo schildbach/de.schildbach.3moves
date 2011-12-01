@@ -1,0 +1,18 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+>
+	<c:url var="link_game" value="/game/view_game.html" />
+
+	<c:choose>
+		<c:when test="${show_board}">
+			<c:import url="/game/board/base_board.dof?show_labels=false&amp;size=tiny" />
+		</c:when>
+		<c:otherwise>
+			<table cellspacing="0" class="list small">
+				<c:import url="/game/list/games_list.dof?columns=id,players&amp;row_class=light_dark" />
+			</table>
+		</c:otherwise>
+	</c:choose>
+
+</jsp:root>

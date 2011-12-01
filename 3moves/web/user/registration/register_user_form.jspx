@@ -1,0 +1,109 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:form="http://www.springframework.org/tags/form"
+	xmlns:spring="http://www.springframework.org/tags"
+>
+	<c:url var="img_path" value="/img"/>
+	<c:url var="server_message_path" value="/user/registration/check_name.html?name="/>
+
+	<fmt:bundle basename="user_registration" prefix="register_user.">
+
+		<fmt:message var="label_submit" key="submit" />
+
+		<fmt:message var="page_title" scope="request" key="header" />
+
+		<c:set var="page_content" scope="request">
+
+			<h3>${page_title}</h3>
+
+			<p>
+				<fmt:message key="explain"/>
+			</p>
+
+			<form:form cssClass="border" method="post" action="?" enctype="multipart/form-data">
+
+				<p>
+					<label for="name"><fmt:message key="name" /></label>
+				</p>
+				<p>
+					<fmt:message key="name.explain" />
+				</p>
+				<p>
+					<img src="${img_path}/1.png" alt="1."/>&#160;
+					<form:input id="name" path="name" size="20" maxlength="12" onchange="javascript:serverMessage('${server_message_path}', 'name', 'name_status');"/>
+					&#160;<span id="name_status" class="error">
+						<spring:bind path="command.name">
+							<c:if test="${status.error}">
+								<fmt:message key="error.name.${status.errorCode}"/>
+							</c:if>
+						</spring:bind>
+					</span>
+				</p>
+
+				<p>
+					<label for="passwords[0]"><fmt:message key="password" /></label>
+				</p>
+				<p>
+					<fmt:message key="password.explain" />
+				</p>
+				<p>
+					<img src="${img_path}/2.png" alt="2."/>&#160;
+					<form:password path="passwords[0]" size="20" maxlength="16" />
+					<spring:bind path="command.passwords[0]">
+						<c:if test="${status.error}">
+							&#160;<span class="error"><fmt:message key="error.password.${status.errorCode}"/></span>
+						</c:if>
+					</spring:bind>
+				</p>
+				<p>
+					<label for="passwords[1]"><fmt:message key="password_repeat.explain" /></label>
+				</p>
+				<p>
+					<img src="${img_path}/3.png" alt="3."/>&#160;
+					<form:password path="passwords[1]" size="20" maxlength="16" />
+					<spring:bind path="command.passwords[1]">
+						<c:if test="${status.error}">
+							&#160;<span class="error"><fmt:message key="error.password.${status.errorCode}"/></span>
+						</c:if>
+					</spring:bind>
+				</p>
+				<spring:bind path="command.passwords">
+					<c:if test="${status.error}">
+						&#160;<div class="error"><fmt:message key="error.password.${status.errorCode}"/></div>
+					</c:if>
+				</spring:bind>
+
+				<p>
+					<label for="gender"><fmt:message key="gender" /></label>
+				</p>
+				<p>
+					<img src="${img_path}/4.png" alt="4."/>&#160;
+					<c:forEach var="gender" items="${genders}">
+						<div>
+							<form:radiobutton path="gender" value="${gender}"/><fmt:message key="gender.${gender}"/>
+						</div>
+					</c:forEach>
+				</p>
+
+				<h4><fmt:message key="register"/></h4>
+				<p>
+					<img src="${img_path}/5.png" alt="5."/>&#160;
+					<form:hidden id="timezone_offset" path="timezoneOffset"/>
+					<input type="submit" value="&gt;&gt; ${label_submit}"/>
+				</p>
+
+			</form:form>
+
+			<script type="text/javascript">
+				document.getElementById('timezone_offset').value = new Date().getTimezoneOffset();
+			</script>
+
+		</c:set>
+
+	</fmt:bundle>
+
+	<c:import url="/layout/standard.dof"/>
+
+</jsp:root>

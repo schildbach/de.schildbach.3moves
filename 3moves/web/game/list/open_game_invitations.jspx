@@ -1,0 +1,70 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+>
+	<fmt:bundle basename="game_list" prefix="open_game_invitations.">
+	
+		<c:set var="page_content" scope="request">
+		
+			<h3>
+				<fmt:message key="header${!empty rules ? '_rules' : ''}">
+					<fmt:param>
+						<fmt:bundle basename="game" prefix="game_tag.">
+							<fmt:message key="${rules}"/>
+						</fmt:bundle>
+					</fmt:param>
+				</fmt:message>
+			</h3>
+		
+			<c:if test="${!empty games}">
+		
+			<table cellspacing="0" class="list small">
+				<c:import url="games_list.dof?columns=id,${empty rules ? 'rules' : 'variant'},aid,owner,players,rating,clock,ready_at,start_at&amp;row_class=light_dark,can_join"/>
+			</table>
+
+			</c:if>
+			
+			<c:choose>
+		
+				<c:when test="${is_logged_in}">
+			
+					<p><fmt:message key="can_join"/></p>
+		
+					<c:if test="${empty games}">
+						<p>
+							<fmt:message key="empty">
+								<fmt:param>
+									<fmt:bundle basename="game" prefix="game_tag.">
+										<fmt:message key="${rules}"/>
+									</fmt:bundle>
+								</fmt:param>
+							</fmt:message>
+						</p>
+					</c:if>
+			
+					<p>
+						<a class="action" href="${link_create_game}?rules=${rules}"><fmt:message key="create_game"/></a>
+					</p>
+			
+				</c:when>
+				
+				<c:otherwise>
+				
+					<p style="color:red;">
+						<fmt:message key="please_login"/>
+					</p>
+		
+					<c:import url="/user/registration/quick_registration.dof"/>
+		
+				</c:otherwise>
+		
+			</c:choose>
+		
+		</c:set>
+	
+	</fmt:bundle>
+	
+	<c:import url="/layout/standard.dof"/>
+
+</jsp:root>

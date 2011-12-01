@@ -1,0 +1,19 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+>
+	<jsp:directive.attribute name="name" type="java.lang.String" required="true" />
+	<jsp:directive.attribute name="ignorerelation" type="java.lang.Boolean" />
+
+	<c:url var="link_people" value="/people" />
+
+	<c:choose>
+		<c:when test="${!ignorerelation}">
+			<a class="usertooltip ${relations[name]}" href="${link_people}/${name}/" name="${name}">${name}</a>
+		</c:when>
+		<c:otherwise>
+			<a class="usertooltip" href="${link_people}/${name}/" name="${name}">${name}</a>
+		</c:otherwise>
+	</c:choose>
+
+</jsp:root>

@@ -1,0 +1,88 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:form="http://www.springframework.org/tags/form"
+	xmlns:spring="http://www.springframework.org/tags"
+>
+	<c:url var="link_registration" value="/user/registration/register_user.html" />
+
+	<fmt:bundle basename="user" prefix="login.">
+
+		<fmt:message var="label_submit" key="submit" />
+			
+		<fmt:message var="page_title" scope="request" key="header" />
+	
+		<c:set var="page_content" scope="request">
+
+			<h3>${page_title}</h3>
+
+			<form:form method="post" action="?" enctype="multipart/form-data">
+
+				<table>
+
+					<tr>
+
+						<td>
+							<label for="identifier"><fmt:message key="identifier" />:</label>
+						</td>
+
+						<td>			
+							<form:input path="identifier" size="32" maxlength="128" />
+							<spring:bind path="command.identifier">
+								<c:if test="${status.error}">
+									&#160;<span class="error"><fmt:message key="error.identifier.${status.errorCode}"/></span>
+								</c:if>
+							</spring:bind>
+						</td>
+
+					</tr>
+
+					<tr>
+
+						<td>
+							<label for="password"><fmt:message key="password"/>:</label>
+						</td>
+
+						<td>			
+							<form:password path="password" size="32" maxlength="16" />
+							<spring:bind path="command.password">
+								<c:if test="${status.error}">
+									&#160;<span class="error"><fmt:message key="error.password.${status.errorCode}"/></span>
+								</c:if>
+							</spring:bind>
+						</td>
+
+					</tr>
+
+				</table>
+
+				<spring:bind path="command">
+					<c:if test="${status.error}">
+						<div class="error"><fmt:message key="error.${status.errorCode}"/></div>
+					</c:if>
+				</spring:bind>
+
+				<p><input type="submit" value="&gt;&gt; ${label_submit}"/></p>
+
+			</form:form>
+
+			<p>
+				<fmt:message key="not_registered"/>
+				&#160;
+				<a class="action" href="${link_registration}"><fmt:message key="register"/></a>
+			</p>
+
+			<p>
+				<fmt:message key="trouble_logging_in"/>
+				&#160;
+				<a class="action" href="mailto:support@3moves.net">support@3moves.net</a>
+			</p>
+
+		</c:set>
+
+	</fmt:bundle>
+
+	<c:import url="/layout/standard.dof"/>
+
+</jsp:root>

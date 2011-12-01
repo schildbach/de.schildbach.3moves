@@ -1,0 +1,11 @@
+<jsp:root version="2.0" xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt">
+
+	<fmt:bundle basename="user_registration" prefix="check_name.">
+
+		<fmt:message key="status.${status}" />
+
+	</fmt:bundle>
+
+</jsp:root>

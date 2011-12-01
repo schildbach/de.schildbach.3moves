@@ -1,0 +1,91 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:form="http://www.springframework.org/tags/form"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:user="urn:jsptagdir:/WEB-INF/tags/user"
+>
+	<c:url var="link_game" value="/game/view_game.html"/>
+
+	<c:set var="page_content" scope="request">
+
+		<fmt:bundle basename="game_rating" prefix="rating_history.">
+
+			<h3>
+				<fmt:message key="header">
+					<fmt:param>
+						<fmt:bundle basename="game_rating" prefix="rating_tag.">
+							<fmt:message key="${rating}"/>
+						</fmt:bundle>
+					</fmt:param>
+					<fmt:param value="${subject}"/>
+				</fmt:message>
+			</h3>
+
+		</fmt:bundle>
+
+		<fmt:bundle basename="game_rating" prefix="rating_tag.">
+
+			<div class="sidebox">
+				<c:forEach var="rating_option" items="${rating_options}">
+					<div>
+						<a class="action" href="?rating=${rating_option}"><fmt:message key="${rating_option}"/></a>
+					</div>
+				</c:forEach>
+			</div>
+
+		</fmt:bundle>
+
+		<fmt:bundle basename="game_rating" prefix="rating_history.">
+
+			<c:choose>
+				<c:when test="${!empty rating_history}">
+					<table>
+						<tr>
+							<th><fmt:message key="date"/></th>
+							<th><fmt:message key="value"/></th>
+							<th><fmt:message key="game"/></th>
+						</tr>
+						<c:forEach var="history" items="${rating_history}">
+							<tr>
+								<td>
+									<fmt:formatDate value="${history.date}" type="both" dateStyle="short" timeStyle="short"/>
+								</td>
+								<td style="text-align:right;">
+									&#160;${history.value}
+								</td>
+								<td>
+									<c:if test="${!empty history.player.game}">
+										<a class="action" href="${link_game}?id=${history.player.game.id}">${history.player.game.id}</a>
+										(<c:choose>
+											<c:when test="${fn:length(history.player.game.players) > 2}">
+												<user:username name="${history.player.game.players[0].subject.name}" />
+												<span class="smaller"> vs </span>
+												<user:username name="${history.player.game.players[1].subject.name}" />
+											</c:when>
+											<c:otherwise>
+												<c:forEach var="player" varStatus="status" items="${history.player.game.players}">
+													<user:username name="${player.subject.name}" />
+													<c:if test="${!status.last}">, </c:if>
+												</c:forEach>
+											</c:otherwise>
+										</c:choose>)
+									</c:if>
+								</td>
+							</tr>
+						</c:forEach>
+					</table>
+				</c:when>
+				<c:otherwise>
+					<fmt:message key="empty" />
+				</c:otherwise>
+			</c:choose>
+
+		</fmt:bundle>
+
+	</c:set>
+
+	<c:import url="/layout/standard.dof"/>
+
+</jsp:root>

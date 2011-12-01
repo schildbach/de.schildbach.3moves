@@ -1,0 +1,70 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:form="http://www.springframework.org/tags/form"
+	xmlns:spring="http://www.springframework.org/tags"
+>
+	<c:set var="page_content" scope="request">
+	
+		<fmt:bundle basename="forum" prefix="create_forum.">
+
+			<fmt:message var="label_submit" key="action_submit"/>
+		
+			<h3><fmt:message key="header"/></h3>
+	
+			<form:form enctype="multipart/form-data">
+				<table>
+					<tr>
+						<td>
+							<label for="tag"><fmt:message key="tag"/></label>
+						</td>
+						<td>
+							<form:input path="tag" maxlength="32" size="32"/>
+						</td>
+						<spring:bind path="command.tag">
+							<c:forEach var="code" items="${status.errorCodes}">
+								<td class="error"><fmt:message key="error_${code}"/></td>
+							</c:forEach>
+						</spring:bind>						
+					</tr>
+					<tr>
+						<td>
+							<label for="name"><fmt:message key="name"/></label>
+						</td>
+						<td>
+							<form:input path="name" maxlength="128" size="32"/>
+						</td>
+						<spring:bind path="command.name">
+							<c:forEach var="code" items="${status.errorCodes}">
+								<td class="error"><fmt:message key="error_${code}"/></td>
+							</c:forEach>
+						</spring:bind>						
+					</tr>
+					<tr>
+						<td>
+							<label for="description"><fmt:message key="description"/></label>
+						</td>
+						<td>
+							<form:textarea path="description" cols="80" rows="5"/>
+						</td>
+					</tr>
+				</table>
+
+				<input type="submit" value="&gt;&gt; ${label_submit}"/>
+				<spring:bind path="command">
+					<c:forEach var="code" items="${status.errorCodes}">
+						<span class="error"><fmt:message key="error_${code}"/></span>
+					</c:forEach>
+				</spring:bind>						
+				
+			</form:form>
+		
+		</fmt:bundle>
+
+	</c:set>	
+	
+	<c:import url="/layout/standard.dof"/>
+
+</jsp:root>

@@ -1,0 +1,90 @@
+<jsp:root version="2.0"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:form="http://www.springframework.org/tags/form"
+	xmlns:spring="http://www.springframework.org/tags"
+>
+	<c:set var="page_content" scope="request">
+	
+		<fmt:bundle basename="mail" prefix="send_mail.">
+		
+			<fmt:message var="label_submit" key="send_mail"/>
+
+			<h3><fmt:message key="header"/></h3>
+
+			<c:import url="navigation.jspx"/>
+		
+			<form:form action="?" enctype="multipart/form-data">
+			
+				<table>
+
+					<tr>
+						<td>
+							<label for="recipient"><fmt:message key="recipient" />:</label>
+						</td>
+						<spring:bind path="command.recipient">
+							<c:forEach var="code" items="${status.errorCodes}">
+								<td class="error"><fmt:message key="error_${code}"/></td>
+							</c:forEach>
+						</spring:bind>
+					</tr>
+
+					<tr>
+						<td colspan="2"><form:input path="recipient" size="40" maxlength="12"/></td>
+					</tr>
+
+					<tr>
+						<td>
+							<label for="subject"><fmt:message key="subject" />:</label>
+						</td>
+						<spring:bind path="command.subject">
+							<c:forEach var="code" items="${status.errorCodes}">
+								<td class="error"><fmt:message key="error_${code}"/></td>
+							</c:forEach>
+						</spring:bind>
+					</tr>
+
+					<tr>
+						<td colspan="2"><form:input path="subject" size="40" maxlength="128"/></td>
+					</tr>
+
+					<tr>
+						<td>
+							<label for="text"><fmt:message key="text" />:</label>
+						</td>
+						<spring:bind path="command.text">
+							<c:forEach var="code" items="${status.errorCodes}">
+								<td class="error"><fmt:message key="error_${code}"/></td>
+							</c:forEach>
+						</spring:bind>
+					</tr>	
+
+					<tr>
+						<td colspan="2">
+							<form:textarea path="text" cssStyle="font-family:Verdana,Arial,Geneva; font-size:13px" cols="67" rows="20"/>
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<input type="submit" value="&gt;&gt; ${label_submit}"/>
+							<spring:bind path="command">
+								<c:forEach var="code" items="${status.errorCodes}">
+									<td class="error"><fmt:message key="error_${code}"/></td>
+								</c:forEach>
+							</spring:bind>
+						</td>
+					</tr>
+
+				</table>
+
+			</form:form>
+		
+		</fmt:bundle>
+	
+	</c:set>
+	
+	<c:import url="/layout/standard.dof"/>
+
+</jsp:root>
